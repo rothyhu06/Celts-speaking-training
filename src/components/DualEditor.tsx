@@ -90,9 +90,21 @@ export default function DualEditor({
 
       {/* Chinese Logic / Thought */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <MessageCircle size={16} className="text-gray-400" />
-          <label className="nga-label text-[9px]">Chinese Logic / Thought (中文思路)</label>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <MessageCircle size={16} className="text-gray-400" />
+            <label className="nga-label text-[9px]">Chinese Logic / Thought (中文思路)</label>
+          </div>
+          {chineseLogicValue && (
+            <button
+              onClick={() => onAiGenerate('script')}
+              disabled={isGenerating}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 transition-all border border-indigo-100 disabled:opacity-50"
+            >
+              <Sparkles size={10} />
+              <span className="text-[8px] font-bold uppercase tracking-wider">{isGenerating ? "Generating..." : "Regenerate AI"}</span>
+            </button>
+          )}
         </div>
         <textarea
           className="w-full border border-gray-200 rounded-2xl p-4 text-sm outline-none h-24 bg-gray-50 resize-none leading-relaxed font-light italic placeholder:text-gray-300 focus:border-black transition-all"
