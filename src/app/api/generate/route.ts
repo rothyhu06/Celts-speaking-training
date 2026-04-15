@@ -48,7 +48,7 @@ Output the result as a JSON object with these keys: score (string), fluency (str
 };
 
 async function callGeminiRest(prompt: string) {
-  const url = `https://generativelanguage.googleapis.com/v1/models/gemini-flash-latest:generateContent?key=${API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${API_KEY}`;
   
   const response = await fetch(url, {
     method: 'POST',
