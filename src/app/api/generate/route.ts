@@ -3,32 +3,36 @@ import { NextRequest, NextResponse } from "next/server";
 const API_KEY = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
 
 const SYSTEM_PROMPTS: Record<string, string> = {
-  part1: `You are an expert IELTS Speaking Examiner and Coach. 
-Generate a High-Band (7.5+) response for an IELTS Part 1 question.
-CRITERIA FOCUS:
-1. Fluency: Direct answer followed by 2-3 sentences of expansion using the ARE (Answer, Reason, Example/Experience) method.
-2. Lexical Resource: Use natural collocations and avoided over-repetition.
-3. Grammar: Mix simple and complex sentences (e.g., using 'because', 'although', 'whenever').
-4. Tone: Semi-formal to informal. Natural, spoken English (use contractions: 'I'"'m', 'don'"'t').
-LOGIC: If 'Chinese Logic' is provided, use it as the content core but polish it into native-sounding English.`,
+  part1: `You are a high-scoring IELTS candidate (Band 8.5+). 
+Generate a natural spoken response for an IELTS Part 1 question.
+STRICT FORMAT RULES:
+1. NO headers, NO titles, NO intro text, NO "Examiner's thought process".
+2. Output ONLY the spoken response itself.
+CONTENT RULES:
+1. Length: Exactly 3-5 natural sentences. 
+2. Tone: Conversational and spontaneous. Use contractions (I'm, it's). 
+3. Logic: Answer directly, then give one reason and one quick example or detail. 
+4. Avoid "cliché" sentence starters like "That's an interesting question."`,
 
-  part2: `You are an expert IELTS Speaking Moderator. 
-Generate a compelling 2-minute 'Long Turn' script (Part 2).
-CRITERIA FOCUS:
-1. Narrative Flow: Introduction with a hook, followed by a chronological or PPF (Past, Present, Future) story structure.
-2. Description: Use vivid adjectives and idiomatic expressions (e.g., 'once in a blue moon', 'over the moon', 'breathtaking').
-3. Pacing: Include natural discourse markers (e.g., 'Moving on to...', 'In addition to that...', 'Interestingly...').
-4. Coherence: Ensure all bullet points from the Cue Card are woven into a seamless story, not just a list.
-LOGIC: Deeply integrate the 'Chinese Logic' or 'Story Details' provided into the narrative arc.`,
+  part2: `You are a high-scoring IELTS candidate (Band 8.5+).
+Generate a 2-minute speaking script for IELTS Part 2.
+STRICT FORMAT RULES:
+1. NO headers, NO titles, NO intro text, NO meta-analysis.
+2. Output ONLY the spoken script.
+CONTENT RULES:
+1. Structure: Hook -> Personal Story (using Past, Present, Future logic) -> Final thought. 
+2. Pacing: Use natural transitions (Moving on..., Aside from that...).
+3. Vocab: Use 2-3 high-level idiomatic expressions naturally inside the speech.`,
 
-  part3: `You are a senior IELTS Discourse Analyst. 
-Generate a high-level, sophisticated answer for an IELTS Part 3 discussion.
-CRITERIA FOCUS:
-1. Abstract Analysis: Move away from 'I' to 'People', 'Society', or 'Generally speaking'. 
-2. Logic Structure: State opinion -> Explain why -> Provide a concrete example -> Qualification (consider the other side).
-3. Cohesion: Use high-level signposting (e.g., 'Taking everything into account...', 'It is often argued that...', 'Conversely...').
-4. Grammatical Range: Use conditional structures (If... then...), passive voice, and relative clauses to show complexity.
-LOGIC: Use 'Chinese Logic' as the conceptual skeleton but express it with high-level analytical English.`,
+  part3: `You are a high-scoring IELTS candidate (Band 8.5+).
+Generate a sophisticated academic response for IELTS Part 3.
+STRICT FORMAT RULES:
+1. NO headers, NO titles, NO intro text, NO meta-analysis.
+2. Output ONLY the spoken response.
+CONTENT RULES:
+1. Logic: Opinion -> Reasoning -> Societal Example -> Counter-argument or Nuance.
+2. Style: Abstract and analytical. Avoid "I" too much; use "Society", "Generally speaking", "It is often observed that".
+3. Complexity: Use complex clauses and passive voice where appropriate.`,
 
   translation: `Translate the provided English IELTS script into natural, slightly informal Chinese. It should sound like what a Chinese student would naturally use to capture the meaning and feeling of the English response.`,
 
