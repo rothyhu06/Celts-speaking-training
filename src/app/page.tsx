@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
 import Link from "next/link";
-import { ArrowRight, Target, BookOpen, MessageSquare, Mic, Sparkles, MessageCircle, Download, Printer, Upload, RefreshCw, Info, HelpCircle } from "lucide-react";
+import { ArrowRight, Target, BookOpen, MessageSquare, Mic, Sparkles, MessageCircle, Download, Printer, Upload, RefreshCw, Info, HelpCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { useRef } from "react";
 import { supabase } from "@/lib/supabase";
 
@@ -11,6 +11,7 @@ export default function DashboardPage() {
   const [mounted, setMounted] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncMessage, setSyncMessage] = useState<string | null>(null);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { categories, topics, stories, user, updateProfile, logout, restoreBackup } = useStore();
 
@@ -280,62 +281,73 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      {/* System Guide */}
-      <section className="space-y-6 pb-20">
-        <div className="flex items-center gap-2">
-          <HelpCircle size={18} className="text-black" />
-          <h2 className="text-xl font-playfair">System Guide</h2>
-        </div>
+      {/* System Guide (Collapsible) */}
+      <section className="space-y-4 pb-20">
+        <button 
+          onClick={() => setIsGuideOpen(!isGuideOpen)}
+          className="w-full flex items-center justify-between py-6 px-8 rounded-3xl border border-gray-100 bg-gray-50/30 hover:bg-gray-50 transition-all group"
+        >
+          <div className="flex items-center gap-3">
+            <HelpCircle size={18} className="text-black" />
+            <div className="flex flex-col items-start">
+              <h2 className="text-lg font-playfair">System Guide</h2>
+              <p className="text-[9px] uppercase tracking-widest text-gray-400 font-bold">使用指南 (Bilingual)</p>
+            </div>
+          </div>
+          {isGuideOpen ? <ChevronUp size={18} strokeWidth={1} /> : <ChevronDown size={18} strokeWidth={1} />}
+        </button>
         
-        <div className="space-y-4">
-          <div className="nga-card-sm border-dashed border-gray-100 bg-transparent">
-            <h3 className="text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
-              <RefreshCw size={10} /> 01 Data & Sync (同步与备份)
-            </h3>
-            <p className="text-xs leading-loose text-muted font-light">
-              <strong className="text-black">Cloud:</strong> Use <span className="font-bold underline">Sync</span> to fetch data from Supabase. 
-              <br/>
-              <strong className="text-black">Local:</strong> Use <span className="font-bold underline">Backup</span> regularly to download your data as a JSON file.
-              <br/>
-              <small className="text-gray-400 italic">提醒：定期备份到本地以防止意外的数据冲突。</small>
-            </p>
-          </div>
+        {isGuideOpen && (
+          <div className="space-y-4 animate-in slide-in-from-top-4 duration-500">
+            <div className="nga-card-sm border-dashed border-gray-100 bg-transparent">
+              <h3 className="text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
+                <RefreshCw size={10} /> 01 Data & Sync (同步与备份)
+              </h3>
+              <p className="text-xs leading-loose text-muted font-light">
+                <strong className="text-black">Cloud:</strong> Use <span className="font-bold underline">Sync</span> to fetch data from Supabase. 
+                <br/>
+                <strong className="text-black">Local:</strong> Use <span className="font-bold underline">Backup</span> regularly to download your data as a JSON file.
+                <br/>
+                <small className="text-gray-400 italic">提醒：定期备份到本地以防止数据丢失。</small>
+              </p>
+            </div>
 
-          <div className="nga-card-sm border-dashed border-gray-100 bg-transparent">
-            <h3 className="text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
-              <MessageSquare size={10} /> 02 Part 1 Q&A (题库管理)
-            </h3>
-            <p className="text-xs leading-loose text-muted font-light">
-              <strong className="text-black">Quick Import:</strong> Use the <span className="font-bold underline">?</span> icon in Part 1 to see formatting rules for .txt files. 
-              <br/>
-              <strong className="text-black">Expert Mode:</strong> Add questions manually and use AI to polish your "Chinese Logic" into natural English.
-            </p>
-          </div>
+            <div className="nga-card-sm border-dashed border-gray-100 bg-transparent">
+              <h3 className="text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
+                <MessageSquare size={10} /> 02 Part 1 Q&A (题库管理)
+              </h3>
+              <p className="text-xs leading-loose text-muted font-light">
+                <strong className="text-black">Quick Import:</strong> Use the <span className="font-bold underline">?</span> icon in Part 1 to see formatting rules for .txt files. 
+                <br/>
+                <small className="text-gray-400 italic">快速导入：Part 1 页面右上角有指南图标。</small>
+              </p>
+            </div>
 
-          <div className="nga-card-sm border-dashed border-gray-100 bg-transparent">
-            <h3 className="text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
-              <Sparkles size={10} /> 03 Part 2 Strategy (串联素材)
-            </h3>
-            <p className="text-xs leading-loose text-muted font-light">
-              <strong className="text-black">The Core:</strong> Create <span className="italic">Stories</span> (素材) first, then <span className="font-bold underline">Link</span> them to multiple <span className="italic">Topics</span> (话题).
-              <br/>
-              One story can cover 5-10 topics! Use <span className="font-bold underline">AI Lab</span> to generate tailored scripts for each linkage.
-              <br/>
-              <small className="text-gray-400 italic">秘籍：以不变应万变，用 10 个好故事解决 50 个话题。</small>
-            </p>
-          </div>
+            <div className="nga-card-sm border-dashed border-gray-100 bg-transparent">
+              <h3 className="text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
+                <Sparkles size={10} /> 03 Part 2 Strategy (串联与实验室)
+              </h3>
+              <p className="text-xs leading-loose text-muted font-light">
+                <strong className="text-black">The Core:</strong> Create <span className="italic">Stories</span> (素材) first, then <span className="font-bold underline">Link</span> them to multiple <span className="italic">Topics</span> (话题).
+                <br/>
+                Use <span className="font-bold underline">AI Lab</span> to generate tailored scripts for each linkage.
+                <br/>
+                <small className="text-gray-400 italic">秘籍：用 10 个好故事解决 50 个话题。</small>
+              </p>
+            </div>
 
-          <div className="nga-card-sm border-dashed border-gray-100 bg-transparent">
-            <h3 className="text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
-              <Mic size={10} /> 04 Practice & Report (考场练习)
-            </h3>
-            <p className="text-xs leading-loose text-muted font-light">
-              <strong className="text-black">Simulation:</strong> Practice with real-time timers in the <span className="font-bold underline">Mock Room</span>.
-              <br/>
-              <strong className="text-black">Assessment:</strong> Use the "Ask for Diagnosis" button after a session to get a Band Score and 4-way feedback report.
-            </p>
+            <div className="nga-card-sm border-dashed border-gray-100 bg-transparent">
+              <h3 className="text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
+                <Mic size={10} /> 04 Practice & Report (考场练习)
+              </h3>
+              <p className="text-xs leading-loose text-muted font-light">
+                <strong className="text-black">Results:</strong> Practice in the <span className="font-bold underline">Mock Room</span> and get a Band Score + 4-way feedback report.
+                <br/>
+                <small className="text-gray-400 italic">实战：练习后记得点击“诊断报告”。</small>
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </section>
     </div>
   );
