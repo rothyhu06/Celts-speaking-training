@@ -59,6 +59,8 @@ export default function StoriesPage() {
   const [tab, setTab] = useState<"topics" | "stories">("topics");
   const [bulkText, setBulkText] = useState("");
   const [isBulkMode, setIsBulkMode] = useState(false);
+  const [editingTopicId, setEditingTopicId] = useState<string | null>(null);
+  const [editingTopicTitle, setEditingTopicTitle] = useState("");
   const [importStatus, setImportStatus] = useState<string | null>(null);
 
   useEffect(() => { setMounted(true); }, []);
@@ -267,34 +269,84 @@ export default function StoriesPage() {
           ) : (
             userTopics.map((topic) => {
               const linked = userStories.find((s) => s.id === topic.linkedStoryId);
+              const isEditing = editingTopicId === topic.id;
+
               return (
-                <div key={topic.id} className="nga-card group flex items-start gap-5 cursor-pointer hover:shadow-sm transition-all"
-                  onClick={() => setActiveDrawerTopicId(topic.id)}>
+                <div 
+                  key={topic.id} 
+                  className="nga-card group flex items-start gap-5 cursor-pointer hover:shadow-sm transition-all"
+                  onClick={() => !isEditing && setActiveDrawerTopicId(topic.id)}
+                >
                   <div className="flex-1 min-w-0">
-                    <p className="font-playfair text-base leading-snug">{topic.title}</p>
-                    {linked ? (
-                      <span className="inline-flex items-center gap-1 mt-2 text-[9px] uppercase tracking-widest font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">
-                        <Link2 size={8} /> {linked.title}
-                      </span>
+                    {isEditing ? (
+                      <div className="flex gap-4 items-center" onClick={(e) => e.stopPropagation()}>
+                        <input 
+                          autoFocus
+                          className="flex-1 border-b border-black py-1 outline-none text-base font-playfair italic bg-transparent"
+                          value={editingTopicTitle}
+                          onChange={(e) => setEditingTopicTitle(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              updateTopic(topic.id, { title: editingTopicTitle });
+                              setEditingTopicId(null);
+                            } else if (e.key === 'Escape') {
+                              setEditingTopicId(null);
+                            }
+                          }}
+                        />
+                        <button 
+                          onClick={() => {
+                            updateTopic(topic.id, { title: editingTopicTitle });
+                            setEditingTopicId(null);
+                          }} 
+                          className="p-1 text-black"
+                        >
+                          <Check size={16} />
+                        </button>
+                        <button onClick={() => setEditingTopicId(null)} className="p-1 text-gray-400"><X size={16} /></button>
+                      </div>
                     ) : (
-                      <span className="inline-block mt-2 text-[9px] uppercase tracking-widest font-semibold text-gray-300">
-                        Unlinked
-                      </span>
-                    )}
-                    {topic.script && (
-                      <p className="text-xs text-muted mt-2 line-clamp-2 font-light italic">
-                        {topic.script.replace(/^\[Topic:.*?\]\n\n/, "")}
-                      </p>
+                      <>
+                        <p className="font-playfair text-base leading-snug">{topic.title}</p>
+                        {linked ? (
+                          <span className="inline-flex items-center gap-1 mt-2 text-[9px] uppercase tracking-widest font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">
+                            <Link2 size={8} /> {linked.title}
+                          </span>
+                        ) : (
+                          <span className="inline-block mt-2 text-[9px] uppercase tracking-widest font-semibold text-gray-300">
+                            Unlinked
+                          </span>
+                        )}
+                        {topic.script && (
+                          <p className="text-xs text-muted mt-2 line-clamp-2 font-light italic">
+                            {topic.script.replace(/^\[Topic:.*?\]\n\n/, "")}
+                          </p>
+                        )}
+                      </>
                     )}
                   </div>
                   <div className="flex flex-col items-end gap-3">
                     <button
-                      onClick={(e) => { e.stopPropagation(); if (confirm("Delete this topic?")) deleteTopic(topic.id); }}
+                      onClick={(e) => { 
+                        e.stopPropagation(); 
+                        if (confirm("Delete this topic?")) deleteTopic(topic.id); 
+                      }}
                       className="p-1.5 text-black hover:text-red-500 transition-all"
                     >
                       <Trash2 size={13} strokeWidth={1.5} />
                     </button>
-                    <Edit2 size={14} strokeWidth={1.5} className="text-black transition-colors" />
+                    {!isEditing && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditingTopicId(topic.id);
+                          setEditingTopicTitle(topic.title);
+                        }}
+                        className="p-1.5 text-black hover:scale-110 transition-all"
+                      >
+                        <Edit2 size={14} strokeWidth={1.5} />
+                      </button>
+                    )}
                   </div>
                 </div>
               );

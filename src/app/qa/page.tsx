@@ -13,13 +13,15 @@ import { generateGeminiIA } from "@/lib/gemini";
 
 export default function QAPage() {
   const [mounted, setMounted] = useState(false);
-  const { categories, addCategory, addQuestion, updateQuestion, user, updateProfile, batchImportQA, deleteCategory, deleteQuestion } = useStore();
+  const { categories, addCategory, addQuestion, updateQuestion, user, updateProfile, batchImportQA, deleteCategory, updateCategory, deleteQuestion } = useStore();
   const { playingId, toggleSpeech } = useTTS();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   const [editingQuestion, setEditingQuestion] = useState<any>(null);
+  const [editingCatId, setEditingCatId] = useState<string | null>(null);
+  const [editingCatName, setEditingCatName] = useState("");
   const [addingToCategory, setAddingToCategory] = useState<string | null>(null);
   const [newQ, setNewQ] = useState("");
   const [newA, setNewA] = useState("");
@@ -331,15 +333,58 @@ T: 当然！我发现我的注意力往往会下降...`}
         ) : (
           userCategories.map((category: Category) => (
             <div key={category.id} className="border-b border-gray-100 last:border-0 overflow-hidden bg-white">
-              <button 
-                onClick={() => toggleCategory(category.id)}
-                className="w-full flex items-center justify-between py-10 hover:px-4 transition-all group"
-              >
-                <div className="flex items-baseline gap-6">
-                  <span className="text-2xl font-playfair group-hover:italic transition-all">{category.name}</span>
-                  <span className="nga-label text-[8px] opacity-0 group-hover:opacity-100 transition-opacity">{category.questions.length} Items</span>
+              <div className="w-full flex items-center justify-between py-10 hover:px-4 transition-all group">
+                <div 
+                  onClick={() => toggleCategory(category.id)}
+                  className="flex-1 flex items-baseline gap-6 cursor-pointer"
+                >
+                  {editingCatId === category.id ? (
+                    <div className="flex gap-4 items-center flex-1 pr-10" onClick={(e) => e.stopPropagation()}>
+                      <input 
+                        autoFocus
+                        className="flex-1 border-b border-black py-1 outline-none text-2xl font-playfair italic bg-transparent"
+                        value={editingCatName}
+                        onChange={(e) => setEditingCatName(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            updateCategory(category.id, { name: editingCatName });
+                            setEditingCatId(null);
+                          } else if (e.key === 'Escape') {
+                            setEditingCatId(null);
+                          }
+                        }}
+                      />
+                      <button 
+                        onClick={() => {
+                          updateCategory(category.id, { name: editingCatName });
+                          setEditingCatId(null);
+                        }} 
+                        className="p-2 text-black"
+                      >
+                        <Check size={20} />
+                      </button>
+                      <button onClick={() => setEditingCatId(null)} className="p-2 text-gray-400"><X size={20} /></button>
+                    </div>
+                  ) : (
+                    <>
+                      <span className="text-2xl font-playfair group-hover:italic transition-all">{category.name}</span>
+                      <span className="nga-label text-[8px] opacity-0 group-hover:opacity-100 transition-opacity">{category.questions.length} Items</span>
+                    </>
+                  )}
                 </div>
                 <div className="flex items-center gap-4">
+                  {!editingCatId && (
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditingCatId(category.id);
+                        setEditingCatName(category.name);
+                      }}
+                      className="p-2 text-black hover:scale-110 transition-all"
+                    >
+                      <Edit2 size={14} strokeWidth={1.5} />
+                    </button>
+                  )}
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
@@ -349,9 +394,13 @@ T: 当然！我发现我的注意力往往会下降...`}
                   >
                     <Trash2 size={14} strokeWidth={1.5} />
                   </button>
-                  {expandedCategories.includes(category.id) ? <ChevronUp size={18} strokeWidth={1} /> : <ChevronDown size={18} strokeWidth={1} />}
+                  {expandedCategories.includes(category.id) ? (
+                    <button onClick={() => toggleCategory(category.id)}><ChevronUp size={18} strokeWidth={1} /></button>
+                  ) : (
+                    <button onClick={() => toggleCategory(category.id)}><ChevronDown size={18} strokeWidth={1} /></button>
+                  )}
                 </div>
-              </button>
+              </div>
 
               {expandedCategories.includes(category.id) && (
                 <div className="pb-12 space-y-12 px-4 animate-in fade-in duration-500">
