@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
-import { Plus, ChevronDown, ChevronUp, Edit2, Check, X, Book, Sparkles, Upload, Trash2, Volume2, Square } from "lucide-react";
+import { Plus, ChevronDown, ChevronUp, Edit2, Check, X, Book, Sparkles, Upload, Trash2, Volume2, Square, HelpCircle } from "lucide-react";
 import { Category, Question } from "@/types";
 import DualEditor from "@/components/DualEditor";
 import { useTTS } from "@/hooks/useTTS";
@@ -26,6 +26,7 @@ export default function QAPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [importStatus, setImportStatus] = useState<string | null>(null);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -170,6 +171,105 @@ export default function QAPage() {
         </div>
       )}
 
+      {/* Bilingual Import Guide Modal */}
+      {isGuideOpen && (
+        <div className="fixed inset-0 bg-white/80 backdrop-blur-xl z-[100] flex items-center justify-center p-6 animate-in fade-in zoom-in-95 duration-300">
+          <div className="w-full max-w-2xl bg-white border border-gray-100 shadow-2xl rounded-[3rem] overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="p-10 border-b border-gray-50 flex justify-between items-center">
+              <div className="space-y-1">
+                <h2 className="text-3xl font-playfair tracking-tight">Import Guide</h2>
+                <p className="nga-label text-[10px] text-gray-400">导入指南 (中英双语版)</p>
+              </div>
+              <button 
+                onClick={() => setIsGuideOpen(false)}
+                className="p-3 hover:bg-gray-50 rounded-full transition-colors"
+              >
+                <X size={20} strokeWidth={1.5} />
+              </button>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-10 space-y-12 custom-scrollbar">
+              {/* General Rules */}
+              <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px] font-bold">1</div>
+                  <h3 className="text-sm font-bold tracking-widest uppercase">General Rules (通用规则)</h3>
+                </div>
+                <div className="pl-9 space-y-4">
+                  <p className="text-sm leading-relaxed text-gray-600">
+                    <strong className="text-black">File Types:</strong> .txt or .docx only. Word files are automatically parsed for plain text.
+                    <br/>
+                    <small className="text-gray-400">支持文件格式：仅限 .txt 或 .docx。Word 文件会自动提取文本解析。</small>
+                  </p>
+                  <p className="text-sm leading-relaxed text-gray-600">
+                    <strong className="text-black">Trigger:</strong> Any line ending with a <span className="underline">?</span> will start a new question block.
+                    <br/>
+                    <small className="text-gray-400">触发机制：任何以 ? 结尾的行都会被识别为新题目的开始。</small>
+                  </p>
+                </div>
+              </section>
+
+              {/* Keywords Section */}
+              <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px] font-bold">2</div>
+                  <h3 className="text-sm font-bold tracking-widest uppercase">Keywords (识别关键字)</h3>
+                </div>
+                <div className="pl-9 grid grid-cols-2 gap-4">
+                  {[
+                    { en: 'Topic', zh: '主题/分类', markers: 'Topic:, 主题:' },
+                    { en: 'Question', zh: '题目', markers: 'Q:, Question:, 问题:' },
+                    { en: 'Answer', zh: '参考答案', markers: 'A:, Answer:, 答案:' },
+                    { en: 'Translation', zh: '中文翻译', markers: 'T:, Translation:, 翻译:' },
+                    { en: 'Vocab', zh: '词汇笔记', markers: 'V:, Vocab:, 词汇:' }
+                  ].map((item, idx) => (
+                    <div key={idx} className="bg-gray-50/50 p-4 rounded-2xl border border-gray-50">
+                      <p className="text-[10px] uppercase tracking-tighter font-bold text-gray-400 mb-1">{item.en} ({item.zh})</p>
+                      <code className="text-[11px] font-mono text-indigo-600">{item.markers}</code>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Template Section */}
+              <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px] font-bold">3</div>
+                  <h3 className="text-sm font-bold tracking-widest uppercase">Example Template (示例模板)</h3>
+                </div>
+                <div className="pl-9">
+                  <div className="bg-black text-white p-8 rounded-3xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                      <Book size={60} />
+                    </div>
+                    <pre className="text-xs font-mono leading-loose whitespace-pre-wrap opacity-80">
+{`主题: Work & Study
+Q: Do you prefer to study in the morning or evening?
+A: Well, for me, I'm definitely a morning person. 
+T: 对我来说，我绝对是一个早起的人。
+V: morning person - 早起的人; definitely - 肯定
+
+Q: Is it important to take breaks?
+A: Absolutely! I find that my focus tends to dip...
+T: 当然！我发现我的注意力往往会下降...`}
+                    </pre>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div className="p-10 border-t border-gray-50 flex justify-center">
+              <button 
+                onClick={() => setIsGuideOpen(false)}
+                className="nga-button-outline px-12"
+              >
+                I Understand (了解了)
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <header className="flex justify-between items-center border-b border-gray-100 pb-12">
         <div className="space-y-2">
           <h1 className="text-4xl font-playfair tracking-tight">Part 1 Q&A</h1>
@@ -189,6 +289,13 @@ export default function QAPage() {
               accept=".txt,.docx" 
               onChange={handleFileUpload} 
             />
+          </button>
+          <button 
+            onClick={() => setIsGuideOpen(true)}
+            className="p-3 border border-black/5 rounded-full hover:bg-black hover:text-white transition-all group relative mr-2"
+            title="View Import Guide (查看导入指南)"
+          >
+            <HelpCircle size={20} strokeWidth={1.5} />
           </button>
           <button 
             onClick={() => setIsAddingCategory(true)}
