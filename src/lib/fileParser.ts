@@ -53,9 +53,18 @@ export function parseFileContent(text: string): {
     // We only use cleanLine for detection, not for appending content!
     const cleanLine = line.replace(/^[^a-zA-Z0-9\u4e00-\u9fa5]+/, '').trim();
 
-    // 1. Detect Category / Topic (Explicit or implicit short line before any question)
+    // 1a. Explicit Category / Topic Detection (High Priority)
+    // Detects explicit markers and forces a flush/switch
+    if (/^(Category|Theme|Topic|主题|分类)[:：]\s*/i.test(cleanLine)) {
+      flushQuestion();
+      currentCategory = cleanLine.replace(/^(Category|Theme|Topic|主题|分类)[:：]\s*/i, '').trim();
+      currentQuestion = null; // Explicitly reset to ensure clean state
+      continue;
+    }
+
+    // 1b. Implicit Category Detection (Lower Priority)
+    // Short line before any question starts.
     if (!currentQuestion && cleanLine.length > 0 && cleanLine.length < 60 && !line.includes('?')) {
-      // It's a short line before a question starts. Adopt as Category.
       currentCategory = line.replace(/^[#\s]+/, '').replace(/^(Category|Theme|Topic|主题|分类)[:：]?\s*/i, '').trim();
       continue;
     }
