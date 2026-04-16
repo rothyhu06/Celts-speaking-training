@@ -298,54 +298,98 @@ export default function DashboardPage() {
         </button>
         
         {isGuideOpen && (
-          <div className="space-y-4 animate-in slide-in-from-top-4 duration-500">
-            <div className="nga-card-sm border-dashed border-gray-100 bg-transparent">
-              <h3 className="text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
-                <RefreshCw size={10} /> 01 Data & Sync (同步与备份)
-              </h3>
-              <p className="text-xs leading-loose text-muted font-light">
-                <strong className="text-black">Cloud:</strong> Use <span className="font-bold underline">Sync</span> to fetch data from Supabase. 
-                <br/>
-                <strong className="text-black">Local:</strong> Use <span className="font-bold underline">Backup</span> regularly to download your data as a JSON file.
-                <br/>
-                <small className="text-gray-400 italic">提醒：定期备份到本地以防止数据丢失。</small>
-              </p>
+          <div className="space-y-8 animate-in slide-in-from-top-4 duration-500 mt-6 overflow-hidden">
+            
+            {/* 01: Core Highlights / 网站亮点 */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 px-2">
+                <Sparkles size={16} className="text-indigo-500" />
+                <h3 className="text-sm font-bold tracking-widest uppercase text-indigo-900 underline decoration-indigo-200 underline-offset-8 decoration-4">01 Site Highlights / 网站亮点</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="nga-card-sm border-indigo-100 bg-indigo-50/20">
+                  <p className="text-xs leading-loose font-medium text-black">
+                    <strong className="text-indigo-600">The Master Story System:</strong> Don't memorize 50 topics. Create 10 "Master Stories" and <strong>Link</strong> them to multiple topics to reduce memory load by 90%.
+                  </p>
+                  <p className="text-xs leading-loose text-muted mt-2 border-t border-indigo-50 pt-2 italic">
+                    <strong className="text-black">万能素材串联法：</strong> 别再死记硬背 50 个话题。创建 10 个“万能故事（Story）”，然后将其<strong>关联（Link）</strong>到多个话题（Topic）上，瞬间减轻 90% 的记忆负担。
+                  </p>
+                </div>
+                <div className="nga-card-sm border-purple-100 bg-purple-50/20">
+                  <p className="text-xs leading-loose font-medium text-black">
+                    <strong className="text-purple-600">Iterative AI Lab:</strong> Use the "AI Suggestion" box then refine it with specific instructions (e.g. "Use idioms", "Make it more natural"). Don't settle for the first draft.
+                  </p>
+                  <p className="text-xs leading-loose text-muted mt-2 border-t border-purple-50 pt-2 italic">
+                    <strong className="text-black">AI 实验室迭代：</strong> 获取 AI 建议后，利用下方的“自定义指令”进行反复打磨（例如：“加入习语”、“语气更自然”），直到生成最适合你的满分范文。
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="nga-card-sm border-dashed border-gray-100 bg-transparent">
-              <h3 className="text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
-                <MessageSquare size={10} /> 02 Part 1 Q&A (题库管理)
-              </h3>
-              <p className="text-xs leading-loose text-muted font-light">
-                <strong className="text-black">Quick Import:</strong> Use the <span className="font-bold underline">?</span> icon in Part 1 to see formatting rules for .txt files. 
-                <br/>
-                <small className="text-gray-400 italic">快速导入：Part 1 页面右上角有指南图标。</small>
-              </p>
+            {/* 02: Step-by-Step / 各模块用法 */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 px-2">
+                <BookOpen size={16} className="text-emerald-500" />
+                <h3 className="text-sm font-bold tracking-widest uppercase text-emerald-900 underline decoration-emerald-200 underline-offset-8 decoration-4">02 Training Workflow / 各模块用法</h3>
+              </div>
+              <div className="grid grid-cols-1 gap-4">
+                <div className="nga-card-sm border-gray-100">
+                  <div className="flex flex-col md:flex-row gap-6 md:gap-12">
+                    <div className="flex-1 space-y-2">
+                      <p className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 text-emerald-700">Part 1: Concise & Personal</p>
+                      <p className="text-xs leading-loose text-muted">Upload your basic Q&A pairs via file import. Use AI to polish them into concise, 2-3 sentence natural spoken responses. Check the "?" icon in Part 1 for rapid import tips.</p>
+                    </div>
+                    <div className="flex-1 space-y-2 border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-12">
+                      <p className="text-xs font-bold uppercase tracking-widest text-emerald-700">第一部分：简洁、生活化</p>
+                      <p className="text-xs leading-loose text-muted font-light italic">利用文件导入批量上传你的 Q&A。让 AI 将其润色为 2-3 句的地道口语。记得点击 Part 1 页面的“？”查看批量导入秘籍。</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="nga-card-sm border-gray-100">
+                  <div className="flex flex-col md:flex-row gap-6 md:gap-12">
+                    <div className="flex-1 space-y-2">
+                      <p className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 text-indigo-700">Part 2: Storytelling Strategy</p>
+                      <p className="text-xs leading-loose text-muted">Navigate to "AI Lab" to manage your stories. Map each story to related topics. This creates a "One-Story-to-Many-Topics" network, transforming a random pool into a logical system.</p>
+                    </div>
+                    <div className="flex-1 space-y-2 border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-12">
+                      <p className="text-xs font-bold uppercase tracking-widest text-indigo-700">第二部分：故事串联法</p>
+                      <p className="text-xs leading-loose text-muted font-light italic">核心在于“AI 实验室”。在这里建立你的故事轴，并将其映射到各个相关的话题。这能把零散的话题变成有逻辑的系统，大幅减少备考量。</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="nga-card-sm border-gray-100">
+                  <div className="flex flex-col md:flex-row gap-6 md:gap-12">
+                    <div className="flex-1 space-y-2">
+                      <p className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 text-rose-700">Mock Room: Full Simulation</p>
+                      <p className="text-xs leading-loose text-muted">Practice with professional timers and recording. After finishing, click "Ask for Diagnosis" to receive a full Band Score report with detailed 4-category IELTS feedback.</p>
+                    </div>
+                    <div className="flex-1 space-y-2 border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-12">
+                      <p className="text-xs font-bold uppercase tracking-widest text-rose-700">模拟考场：全真计时模拟</p>
+                      <p className="text-xs leading-loose text-muted font-light italic">在 Mock Room 中开启倒计时进行录音练习。练习结束后，一键开启“诊断报告”，获取专家级的 Band Score 评分和四维度反馈报告。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="nga-card-sm border-dashed border-gray-100 bg-transparent">
-              <h3 className="text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
-                <Sparkles size={10} /> 03 Part 2 Strategy (串联与实验室)
-              </h3>
-              <p className="text-xs leading-loose text-muted font-light">
-                <strong className="text-black">The Core:</strong> Create <span className="italic">Stories</span> (素材) first, then <span className="font-bold underline">Link</span> them to multiple <span className="italic">Topics</span> (话题).
-                <br/>
-                Use <span className="font-bold underline">AI Lab</span> to generate tailored scripts for each linkage.
-                <br/>
-                <small className="text-gray-400 italic">秘籍：用 10 个好故事解决 50 个话题。</small>
-              </p>
+            {/* 03: Data / 数据安全 */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 px-2">
+                <RefreshCw size={16} className="text-gray-400" />
+                <h3 className="text-sm font-bold tracking-widest uppercase text-gray-500">03 Sync & Safety / 数据同步与备份</h3>
+              </div>
+              <div className="nga-card-sm bg-gray-50/50 border-gray-100">
+                <p className="text-xs leading-loose text-muted">
+                  Use the <strong>Sync</strong> button to save to cloud. Use <strong>Backup</strong> regularly to download a local JSON copy. Double protection for your study progress.
+                </p>
+                <p className="text-xs leading-loose text-muted mt-2 border-t border-gray-100 pt-2 italic">
+                  点击顶部的 <strong>Sync</strong> 可云端同步；定期点击 <strong>Backup</strong> 下载本地快照。双重保障你的备考心血。
+                </p>
+              </div>
             </div>
 
-            <div className="nga-card-sm border-dashed border-gray-100 bg-transparent">
-              <h3 className="text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
-                <Mic size={10} /> 04 Practice & Report (考场练习)
-              </h3>
-              <p className="text-xs leading-loose text-muted font-light">
-                <strong className="text-black">Results:</strong> Practice in the <span className="font-bold underline">Mock Room</span> and get a Band Score + 4-way feedback report.
-                <br/>
-                <small className="text-gray-400 italic">实战：练习后记得点击“诊断报告”。</small>
-              </p>
-            </div>
           </div>
         )}
       </section>
