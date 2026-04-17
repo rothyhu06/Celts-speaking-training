@@ -435,13 +435,13 @@ export default function DashboardPage() {
                   </div>
                   <div className="space-y-1">
                     {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => !q.prepared).map(q => (
-                      <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-3 px-4 hover:bg-gray-50 rounded-2xl transition-all font-playfair truncate border border-transparent hover:border-gray-100">{q.question}</Link>
+                      <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-3 px-4 hover:bg-gray-50 rounded-2xl transition-all font-playfair border border-transparent hover:border-gray-100 leading-relaxed truncate hover:whitespace-normal">{q.question}</Link>
                     )))}
                     {selectedModule === 'p2' && userTopics.filter(t => !t.linkedStoryId).map(t => (
-                      <Link key={t.id} href="/stories" className="block text-sm py-3 px-4 hover:bg-gray-50 rounded-2xl transition-all font-playfair truncate border border-transparent hover:border-gray-100">{t.title}</Link>
+                      <Link key={t.id} href="/stories" className="block text-sm py-3 px-4 hover:bg-gray-50 rounded-2xl transition-all font-playfair border border-transparent hover:border-gray-100 leading-relaxed truncate hover:whitespace-normal">{t.title}</Link>
                     ))}
                     {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => !q.prepared).map(q => (
-                      <Link key={q.id} href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-xs py-3 px-4 hover:bg-gray-50 rounded-2xl transition-all font-playfair leading-relaxed border border-transparent hover:border-gray-100">{q.question}</Link>
+                      <Link key={q.id} href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-xs py-3 px-4 hover:bg-gray-50 rounded-2xl transition-all font-playfair leading-relaxed border border-transparent hover:border-gray-100 truncate hover:whitespace-normal">{q.question}</Link>
                     )))}
                     {(selectedModule === 'p3' ? (totalPart3 - answeredPart3 === 0) : selectedModule === 'p1' ? (totalQuestions - answeredQuestions === 0) : (userTopics.length - linkedTopics === 0)) && (
                       <div className="py-12 text-center space-y-2">
@@ -462,13 +462,13 @@ export default function DashboardPage() {
                   </div>
                   <div className="space-y-1 opacity-50">
                     {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => q.prepared).map(q => (
-                      <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-3 px-4 font-playfair truncate flex items-center gap-3 italic hover:bg-gray-50 rounded-2xl transition-all"><Check size={12} className="text-emerald-500 shrink-0"/> {q.question}</Link>
+                      <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-3 px-4 font-playfair flex items-center gap-3 italic hover:bg-gray-50 rounded-2xl transition-all leading-relaxed truncate hover:whitespace-normal"><Check size={12} className="text-emerald-500 shrink-0"/> {q.question}</Link>
                     )))}
                     {selectedModule === 'p2' && userTopics.filter(t => t.linkedStoryId).map(t => (
-                      <div key={t.id} className="text-sm py-3 px-4 font-playfair truncate flex items-center gap-3 italic"><Check size={12} className="text-emerald-500 shrink-0"/> {t.title}</div>
+                      <div key={t.id} className="text-sm py-3 px-4 font-playfair flex items-center gap-3 italic leading-relaxed truncate hover:whitespace-normal"><Check size={12} className="text-emerald-500 shrink-0"/> {t.title}</div>
                     ))}
                     {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => q.prepared).map(q => (
-                      <div key={q.id} className="text-xs py-3 px-4 font-playfair leading-relaxed flex items-start gap-3 italic"><Check size={10} className="text-emerald-500 mt-1 shrink-0"/> {q.question}</div>
+                      <div key={q.id} className="text-xs py-3 px-4 font-playfair leading-relaxed flex items-start gap-3 italic whitespace-normal truncate hover:whitespace-normal"><Check size={10} className="text-emerald-500 mt-1 shrink-0"/> {q.question}</div>
                     )))}
                     {(selectedModule === 'p3' ? answeredPart3 === 0 : selectedModule === 'p1' ? answeredQuestions === 0 : linkedTopics === 0) && (
                       <p className="text-xs text-muted italic py-12 text-center">Nothing mastered yet.</p>
