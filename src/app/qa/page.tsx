@@ -274,8 +274,22 @@ T: 当然！我发现我的注意力往往会下降...`}
 
       <header className="flex justify-between items-center border-b border-gray-100 pb-12">
         <div className="space-y-2">
-          <h1 className="text-4xl font-playfair tracking-tight">Part 1 Q<span className="font-sans text-3xl font-light mx-1 opacity-40">&</span>A</h1>
-          <p className="nga-label">Personal responses & topics</p>
+          <h1 className="text-4xl font-playfair tracking-tight">
+            {"Part 1 Q&A".split('&').map((part, i, arr) => (
+              <span key={i}>
+                {part}
+                {i < arr.length - 1 && <span className="font-sans text-3xl font-light mx-1 opacity-40">&</span>}
+              </span>
+            ))}
+          </h1>
+          <p className="nga-label">
+            {"Personal responses & topics".split('&').map((part, i, arr) => (
+              <span key={i}>
+                {part}
+                {i < arr.length - 1 && <span className="font-sans opacity-40">&</span>}
+              </span>
+            ))}
+          </p>
         </div>
         <div className="flex gap-4">
           <button 
@@ -367,7 +381,14 @@ T: 当然！我发现我的注意力往往会下降...`}
                     </div>
                   ) : (
                     <>
-                      <span className="text-2xl font-playfair group-hover:italic transition-all">{category.name}</span>
+                      <span className="text-2xl font-playfair group-hover:italic transition-all">
+                        {category.name.split('&').map((part, i, arr) => (
+                          <span key={i}>
+                            {part}
+                            {i < arr.length - 1 && <span className="font-sans font-light mx-1 opacity-40">&</span>}
+                          </span>
+                        ))}
+                      </span>
                       <span className="nga-label text-[8px] opacity-0 group-hover:opacity-100 transition-opacity">{category.questions.length} Items</span>
                     </>
                   )}

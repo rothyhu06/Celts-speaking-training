@@ -162,7 +162,7 @@ export default function StoriesPage() {
       <header className="flex justify-between items-start border-b border-gray-100 pb-10">
         <div className="space-y-2">
           <h1 className="text-4xl font-playfair tracking-tight">Part 2</h1>
-          <p className="nga-label">Stories & Topics</p>
+          <p className="nga-label">Stories <span className="font-sans opacity-40">&</span> Topics</p>
         </div>
         <div className="flex gap-3">
           <button
