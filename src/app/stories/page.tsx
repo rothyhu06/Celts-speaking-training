@@ -446,7 +446,7 @@ export default function StoriesPage() {
         <>
           <div className="drawer-overlay" onClick={() => setActiveDrawerTopicId(null)} />
           <aside
-            className="fixed top-0 right-0 bottom-0 bg-white z-50 overflow-y-auto slide-in-from-right w-full md:w-[560px]"
+            className="fixed top-0 right-0 bottom-0 bg-white dark:bg-[#111216] z-50 overflow-y-auto slide-in-from-right w-full md:w-[560px]"
             style={{ boxShadow: "-8px 0 40px rgba(0,0,0,0.08)" }}
           >
             <div className="p-8 space-y-10">
@@ -481,9 +481,9 @@ export default function StoriesPage() {
                           })}
                           className="text-left flex items-center gap-4 p-4 rounded-xl border transition-all"
                           style={{
-                            borderColor: isLinked ? "#0a0a0a" : "#f0f0f0",
-                            background: isLinked ? "#0a0a0a" : "#fff",
-                            color: isLinked ? "#fff" : "#0a0a0a",
+                            borderColor: isLinked ? "var(--fg-primary)" : "var(--bg-card)",
+                            background: isLinked ? "var(--fg-primary)" : "transparent",
+                            color: isLinked ? "var(--bg-primary)" : "var(--fg-primary)",
                           }}
                         >
                           <div className="flex-1">
@@ -576,7 +576,7 @@ export default function StoriesPage() {
                       <div className="space-y-3 animate-in slide-in-from-top-4">
                         <textarea
                           autoFocus
-                          className="w-full border border-gray-100 rounded-xl p-4 text-sm outline-none h-32 bg-gray-50/50 resize-none leading-relaxed"
+                          className="w-full border border-gray-100 dark:border-white/5 rounded-xl p-4 text-sm outline-none h-32 bg-gray-50/50 dark:bg-white/[0.02] resize-none leading-relaxed dark:text-gray-300"
                           placeholder="Paste Part 3 questions, one per line..."
                           value={part3BulkText}
                           onChange={(e) => setPart3BulkText(e.target.value)}
@@ -670,10 +670,10 @@ export default function StoriesPage() {
                           <div 
                             key={t.id} 
                             onClick={() => { setTab('topics'); setActiveDrawerTopicId(t.id); }}
-                            className="bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 px-4 py-3 rounded-2xl flex items-center gap-3 hover:scale-105 transition-all cursor-pointer group shadow-sm hover:shadow-md"
+                            className="bg-white dark:bg-white/[0.05] border border-gray-100 dark:border-white/10 px-4 py-3 rounded-2xl flex items-center gap-3 hover:scale-105 transition-all cursor-pointer group shadow-sm hover:shadow-md"
                           >
                             <Link2 size={12} className="text-gray-300 group-hover:text-black dark:group-hover:text-white" />
-                            <span className="text-sm font-playfair group-hover:italic transition-all">{t.title}</span>
+                            <span className="text-sm font-playfair group-hover:italic transition-all dark:text-gray-300 dark:group-hover:text-white">{t.title}</span>
                           </div>
                         ))}
                       </div>

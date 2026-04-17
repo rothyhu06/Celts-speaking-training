@@ -214,8 +214,8 @@ function QAPageContent() {
 
       {/* Bilingual Import Guide Modal */}
       {isGuideOpen && (
-        <div className="fixed inset-0 bg-white/80 backdrop-blur-xl z-[100] flex items-center justify-center p-6 animate-in fade-in zoom-in-95 duration-300">
-          <div className="w-full max-w-2xl bg-white border border-gray-100 shadow-2xl rounded-[3rem] overflow-hidden flex flex-col max-h-[90vh]">
+        <div className="fixed inset-0 bg-white/80 dark:bg-black/40 backdrop-blur-xl z-[100] flex items-center justify-center p-6 animate-in fade-in zoom-in-95 duration-300">
+          <div className="w-full max-w-2xl bg-white dark:bg-[#111216] border border-gray-100 dark:border-white/5 shadow-2xl rounded-[3rem] overflow-hidden flex flex-col max-h-[90vh]">
             <div className="p-10 border-b border-gray-50 flex justify-between items-center">
               <div className="space-y-1">
                 <h2 className="text-3xl font-playfair tracking-tight">Import Guide</h2>
@@ -223,9 +223,9 @@ function QAPageContent() {
               </div>
               <button 
                 onClick={() => setIsGuideOpen(false)}
-                className="p-3 hover:bg-gray-50 rounded-full transition-colors"
+                className="p-3 hover:bg-gray-50 dark:hover:bg-white/5 rounded-full transition-colors"
               >
-                <X size={20} strokeWidth={1.5} />
+                <X size={20} strokeWidth={1.5} className="dark:text-gray-400" />
               </button>
             </div>
             

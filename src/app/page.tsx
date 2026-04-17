@@ -470,7 +470,7 @@ export default function DashboardPage() {
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="relative w-full max-w-5xl bg-white/80 backdrop-blur-[40px] rounded-[3.5rem] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.2)] border border-white/50 overflow-hidden flex flex-col max-h-[90vh] pointer-events-auto"
+            className="relative w-full max-w-5xl bg-white/90 dark:bg-[#111216]/95 backdrop-blur-[40px] rounded-[3.5rem] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.2)] dark:shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] border border-white/50 dark:border-white/5 overflow-hidden flex flex-col max-h-[90vh] pointer-events-auto"
           >
             {/* Modal Header */}
             <div className="p-10 pb-4 flex justify-between items-start">
@@ -478,28 +478,28 @@ export default function DashboardPage() {
                 <p className="nga-label text-[10px] text-indigo-500 font-bold tracking-[0.25em] uppercase">
                   {selectedModule.toUpperCase()} PERSPECTIVE
                 </p>
-                <h2 className="text-4xl font-playfair tracking-tight mt-1">
+                <h2 className="text-4xl font-playfair tracking-tight mt-1 dark:text-white">
                   {selectedModule === 'p1' ? 'Part 1 Mastery' : selectedModule === 'p2' ? 'Topic Linkage' : 'Part 3 Insights'}
                 </h2>
               </div>
               <button 
                 onClick={() => setSelectedModule(null)}
-                className="p-3 bg-white/50 hover:bg-white rounded-full transition-all group border border-gray-100 shadow-sm"
+                className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 rounded-full transition-all group border border-gray-100 dark:border-white/5 shadow-sm"
               >
-                <X size={20} className="text-gray-400 group-hover:text-black" />
+                <X size={20} className="text-gray-400 group-hover:text-black dark:group-hover:text-white" />
               </button>
             </div>
 
             {/* Modal Content - Dual Section */}
             <div className="flex-1 overflow-hidden flex flex-col md:flex-row p-8 pt-0 gap-8">
               {/* LEFT COLUMN: PENDING (Soft Background) */}
-              <div className="flex-1 bg-white/40 rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-gray-100/30">
+              <div className="flex-1 bg-gray-50/50 dark:bg-white/[0.02] rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-gray-100/30 dark:border-white/5">
                 <div className="flex items-center justify-between mb-8 px-2">
-                  <h4 className="nga-label text-[10px] text-gray-500 font-bold uppercase tracking-widest flex items-center gap-2">
+                  <h4 className="nga-label text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest flex items-center gap-2">
                      <div className="w-1.5 h-1.5 rounded-full bg-rose-400" />
                      In Progress
                   </h4>
-                  <span className="text-[11px] font-mono font-bold text-gray-400">
+                  <span className="text-[11px] font-mono font-bold text-gray-400 dark:text-gray-500">
                     {selectedModule === 'p1' ? totalQuestions - answeredQuestions : selectedModule === 'p2' ? userTopics.length - linkedTopics : totalPart3 - answeredPart3} Items
                   </span>
                 </div>
@@ -507,7 +507,7 @@ export default function DashboardPage() {
                 <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-1.5">
                   {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => !q.prepared).map((q, idx) => (
                     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={q.id}>
-                      <Link href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-[15px] py-4 px-6 hover:bg-white hover:shadow-subtle rounded-2xl transition-all font-playfair border border-transparent hover:border-gray-100 leading-relaxed truncate hover:whitespace-normal group">
+                      <Link href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-[15px] py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] hover:shadow-subtle dark:hover:shadow-none transition-all font-playfair border border-transparent hover:border-gray-100 dark:hover:border-white/10 dark:text-gray-300">
                         <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
                         {q.question}
                       </Link>
@@ -515,7 +515,7 @@ export default function DashboardPage() {
                   )))}
                   {selectedModule === 'p2' && userTopics.filter(t => !t.linkedStoryId).map((t, idx) => (
                     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={t.id}>
-                      <Link href="/stories" className="block text-[15px] py-4 px-6 hover:bg-white hover:shadow-subtle rounded-2xl transition-all font-playfair border border-transparent hover:border-gray-100 leading-relaxed truncate hover:whitespace-normal">
+                      <Link href="/stories" className="block text-[15px] py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] hover:shadow-subtle dark:hover:shadow-none transition-all font-playfair border border-transparent hover:border-gray-100 dark:hover:border-white/10 dark:text-gray-300">
                          <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
                         {t.title}
                       </Link>
@@ -523,7 +523,7 @@ export default function DashboardPage() {
                   ))}
                   {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => !q.prepared).map((q, idx) => (
                     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={q.id}>
-                      <Link href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-sm py-4 px-6 hover:bg-white hover:shadow-subtle rounded-2xl transition-all font-playfair leading-relaxed truncate hover:whitespace-normal border border-transparent hover:border-gray-100">
+                      <Link href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-sm py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] hover:shadow-subtle dark:hover:shadow-none transition-all font-playfair leading-relaxed truncate hover:whitespace-normal border border-transparent hover:border-gray-100 dark:hover:border-white/10 dark:text-gray-300">
                          <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
                         {q.question}
                       </Link>
@@ -542,19 +542,19 @@ export default function DashboardPage() {
               </div>
 
               {/* RIGHT COLUMN: REVIEWS / MASTERED (Tinted Background) */}
-              <div className="flex-1 bg-emerald-50/20 rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-emerald-100/20">
+              <div className="flex-1 bg-emerald-50/20 dark:bg-emerald-500/[0.05] rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-emerald-100/20 dark:border-emerald-500/10">
                 <div className="flex items-center justify-between mb-8 px-2">
-                  <h4 className="nga-label text-[10px] text-emerald-600 font-bold uppercase tracking-widest flex items-center gap-2">
+                  <h4 className="nga-label text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-2">
                     <Check size={14} /> Ready for Mock
                   </h4>
-                  <span className="text-[11px] font-mono font-bold text-emerald-400">
+                  <span className="text-[11px] font-mono font-bold text-emerald-400 dark:text-emerald-500">
                     {selectedModule === 'p1' ? answeredQuestions : selectedModule === 'p2' ? linkedTopics : answeredPart3} Items
                   </span>
                 </div>
                 
                 <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-1 opacity-70">
                   {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => q.prepared).map(q => (
-                    <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-4 px-6 font-playfair italic flex items-start gap-4 hover:bg-white/50 rounded-2xl transition-all leading-relaxed truncate hover:whitespace-normal">
+                    <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-4 px-6 font-playfair italic flex items-start gap-4 hover:bg-white/50 dark:hover:bg-white/[0.05] rounded-2xl transition-all dark:text-gray-300">
                       <Check size={14} className="text-emerald-500 shrink-0 mt-1" />
                       {q.question}
                     </Link>
@@ -580,8 +580,8 @@ export default function DashboardPage() {
               </div>
             </div>
             
-            <div className="px-10 py-6 bg-white/30 border-t border-white/20 text-right">
-               <p className="text-[9px] uppercase tracking-widest text-gray-400">Press ESC or click outside to close</p>
+            <div className="px-10 py-6 bg-gray-50/50 dark:bg-white/[0.01] border-t border-gray-100 dark:border-white/5 text-right">
+               <p className="text-[9px] uppercase tracking-widest text-gray-400 dark:text-gray-500">Press ESC or click outside to close</p>
             </div>
           </motion.div>
         </div>
@@ -604,10 +604,10 @@ function QuickLink({
   return (
     <Link
       href={href}
-      className="nga-card flex items-center gap-5 hover:shadow-sm transition-all group"
+      className="nga-card flex items-center gap-5 hover:shadow-sm transition-all group bg-white dark:bg-white/[0.02]"
       style={{ textDecoration: "none" }}
     >
-      <div className="p-3 rounded-full border border-gray-100 group-hover:bg-black group-hover:text-white group-hover:border-black transition-all">
+      <div className="p-3 rounded-full border border-gray-100 dark:border-white/10 group-hover:bg-black dark:group-hover:bg-white group-hover:text-white dark:group-hover:text-black group-hover:border-black dark:group-hover:border-white transition-all">
         {icon}
       </div>
       <div className="flex-1">
