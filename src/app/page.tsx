@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
 import Link from "next/link";
-import { ArrowRight, Target, BookOpen, MessageSquare, Mic, Sparkles, MessageCircle, Download, Printer, Upload, RefreshCw, Info, HelpCircle, ChevronDown, ChevronUp, Check } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, Target, BookOpen, MessageSquare, Mic, Sparkles, MessageCircle, Download, Printer, Upload, RefreshCw, Info, HelpCircle, ChevronDown, ChevronUp, Check, X } from "lucide-react";
 import { useRef } from "react";
 import { supabase } from "@/lib/supabase";
 
@@ -406,79 +407,133 @@ export default function DashboardPage() {
         )}
       </section>
 
-      {/* Drill-down Modal */}
+      {/* Premium Drill-down Modal */}
       {selectedModule && (
-        <>
-          <div className="drawer-overlay" onClick={() => setSelectedModule(null)} />
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-10 pointer-events-none">
-            <div className="bg-white w-full max-w-4xl max-h-[85vh] rounded-[2.5rem] shadow-2xl p-8 md:p-12 overflow-hidden flex flex-col pointer-events-auto animate-in zoom-in-95 duration-300">
-              <div className="flex justify-between items-start mb-10">
-                <div className="space-y-1">
-                  <p className="nga-label text-[10px]">{selectedModule.toUpperCase()} PERSPECTIVE</p>
-                  <h3 className="text-3xl font-playfair">
-                    {selectedModule === 'p1' ? 'Part 1 Mastery' : selectedModule === 'p2' ? 'Part 2 Linking' : 'Part 3 Criticals'}
-                  </h3>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 lg:p-10">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute inset-0 bg-black/10 backdrop-blur-md"
+            onClick={() => setSelectedModule(null)}
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="relative w-full max-w-5xl bg-white/80 backdrop-blur-[40px] rounded-[3.5rem] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.2)] border border-white/50 overflow-hidden flex flex-col max-h-[90vh] pointer-events-auto"
+          >
+            {/* Modal Header */}
+            <div className="p-10 pb-4 flex justify-between items-start">
+              <div className="space-y-1">
+                <p className="nga-label text-[10px] text-indigo-500 font-bold tracking-[0.25em] uppercase">
+                  {selectedModule.toUpperCase()} PERSPECTIVE
+                </p>
+                <h2 className="text-4xl font-playfair tracking-tight mt-1">
+                  {selectedModule === 'p1' ? 'Part 1 Mastery' : selectedModule === 'p2' ? 'Topic Linkage' : 'Part 3 Insights'}
+                </h2>
+              </div>
+              <button 
+                onClick={() => setSelectedModule(null)}
+                className="p-3 bg-white/50 hover:bg-white rounded-full transition-all group border border-gray-100 shadow-sm"
+              >
+                <X size={20} className="text-gray-400 group-hover:text-black" />
+              </button>
+            </div>
+
+            {/* Modal Content - Dual Section */}
+            <div className="flex-1 overflow-hidden flex flex-col md:flex-row p-8 pt-0 gap-8">
+              {/* LEFT COLUMN: PENDING (Soft Background) */}
+              <div className="flex-1 bg-white/40 rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-gray-100/30">
+                <div className="flex items-center justify-between mb-8 px-2">
+                  <h4 className="nga-label text-[10px] text-gray-500 font-bold uppercase tracking-widest flex items-center gap-2">
+                     <div className="w-1.5 h-1.5 rounded-full bg-rose-400" />
+                     In Progress
+                  </h4>
+                  <span className="text-[11px] font-mono font-bold text-gray-400">
+                    {selectedModule === 'p1' ? totalQuestions - answeredQuestions : selectedModule === 'p2' ? userTopics.length - linkedTopics : totalPart3 - answeredPart3} Items
+                  </span>
                 </div>
-                <button onClick={() => setSelectedModule(null)} className="p-3 hover:bg-gray-100 rounded-full transition-all">
-                  <ChevronDown size={24} />
-                </button>
+                
+                <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-1.5">
+                  {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => !q.prepared).map((q, idx) => (
+                    <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={q.id}>
+                      <Link href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-[15px] py-4 px-6 hover:bg-white hover:shadow-subtle rounded-2xl transition-all font-playfair border border-transparent hover:border-gray-100 leading-relaxed truncate hover:whitespace-normal group">
+                        <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
+                        {q.question}
+                      </Link>
+                    </motion.div>
+                  )))}
+                  {selectedModule === 'p2' && userTopics.filter(t => !t.linkedStoryId).map((t, idx) => (
+                    <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={t.id}>
+                      <Link href="/stories" className="block text-[15px] py-4 px-6 hover:bg-white hover:shadow-subtle rounded-2xl transition-all font-playfair border border-transparent hover:border-gray-100 leading-relaxed truncate hover:whitespace-normal">
+                         <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
+                        {t.title}
+                      </Link>
+                    </motion.div>
+                  ))}
+                  {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => !q.prepared).map((q, idx) => (
+                    <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={q.id}>
+                      <Link href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-sm py-4 px-6 hover:bg-white hover:shadow-subtle rounded-2xl transition-all font-playfair leading-relaxed truncate hover:whitespace-normal border border-transparent hover:border-gray-100">
+                         <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
+                        {q.question}
+                      </Link>
+                    </motion.div>
+                  )))}
+                  
+                  {(selectedModule === 'p3' ? (totalPart3 - answeredPart3 === 0) : selectedModule === 'p1' ? (totalQuestions - answeredQuestions === 0) : (userTopics.length - linkedTopics === 0)) && (
+                    <div className="h-full flex flex-col items-center justify-center py-20 text-center space-y-4">
+                      <div className="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center">
+                        <Check size={28} className="text-emerald-500" />
+                      </div>
+                      <p className="font-playfair italic text-gray-400">Everything is in place.</p>
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto pr-2 grid grid-cols-1 md:grid-cols-2 gap-12">
-                {/* LEFT COLUMN: Remaining / Pending */}
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-                    <h4 className="nga-label text-rose-600">Pending Tasks</h4>
-                    <span className="text-[10px] bg-rose-50 text-rose-600 px-3 py-1 rounded-full font-bold">
-                      {selectedModule === 'p1' ? (totalQuestions - answeredQuestions) : selectedModule === 'p2' ? (userTopics.length - linkedTopics) : (totalPart3 - answeredPart3)}
-                    </span>
-                  </div>
-                  <div className="space-y-1">
-                    {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => !q.prepared).map(q => (
-                      <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-3 px-4 hover:bg-gray-50 rounded-2xl transition-all font-playfair border border-transparent hover:border-gray-100 leading-relaxed truncate hover:whitespace-normal">{q.question}</Link>
-                    )))}
-                    {selectedModule === 'p2' && userTopics.filter(t => !t.linkedStoryId).map(t => (
-                      <Link key={t.id} href="/stories" className="block text-sm py-3 px-4 hover:bg-gray-50 rounded-2xl transition-all font-playfair border border-transparent hover:border-gray-100 leading-relaxed truncate hover:whitespace-normal">{t.title}</Link>
-                    ))}
-                    {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => !q.prepared).map(q => (
-                      <Link key={q.id} href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-xs py-3 px-4 hover:bg-gray-50 rounded-2xl transition-all font-playfair leading-relaxed border border-transparent hover:border-gray-100 truncate hover:whitespace-normal">{q.question}</Link>
-                    )))}
-                    {(selectedModule === 'p3' ? (totalPart3 - answeredPart3 === 0) : selectedModule === 'p1' ? (totalQuestions - answeredQuestions === 0) : (userTopics.length - linkedTopics === 0)) && (
-                      <div className="py-12 text-center space-y-2">
-                        <Check size={24} className="mx-auto text-emerald-400" />
-                        <p className="text-xs text-muted italic">All clear!</p>
-                      </div>
-                    )}
-                  </div>
+              {/* RIGHT COLUMN: REVIEWS / MASTERED (Tinted Background) */}
+              <div className="flex-1 bg-emerald-50/20 rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-emerald-100/20">
+                <div className="flex items-center justify-between mb-8 px-2">
+                  <h4 className="nga-label text-[10px] text-emerald-600 font-bold uppercase tracking-widest flex items-center gap-2">
+                    <Check size={14} /> Ready for Mock
+                  </h4>
+                  <span className="text-[11px] font-mono font-bold text-emerald-400">
+                    {selectedModule === 'p1' ? answeredQuestions : selectedModule === 'p2' ? linkedTopics : answeredPart3} Items
+                  </span>
                 </div>
-
-                {/* RIGHT COLUMN: Mastered / Linked */}
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-                    <h4 className="nga-label text-emerald-600">Mastered</h4>
-                    <span className="text-[10px] bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full font-bold">
-                      {selectedModule === 'p1' ? answeredQuestions : selectedModule === 'p2' ? linkedTopics : answeredPart3}
-                    </span>
-                  </div>
-                  <div className="space-y-1 opacity-50">
-                    {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => q.prepared).map(q => (
-                      <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-3 px-4 font-playfair flex items-center gap-3 italic hover:bg-gray-50 rounded-2xl transition-all leading-relaxed truncate hover:whitespace-normal"><Check size={12} className="text-emerald-500 shrink-0"/> {q.question}</Link>
-                    )))}
-                    {selectedModule === 'p2' && userTopics.filter(t => t.linkedStoryId).map(t => (
-                      <div key={t.id} className="text-sm py-3 px-4 font-playfair flex items-center gap-3 italic leading-relaxed truncate hover:whitespace-normal"><Check size={12} className="text-emerald-500 shrink-0"/> {t.title}</div>
-                    ))}
-                    {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => q.prepared).map(q => (
-                      <div key={q.id} className="text-xs py-3 px-4 font-playfair leading-relaxed flex items-start gap-3 italic whitespace-normal truncate hover:whitespace-normal"><Check size={10} className="text-emerald-500 mt-1 shrink-0"/> {q.question}</div>
-                    )))}
-                    {(selectedModule === 'p3' ? answeredPart3 === 0 : selectedModule === 'p1' ? answeredQuestions === 0 : linkedTopics === 0) && (
-                      <p className="text-xs text-muted italic py-12 text-center">Nothing mastered yet.</p>
-                    )}
-                  </div>
+                
+                <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-1 opacity-70">
+                  {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => q.prepared).map(q => (
+                    <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-4 px-6 font-playfair italic flex items-start gap-4 hover:bg-white/50 rounded-2xl transition-all leading-relaxed truncate hover:whitespace-normal">
+                      <Check size={14} className="text-emerald-500 shrink-0 mt-1" />
+                      {q.question}
+                    </Link>
+                  )))}
+                  {selectedModule === 'p2' && userTopics.filter(t => t.linkedStoryId).map(t => (
+                    <div key={t.id} className="text-sm py-4 px-6 flex items-start gap-4 italic font-playfair truncate hover:whitespace-normal">
+                      <Check size={14} className="text-emerald-500 shrink-0 mt-1" />
+                      {t.title}
+                    </div>
+                  ))}
+                  {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => q.prepared).map(q => (
+                    <div key={q.id} className="text-xs py-4 px-6 font-playfair leading-relaxed flex items-start gap-4 italic truncate hover:whitespace-normal">
+                      <Check size={12} className="text-emerald-500 shrink-0 mt-1" />
+                      {q.question}
+                    </div>
+                  )))}
+                  {(selectedModule === 'p3' ? answeredPart3 === 0 : selectedModule === 'p1' ? answeredQuestions === 0 : linkedTopics === 0) && (
+                    <div className="h-full flex flex-col items-center justify-center py-20 opacity-20 text-center group">
+                      <p className="text-[10px] uppercase tracking-[0.3em]">No records yet</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
-        </>
+            
+            <div className="px-10 py-6 bg-white/30 border-t border-white/20 text-right">
+               <p className="text-[9px] uppercase tracking-widest text-gray-400">Press ESC or click outside to close</p>
+            </div>
+          </motion.div>
+        </div>
       )}
     </div>
   );
