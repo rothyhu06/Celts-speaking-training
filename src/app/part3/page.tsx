@@ -224,7 +224,7 @@ export default function Part3Page() {
                                   onClick={() => togglePart3QuestionPrepared(topic.id, q.id)}
                                   className={`mt-1.5 p-1 rounded-full border transition-all ${q.prepared ? 'bg-black text-white border-black' : 'border-gray-200 text-transparent hover:border-black'}`}
                                 ><Check size={10}/></button>
-                                <h3 className={`text-xl font-playfair leading-relaxed transition-all ${q.prepared ? 'opacity-30 line-through' : ''}`}>
+                                <h3 className="text-xl font-playfair leading-relaxed">
                                   {q.question}
                                 </h3>
                               </div>

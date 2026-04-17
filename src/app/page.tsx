@@ -50,7 +50,7 @@ export default function DashboardPage() {
 
   const totalQuestions = userCategories.reduce((sum, c) => sum + c.questions.length, 0);
   const answeredQuestions = userCategories.reduce(
-    (sum, c) => sum + (c.questions?.filter((q) => q.answer && q.answer.trim().length > 0).length || 0),
+    (sum, c) => sum + (c.questions?.filter((q) => q.prepared).length || 0),
     0
   );
   const p1Coverage = totalQuestions > 0 ? Math.round((answeredQuestions / totalQuestions) * 100) : 0;
@@ -60,7 +60,7 @@ export default function DashboardPage() {
 
   const totalPart3 = userTopics.reduce((sum, t) => sum + (t.part3Questions?.length || 0), 0);
   const answeredPart3 = userTopics.reduce(
-    (sum, t) => sum + (t.part3Questions?.filter(q => q && q.answer && q.answer.trim().length > 0).length || 0),
+    (sum, t) => sum + (t.part3Questions?.filter(q => q && q.prepared).length || 0),
     0
   );
   const p3Coverage = totalPart3 > 0 ? Math.round((answeredPart3 / totalPart3) * 100) : 0;

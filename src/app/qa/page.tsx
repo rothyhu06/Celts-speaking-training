@@ -274,7 +274,7 @@ T: 当然！我发现我的注意力往往会下降...`}
 
       <header className="flex justify-between items-center border-b border-gray-100 pb-12">
         <div className="space-y-2">
-          <h1 className="text-4xl font-playfair tracking-tight">Part 1 Q&A</h1>
+          <h1 className="text-4xl font-playfair tracking-tight">Part 1 Q<span className="font-sans text-3xl font-light mx-1 opacity-40">&</span>A</h1>
           <p className="nga-label">Personal responses & topics</p>
         </div>
         <div className="flex gap-4">
@@ -469,7 +469,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                                   className={`mt-1.5 p-1 rounded-full border ${q.prepared ? 'bg-black text-white' : 'border-gray-200 text-transparent hover:border-black'}`}
                                 ><Check size={10}/></button>
                                 <div>
-                                  <h4 className={`text-xl font-playfair leading-relaxed transition-all ${q.prepared ? 'opacity-30 line-through' : ''}`}>{q.question}</h4>
+                                  <h4 className={`text-xl font-playfair leading-snug transition-all`}>{q.question}</h4>
                                   {q.answer && <p className="text-[10px] text-gray-400 mt-2">Answered</p>}
                                 </div>
                               </div>
