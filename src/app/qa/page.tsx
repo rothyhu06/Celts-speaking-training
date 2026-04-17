@@ -8,7 +8,6 @@ import DualEditor from "@/components/DualEditor";
 import { useTTS } from "@/hooks/useTTS";
 import { parseFileContent } from "@/lib/fileParser";
 import { useRef } from "react";
-import mammoth from "mammoth";
 import { generateGeminiIA } from "@/lib/gemini";
 
 export default function QAPage() {
@@ -66,6 +65,7 @@ export default function QAPage() {
 
     try {
       if (file.name.endsWith('.docx')) {
+        const mammoth = await import("mammoth");
         const arrayBuffer = await file.arrayBuffer();
         const result = await mammoth.extractRawText({ arrayBuffer });
         processImportedText(result.value);

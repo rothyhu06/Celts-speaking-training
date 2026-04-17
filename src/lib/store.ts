@@ -380,10 +380,6 @@ export const useStore = create<AppState>()(
           ),
         })),
 
-              : t
-          ),
-        })),
-
       batchImportPart3: (topicId, questions) =>
         set((state) => ({
           topics: state.topics.map((t) =>
