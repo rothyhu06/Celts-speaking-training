@@ -470,7 +470,7 @@ export default function DashboardPage() {
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="relative w-full max-w-5xl bg-white/90 dark:bg-[#111216]/95 backdrop-blur-[40px] rounded-[3.5rem] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.2)] dark:shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] border border-white/50 dark:border-white/5 overflow-hidden flex flex-col max-h-[90vh] pointer-events-auto"
+            className="relative w-full max-w-5xl bg-white/95 dark:bg-[#111216]/98 backdrop-blur-[40px] rounded-[3.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.6)] border border-gray-100 dark:border-white/5 overflow-hidden flex flex-col max-h-[90vh] pointer-events-auto"
           >
             {/* Modal Header */}
             <div className="p-10 pb-4 flex justify-between items-start">
@@ -478,7 +478,7 @@ export default function DashboardPage() {
                 <p className="nga-label text-[10px] text-indigo-500 font-bold tracking-[0.25em] uppercase">
                   {selectedModule.toUpperCase()} PERSPECTIVE
                 </p>
-                <h2 className="text-4xl font-playfair tracking-tight mt-1 dark:text-white">
+                <h2 className="text-4xl font-playfair tracking-tight mt-1 text-[var(--fg-primary)]">
                   {selectedModule === 'p1' ? 'Part 1 Mastery' : selectedModule === 'p2' ? 'Topic Linkage' : 'Part 3 Insights'}
                 </h2>
               </div>
@@ -486,20 +486,20 @@ export default function DashboardPage() {
                 onClick={() => setSelectedModule(null)}
                 className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 rounded-full transition-all group border border-gray-100 dark:border-white/5 shadow-sm"
               >
-                <X size={20} className="text-gray-400 group-hover:text-black dark:group-hover:text-white" />
+                <X size={20} className="text-[var(--fg-muted)] group-hover:text-[var(--fg-primary)]" />
               </button>
             </div>
 
             {/* Modal Content - Dual Section */}
             <div className="flex-1 overflow-hidden flex flex-col md:flex-row p-8 pt-0 gap-8">
               {/* LEFT COLUMN: PENDING (Soft Background) */}
-              <div className="flex-1 bg-gray-50/50 dark:bg-white/[0.02] rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-gray-100/30 dark:border-white/5">
+              <div className="flex-1 bg-gray-100/30 dark:bg-white/[0.02] rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-gray-100/30 dark:border-white/5">
                 <div className="flex items-center justify-between mb-8 px-2">
-                  <h4 className="nga-label text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest flex items-center gap-2">
+                  <h4 className="nga-label text-[10px] text-[var(--fg-muted)] font-bold uppercase tracking-widest flex items-center gap-2">
                      <div className="w-1.5 h-1.5 rounded-full bg-rose-400" />
                      In Progress
                   </h4>
-                  <span className="text-[11px] font-mono font-bold text-gray-400 dark:text-gray-500">
+                  <span className="text-[11px] font-mono font-bold text-[var(--fg-muted)]">
                     {selectedModule === 'p1' ? totalQuestions - answeredQuestions : selectedModule === 'p2' ? userTopics.length - linkedTopics : totalPart3 - answeredPart3} Items
                   </span>
                 </div>
@@ -523,7 +523,7 @@ export default function DashboardPage() {
                   ))}
                   {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => !q.prepared).map((q, idx) => (
                     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={q.id}>
-                      <Link href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-sm py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] hover:shadow-subtle dark:hover:shadow-none transition-all font-playfair leading-relaxed truncate hover:whitespace-normal border border-transparent hover:border-gray-100 dark:hover:border-white/10 dark:text-gray-300">
+                      <Link href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-sm py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] rounded-2xl transition-all font-playfair leading-relaxed truncate hover:whitespace-normal border border-transparent hover:border-gray-100 dark:hover:border-white/10 text-[var(--fg-primary)]">
                          <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
                         {q.question}
                       </Link>
@@ -532,22 +532,22 @@ export default function DashboardPage() {
                   
                   {(selectedModule === 'p3' ? (totalPart3 - answeredPart3 === 0) : selectedModule === 'p1' ? (totalQuestions - answeredQuestions === 0) : (userTopics.length - linkedTopics === 0)) && (
                     <div className="h-full flex flex-col items-center justify-center py-20 text-center space-y-4">
-                      <div className="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center">
+                      <div className="w-14 h-14 rounded-full bg-emerald-500/10 flex items-center justify-center">
                         <Check size={28} className="text-emerald-500" />
                       </div>
-                      <p className="font-playfair italic text-gray-400">Everything is in place.</p>
+                      <p className="font-playfair italic text-[var(--fg-muted)]">Everything is in place.</p>
                     </div>
                   )}
                 </div>
               </div>
 
               {/* RIGHT COLUMN: REVIEWS / MASTERED (Tinted Background) */}
-              <div className="flex-1 bg-emerald-50/20 dark:bg-emerald-500/[0.05] rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-emerald-100/20 dark:border-emerald-500/10">
+              <div className="flex-1 bg-emerald-500/5 dark:bg-emerald-500/[0.05] rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-emerald-500/10">
                 <div className="flex items-center justify-between mb-8 px-2">
                   <h4 className="nga-label text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-2">
                     <Check size={14} /> Ready for Mock
                   </h4>
-                  <span className="text-[11px] font-mono font-bold text-emerald-400 dark:text-emerald-500">
+                  <span className="text-[11px] font-mono font-bold text-emerald-500">
                     {selectedModule === 'p1' ? answeredQuestions : selectedModule === 'p2' ? linkedTopics : answeredPart3} Items
                   </span>
                 </div>

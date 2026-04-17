@@ -419,7 +419,7 @@ export default function StoriesPage() {
               return (
                 <div key={story.id} className="nga-card group">
                   <div className="flex items-start gap-4">
-                    <span className="nga-label text-[8px] bg-gray-50 px-2 py-1 rounded-md flex-shrink-0">
+                    <span className="text-[8px] bg-indigo-600 text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter shrink-0 mt-0.5">
                       {story.tag}
                     </span>
                     <div className="flex-1 min-w-0">
@@ -488,7 +488,7 @@ export default function StoriesPage() {
                         >
                           <div className="flex-1">
                             <p className="text-sm font-medium">{story.title}</p>
-                            <p className="text-[10px] opacity-60 uppercase tracking-widest mt-0.5">{story.tag}</p>
+                            <p className="text-[10px] text-indigo-500 font-bold uppercase tracking-widest mt-0.5">{story.tag}</p>
                           </div>
                           {isLinked && <Check size={14} />}
                         </button>
@@ -650,10 +650,10 @@ export default function StoriesPage() {
                   <div className="p-8 border-b border-gray-50 dark:border-white/5 flex justify-between items-center bg-gray-50/30 dark:bg-white/[0.01]">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-[9px] bg-black dark:bg-white dark:text-black text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">
+                        <span className="text-[9px] bg-indigo-600 text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter shrink-0">
                           {story.tag}
                         </span>
-                        <h4 className="text-2xl font-playfair">{story.title}</h4>
+                        <h4 className="text-2xl font-playfair dark:text-white leading-none">{story.title}</h4>
                       </div>
                       <p className="text-xs text-muted line-clamp-1">{story.summary}</p>
                     </div>
