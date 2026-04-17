@@ -478,7 +478,7 @@ export default function DashboardPage() {
                 <p className="nga-label text-[10px] text-indigo-500 font-bold tracking-[0.25em] uppercase">
                   {selectedModule.toUpperCase()} PERSPECTIVE
                 </p>
-                <h2 className="text-4xl font-playfair tracking-tight mt-1 text-[var(--fg-primary)]">
+                <h2 className="text-4xl font-playfair tracking-tight mt-1 text-black dark:text-white font-bold">
                   {selectedModule === 'p1' ? 'Part 1 Mastery' : selectedModule === 'p2' ? 'Topic Linkage' : 'Part 3 Insights'}
                 </h2>
               </div>
@@ -507,7 +507,7 @@ export default function DashboardPage() {
                 <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-1.5">
                   {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => !q.prepared).map((q, idx) => (
                     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={q.id}>
-                      <Link href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-[15px] py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] hover:shadow-subtle dark:hover:shadow-none transition-all font-playfair border border-transparent hover:border-gray-100 dark:hover:border-white/10 dark:text-gray-300">
+                      <Link href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-[15px] py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] rounded-2xl transition-all font-playfair border border-transparent hover:border-gray-100 dark:hover:border-white/10 text-black dark:text-gray-100 truncate hover:whitespace-normal group">
                         <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
                         {q.question}
                       </Link>
@@ -515,7 +515,7 @@ export default function DashboardPage() {
                   )))}
                   {selectedModule === 'p2' && userTopics.filter(t => !t.linkedStoryId).map((t, idx) => (
                     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={t.id}>
-                      <Link href="/stories" className="block text-[15px] py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] hover:shadow-subtle dark:hover:shadow-none transition-all font-playfair border border-transparent hover:border-gray-100 dark:hover:border-white/10 dark:text-gray-300">
+                      <Link href="/stories" className="block text-[15px] py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] rounded-2xl transition-all font-playfair border border-transparent hover:border-gray-100 dark:hover:border-white/10 text-black dark:text-gray-100 truncate hover:whitespace-normal group">
                          <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
                         {t.title}
                       </Link>
@@ -523,7 +523,7 @@ export default function DashboardPage() {
                   ))}
                   {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => !q.prepared).map((q, idx) => (
                     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={q.id}>
-                      <Link href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-sm py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] rounded-2xl transition-all font-playfair leading-relaxed truncate hover:whitespace-normal border border-transparent hover:border-gray-100 dark:hover:border-white/10 text-[var(--fg-primary)]">
+                      <Link href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-sm py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] rounded-2xl transition-all font-playfair leading-relaxed border border-transparent hover:border-gray-100 dark:hover:border-white/10 text-black dark:text-gray-100 truncate hover:whitespace-normal group">
                          <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
                         {q.question}
                       </Link>
@@ -554,7 +554,7 @@ export default function DashboardPage() {
                 
                 <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-1 opacity-70">
                   {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => q.prepared).map(q => (
-                    <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-4 px-6 font-playfair italic flex items-start gap-4 hover:bg-white/50 dark:hover:bg-white/[0.05] rounded-2xl transition-all dark:text-gray-300">
+                    <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-4 px-6 font-playfair italic flex items-start gap-4 hover:bg-white/50 dark:hover:bg-white/[0.05] rounded-2xl transition-all text-black dark:text-emerald-100 truncate hover:whitespace-normal group">
                       <Check size={14} className="text-emerald-500 shrink-0 mt-1" />
                       {q.question}
                     </Link>
