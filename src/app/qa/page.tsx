@@ -45,6 +45,8 @@ function QAPageContent() {
     setMounted(true);
   }, []);
 
+  const userCategories = categories.filter(c => c.userId === user?.id);
+
   useEffect(() => {
     if (mounted && userCategories.length > 0) {
       const catId = searchParams.get('catId');
@@ -72,8 +74,6 @@ function QAPageContent() {
   }, [mounted, searchParams, userCategories.length]);
 
   if (!mounted || !user) return null;
-
-  const userCategories = categories.filter(c => c.userId === user.id);
 
   const processImportedText = (text: string) => {
     try {
