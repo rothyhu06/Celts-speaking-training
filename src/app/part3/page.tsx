@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useStore } from "@/lib/store";
 import { Sparkles, Edit2, ChevronDown, ChevronRight, Check, Volume2, Square } from "lucide-react";
 import DualEditor from "@/components/DualEditor";
@@ -10,11 +10,19 @@ import { useTTS } from "@/hooks/useTTS";
 import { generateGeminiIA } from "@/lib/gemini";
 
 export default function Part3Page() {
+  return (
+    <Suspense fallback={<div className="p-20 text-center font-playfair italic">Gathering insights...</div>}>
+      <Part3PageContent />
+    </Suspense>
+  );
+}
+
+function Part3PageContent() {
   const [mounted, setMounted] = useState(false);
   const { user, topics, updatePart3Question, updateProfile, togglePart3QuestionPrepared } = useStore();
   const searchParams = useSearchParams();
   const { playingId, toggleSpeech } = useTTS();
-
+ 
   // State to hold and manage currently editing question
   const [editingData, setEditingData] = useState<{ topicId: string; q: Part3Question } | null>(null);
   const [expandedTopics, setExpandedTopics] = useState<string[]>([]);
@@ -105,7 +113,7 @@ export default function Part3Page() {
   userTopics.forEach(t => {
     t.part3Questions?.forEach(q => {
       totalP3++;
-      if (q.answer && q.answer.trim().length > 0) doneP3++;
+      if (q.prepared) doneP3++;
     });
   });
 
@@ -141,7 +149,7 @@ export default function Part3Page() {
           {userTopics.map((topic) => {
             const isExpanded = expandedTopics.includes(topic.id);
             const qCount = topic.part3Questions?.length || 0;
-            const qDone = topic.part3Questions?.filter(q => q.answer && q.answer.trim().length > 0).length || 0;
+            const qDone = topic.part3Questions?.filter(q => q.prepared).length || 0;
             
             return (
             <div key={topic.id} className="nga-card border border-gray-100 p-0 overflow-hidden">

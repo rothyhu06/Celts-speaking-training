@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useStore } from "@/lib/store";
 import { Plus, ChevronDown, ChevronUp, Edit2, Check, X, Book, Sparkles, Upload, Trash2, Volume2, Square, HelpCircle } from "lucide-react";
@@ -12,6 +12,14 @@ import { useRef } from "react";
 import { generateGeminiIA } from "@/lib/gemini";
 
 export default function QAPage() {
+  return (
+    <Suspense fallback={<div className="p-20 text-center font-playfair italic">Loading Prep Room...</div>}>
+      <QAPageContent />
+    </Suspense>
+  );
+}
+
+function QAPageContent() {
   const [mounted, setMounted] = useState(false);
   const { categories, addCategory, addQuestion, updateQuestion, user, updateProfile, batchImportQA, deleteCategory, updateCategory, deleteQuestion, toggleQuestionPrepared } = useStore();
   const { playingId, toggleSpeech } = useTTS();
