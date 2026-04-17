@@ -11,7 +11,7 @@ import { generateGeminiIA } from "@/lib/gemini";
 
 export default function Part3Page() {
   const [mounted, setMounted] = useState(false);
-  const { user, topics, updatePart3Question, updateProfile } = useStore();
+  const { user, topics, updatePart3Question, updateProfile, togglePart3QuestionPrepared } = useStore();
   const searchParams = useSearchParams();
   const { playingId, toggleSpeech } = useTTS();
 
@@ -219,7 +219,15 @@ export default function Part3Page() {
                         ) : (
                           <>
                             <div className="flex justify-between items-start gap-8 px-4">
-                              <h3 className="text-xl font-playfair leading-relaxed flex-1">{q.question}</h3>
+                              <div className="flex items-start gap-4 flex-1">
+                                <button 
+                                  onClick={() => togglePart3QuestionPrepared(topic.id, q.id)}
+                                  className={`mt-1.5 p-1 rounded-full border transition-all ${q.prepared ? 'bg-black text-white border-black' : 'border-gray-200 text-transparent hover:border-black'}`}
+                                ><Check size={10}/></button>
+                                <h3 className={`text-xl font-playfair leading-relaxed transition-all ${q.prepared ? 'opacity-30 line-through' : ''}`}>
+                                  {q.question}
+                                </h3>
+                              </div>
                               <div className="flex gap-2 shrink-0">
                                 <button 
                                   onClick={() => setEditingData({ topicId: topic.id, q })}

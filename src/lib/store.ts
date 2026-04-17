@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { v4 as uuidv4 } from 'uuid';
-import { Category, Question, Topic, Story, User } from '@/types';
+import { Category, Question, Topic, Story, User, Part3Question } from '@/types';
 
 interface AppState {
   user: User | null;
@@ -43,7 +43,7 @@ interface AppState {
 
   // Part 3 actions
   addPart3Question: (topicId: string, question: string) => void;
-  updatePart3Question: (topicId: string, questionId: string, updates: Partial<import('@/types').Part3Question>) => void;
+  updatePart3Question: (topicId: string, questionId: string, updates: Partial<Part3Question>) => void;
   deletePart3Question: (topicId: string, questionId: string) => void;
   batchImportPart3: (topicId: string, questions: string[]) => void;
   toggleQuestionPrepared: (categoryId: string, questionId: string) => void;
