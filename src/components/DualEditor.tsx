@@ -109,14 +109,14 @@ export default function DualEditor({
   return (
     <div className="space-y-12 animate-in fade-in duration-700 pb-10">
       {/* Sticky Original Question Header */}
-      <div className="sticky top-0 z-10 -mx-10 px-10 pt-4 pb-8 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all">
+      <div className="sticky top-0 z-10 -mx-10 px-10 pt-4 pb-8 bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-md border-b border-gray-100 dark:border-white/5 shadow-sm transition-all">
         <div className="flex items-center justify-between">
           <div className="space-y-3 flex-1">
-            <label className="nga-label text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">Current Prompt</label>
-            <h2 className="text-2xl font-playfair leading-tight text-black">{title}</h2>
+            <label className="nga-label text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-[0.2em]">Current Prompt</label>
+            <h2 className="text-2xl font-playfair leading-tight text-black dark:text-white">{title}</h2>
             {subtitle && (
-              <div className="bg-gray-50/80 rounded-xl p-4 mt-2 border border-gray-100">
-                 <p className="text-xs text-muted leading-relaxed font-light whitespace-pre-line italic">
+              <div className="bg-gray-100/50 dark:bg-white/[0.03] rounded-xl p-4 mt-2 border border-black/[0.03] dark:border-white/5">
+                 <p className="text-xs text-muted dark:text-gray-400 leading-relaxed font-light whitespace-pre-line italic">
                    {subtitle}
                  </p>
               </div>
@@ -158,7 +158,7 @@ export default function DualEditor({
           )}
         </div>
         <textarea
-          className="w-full border border-gray-200 rounded-2xl p-4 text-sm outline-none h-24 bg-gray-50 resize-none leading-relaxed font-light italic placeholder:text-gray-300 focus:border-black transition-all"
+          className="w-full border border-gray-100 dark:border-white/5 rounded-2xl p-4 text-sm outline-none h-24 bg-gray-50/50 dark:bg-white/[0.02] resize-none leading-relaxed font-light italic placeholder:text-gray-300 dark:placeholder:text-gray-600 focus:border-indigo-200 dark:focus:border-indigo-900 transition-all dark:text-gray-300"
           placeholder="Type your Chinese logic points here..."
           value={localThought}
           onChange={(e) => {
@@ -197,7 +197,7 @@ export default function DualEditor({
             )}
           </div>
           <textarea
-            className="w-full p-6 rounded-2xl text-lg font-playfair leading-relaxed resize-none h-48 outline-none transition-all duration-500 bg-gray-50 border border-gray-200 focus:border-black focus:bg-white"
+            className="w-full p-6 rounded-2xl text-lg font-playfair leading-relaxed resize-none h-48 outline-none transition-all duration-500 bg-gray-50/50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/5 focus:border-indigo-400 dark:focus:border-indigo-900 focus:bg-white dark:focus:bg-[#1a1c22] text-black dark:text-white"
             placeholder="Type your manual response here..."
             value={localEnglish}
             onChange={(e) => {
@@ -226,7 +226,7 @@ export default function DualEditor({
             </div>
             <textarea
               readOnly
-              className="w-full p-6 text-lg font-playfair leading-relaxed resize-none h-48 outline-none bg-white rounded-2xl border border-indigo-50 shadow-sm text-gray-800"
+              className="w-full p-6 text-lg font-playfair leading-relaxed resize-none h-48 outline-none bg-white dark:bg-white/[0.05] rounded-2xl border border-indigo-50 dark:border-indigo-900/10 shadow-sm text-gray-800 dark:text-indigo-100"
               value={aiEnglishValue}
             />
             {/* Prompt Controller */}
@@ -234,7 +234,7 @@ export default function DualEditor({
               <input 
                 type="text"
                 placeholder="Instruct AI to adjust (e.g. 'Make it shorter', 'Use more idioms')"
-                className="flex-1 bg-white border border-indigo-100 py-3 px-4 rounded-xl text-sm outline-none focus:border-indigo-300 transition-colors shadow-sm"
+                className="flex-1 bg-white dark:bg-white/[0.03] border border-indigo-100 dark:border-indigo-900/10 py-3 px-4 rounded-xl text-sm outline-none focus:border-indigo-300 transition-colors shadow-sm dark:text-white"
                 value={scriptInstruction}
                 onChange={(e) => setScriptInstruction(e.target.value)}
                 onKeyDown={(e) => {
@@ -259,10 +259,10 @@ export default function DualEditor({
       {aiCoachingValue && (
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <Sparkles size={16} className="text-black" />
-            <label className="nga-label text-[9px] text-black font-bold">AI Coach Guidance</label>
+            <Sparkles size={16} className="text-black dark:text-indigo-400" />
+            <label className="nga-label text-[9px] text-black dark:text-indigo-300 font-bold">AI Coach Guidance</label>
           </div>
-          <div className="w-full p-6 rounded-2xl text-sm leading-loose bg-black text-white outline-none shadow-xl">
+          <div className="w-full p-6 rounded-2xl text-sm leading-loose bg-black dark:bg-white/5 text-white outline-none shadow-xl border border-white/5">
             <div className="whitespace-pre-wrap font-light">{aiCoachingValue}</div>
           </div>
         </div>
@@ -288,7 +288,7 @@ export default function DualEditor({
               )}
             </div>
             <textarea
-              className="w-full p-4 rounded-2xl text-sm leading-loose resize-none h-32 outline-none transition-all duration-300 bg-gray-50 border border-gray-200 focus:border-black focus:bg-white"
+              className="w-full p-4 rounded-2xl text-sm leading-loose resize-none h-32 outline-none transition-all duration-300 bg-gray-50/50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/5 focus:border-indigo-400 dark:focus:border-indigo-900 focus:bg-white dark:focus:bg-[#1a1c22] text-black dark:text-white"
               placeholder="Your manual translation notes..."
               value={localChinese}
               onChange={(e) => {
@@ -300,21 +300,21 @@ export default function DualEditor({
           </div>
           
           {aiChineseValue && (
-            <div className="space-y-3 bg-gradient-to-br from-emerald-50 to-teal-50 p-3 rounded-2xl border border-emerald-100">
+            <div className="space-y-3 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 dark:from-emerald-500/[0.05] dark:to-teal-500/[0.05] p-3 rounded-2xl border border-emerald-100 dark:border-emerald-900/10 transition-all">
                <div className="flex items-center gap-2 px-1">
                  <Sparkles size={12} className="text-emerald-600" />
                  <label className="nga-label text-[8px] text-emerald-700">AI Translation</label>
                </div>
                <textarea
                   readOnly
-                  className="w-full p-4 text-sm leading-loose resize-none h-32 outline-none bg-white rounded-xl shadow-sm text-gray-800"
+                  className="w-full p-4 text-sm leading-loose resize-none h-32 outline-none bg-white dark:bg-white/[0.05] rounded-xl shadow-sm text-gray-800 dark:text-emerald-100"
                   value={aiChineseValue}
                 />
                 <div className="flex items-center gap-2">
                   <input 
                     type="text"
                     placeholder="Adjust style..."
-                    className="flex-1 bg-white border border-emerald-100 py-2.5 px-3 rounded-xl text-xs outline-none focus:border-emerald-300 transition-colors shadow-sm"
+                    className="flex-1 bg-white dark:bg-white/[0.03] border border-emerald-100 dark:border-emerald-900/10 py-2.5 px-3 rounded-xl text-xs outline-none focus:border-emerald-300 transition-colors shadow-sm dark:text-white"
                     value={translationInstruction}
                     onChange={(e) => setTranslationInstruction(e.target.value)}
                     onKeyDown={(e) => {
@@ -352,7 +352,7 @@ export default function DualEditor({
               )}
             </div>
             <textarea
-              className="w-full p-4 rounded-2xl text-sm leading-loose resize-none h-32 outline-none transition-all duration-300 bg-gray-50 border border-gray-200 focus:border-black focus:bg-white"
+              className="w-full p-4 rounded-2xl text-sm leading-loose resize-none h-32 outline-none transition-all duration-300 bg-gray-50/50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/5 focus:border-indigo-400 dark:focus:border-indigo-900 focus:bg-white dark:focus:bg-[#1a1c22] text-black dark:text-white"
               placeholder="Your manual vocab notes..."
               value={localVocab}
               onChange={(e) => {
@@ -366,21 +366,21 @@ export default function DualEditor({
           </div>
           
           {aiVocabAnalysisValue && (
-            <div className="space-y-3 bg-gradient-to-br from-amber-50 to-orange-50 p-3 rounded-2xl border border-amber-100">
+            <div className="space-y-3 bg-gradient-to-br from-amber-500/5 to-orange-500/5 dark:from-amber-500/[0.05] dark:to-orange-500/[0.05] p-3 rounded-2xl border border-amber-100 dark:border-amber-900/10 transition-all">
                <div className="flex items-center gap-2 px-1">
                  <Sparkles size={12} className="text-amber-600" />
                  <label className="nga-label text-[8px] text-amber-700">AI Vocab Extraction</label>
                </div>
                <textarea
                   readOnly
-                  className="w-full p-4 text-sm leading-loose resize-none h-32 outline-none bg-white rounded-xl shadow-sm text-gray-800"
+                  className="w-full p-4 text-sm leading-loose resize-none h-32 outline-none bg-white dark:bg-white/[0.05] rounded-xl shadow-sm text-gray-800 dark:text-amber-100"
                   value={aiVocabAnalysisValue}
                 />
                 <div className="flex items-center gap-2">
                   <input 
                     type="text"
                     placeholder="E.g. extract advanced idioms"
-                    className="flex-1 bg-white border border-amber-100 py-2.5 px-3 rounded-xl text-xs outline-none focus:border-amber-300 transition-colors shadow-sm"
+                    className="flex-1 bg-white dark:bg-white/[0.03] border border-amber-100 dark:border-amber-900/10 py-2.5 px-3 rounded-xl text-xs outline-none focus:border-amber-300 transition-colors shadow-sm dark:text-white"
                     value={vocabInstruction}
                     onChange={(e) => setVocabInstruction(e.target.value)}
                     onKeyDown={(e) => {
