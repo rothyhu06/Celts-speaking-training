@@ -12,6 +12,7 @@ export default function DashboardPage() {
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncMessage, setSyncMessage] = useState<string | null>(null);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [selectedModule, setSelectedModule] = useState<"p1" | "p2" | "p3" | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { categories, topics, stories, user, updateProfile, logout, restoreBackup } = useStore();
 
@@ -178,10 +179,13 @@ export default function DashboardPage() {
 
       {/* Progress Cards */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="nga-card space-y-4">
+        <div 
+          onClick={() => setSelectedModule("p1")}
+          className="nga-card space-y-4 cursor-pointer hover:border-black transition-all group active:scale-95"
+        >
           <div className="flex items-center justify-between">
             <span className="nga-label">Part 1</span>
-            <MessageSquare size={14} className="text-muted" />
+            <MessageSquare size={14} className="text-muted group-hover:text-black transition-colors" />
           </div>
           <p className="text-2xl font-playfair">{p1Coverage}%</p>
           <div className="progress-bar">
@@ -191,10 +195,14 @@ export default function DashboardPage() {
             {answeredQuestions}/{totalQuestions} done
           </p>
         </div>
-        <div className="nga-card space-y-4">
+        
+        <div 
+          onClick={() => setSelectedModule("p2")}
+          className="nga-card space-y-4 cursor-pointer hover:border-black transition-all group active:scale-95"
+        >
           <div className="flex items-center justify-between">
             <span className="nga-label">Part 2</span>
-            <BookOpen size={14} className="text-muted" />
+            <BookOpen size={14} className="text-muted group-hover:text-black transition-colors" />
           </div>
           <p className="text-2xl font-playfair">{p2Coverage}%</p>
           <div className="progress-bar">
@@ -204,10 +212,14 @@ export default function DashboardPage() {
             {linkedTopics}/{userTopics.length} linked
           </p>
         </div>
-        <div className="nga-card space-y-4">
+
+        <div 
+          onClick={() => setSelectedModule("p3")}
+          className="nga-card space-y-4 cursor-pointer hover:border-black transition-all group active:scale-95"
+        >
           <div className="flex items-center justify-between">
             <span className="nga-label">Part 3</span>
-            <MessageCircle size={14} className="text-muted" />
+            <MessageCircle size={14} className="text-muted group-hover:text-black transition-colors" />
           </div>
           <p className="text-2xl font-playfair">{p3Coverage}%</p>
           <div className="progress-bar">
@@ -393,6 +405,76 @@ export default function DashboardPage() {
           </div>
         )}
       </section>
+
+      {/* Drill-down Modal */}
+      {selectedModule && (
+        <>
+          <div className="drawer-overlay" onClick={() => setSelectedModule(null)} />
+          <div className="fixed inset-x-4 bottom-10 md:inset-x-0 md:mx-auto md:max-w-4xl max-h-[75vh] bg-white z-50 rounded-[2.5rem] shadow-2xl p-10 overflow-hidden flex flex-col animate-in slide-in-from-bottom-4">
+            <div className="flex justify-between items-start mb-10">
+              <div className="space-y-1">
+                <p className="nga-label">{selectedModule.toUpperCase()} PERSPECTIVE</p>
+                <h3 className="text-3xl font-playfair">
+                  {selectedModule === 'p1' ? 'Part 1 Mastery' : selectedModule === 'p2' ? 'Part 2 Linking' : 'Part 3 Criticals'}
+                </h3>
+              </div>
+              <button onClick={() => setSelectedModule(null)} className="p-2 hover:bg-gray-50 rounded-full transition-colors">
+                <ChevronDown size={24} />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto pr-2 grid grid-cols-1 md:grid-cols-2 gap-12">
+              {/* LEFT COLUMN: Remaining / Pending */}
+              <div className="space-y-6">
+                <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+                  <h4 className="nga-label text-rose-600">Pending Tasks</h4>
+                  <span className="text-[10px] bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full font-bold">
+                    {selectedModule === 'p1' ? (totalQuestions - answeredQuestions) : selectedModule === 'p2' ? (userTopics.length - linkedTopics) : (totalPart3 - answeredPart3)}
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => !q.prepared).map(q => (
+                    <Link key={q.id} href="/qa" className="block text-sm py-2 px-3 hover:bg-gray-50 rounded-xl transition-all font-playfair truncate">{q.question}</Link>
+                  )))}
+                  {selectedModule === 'p2' && userTopics.filter(t => !t.linkedStoryId).map(t => (
+                    <Link key={t.id} href="/stories" className="block text-sm py-2 px-3 hover:bg-gray-50 rounded-xl transition-all font-playfair truncate">{t.title}</Link>
+                  ))}
+                  {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => !q.prepared).map(q => (
+                    <Link key={q.id} href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-xs py-2 px-3 hover:bg-gray-50 rounded-xl transition-all font-playfair leading-relaxed">{q.question}</Link>
+                  )))}
+                  {(selectedModule === 'p3' ? answeredPart3 === totalPart3 : selectedModule === 'p1' ? answeredQuestions === totalQuestions : linkedTopics === userTopics.length) && (
+                    <p className="text-xs text-muted italic p-4 text-center">Perfect! All clear.</p>
+                  )}
+                </div>
+              </div>
+
+              {/* RIGHT COLUMN: Prepared / Linked */}
+              <div className="space-y-6">
+                <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+                  <h4 className="nga-label text-emerald-600">Mastered</h4>
+                  <span className="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full font-bold">
+                    {selectedModule === 'p1' ? answeredQuestions : selectedModule === 'p2' ? linkedTopics : answeredPart3}
+                  </span>
+                </div>
+                <div className="space-y-2 opacity-50">
+                  {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => q.prepared).map(q => (
+                    <div key={q.id} className="text-sm py-2 px-3 font-playfair truncate flex items-center gap-2 italic"><Check size={12} className="text-emerald-500"/> {q.question}</div>
+                  )))}
+                  {selectedModule === 'p2' && userTopics.filter(t => t.linkedStoryId).map(t => (
+                    <div key={t.id} className="text-sm py-2 px-3 font-playfair truncate flex items-center gap-2 italic"><Check size={12} className="text-emerald-500"/> {t.title}</div>
+                  ))}
+                  {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => q.prepared).map(q => (
+                    <div key={q.id} className="text-xs py-2 px-3 font-playfair leading-relaxed flex items-start gap-2 italic"><Check size={10} className="text-emerald-500 mt-1 shrink-0"/> {q.question}</div>
+                  )))}
+                  {(selectedModule === 'p3' ? answeredPart3 === 0 : selectedModule === 'p1' ? answeredQuestions === 0 : linkedTopics === 0) && (
+                    <p className="text-xs text-muted italic p-4 text-center">Nothing here yet.</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
