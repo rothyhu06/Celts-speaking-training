@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
 import Link from "next/link";
-import { ArrowRight, Target, BookOpen, MessageSquare, Mic, Sparkles, MessageCircle, Download, Printer, Upload, RefreshCw, Info, HelpCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowRight, Target, BookOpen, MessageSquare, Mic, Sparkles, MessageCircle, Download, Printer, Upload, RefreshCw, Info, HelpCircle, ChevronDown, ChevronUp, Check } from "lucide-react";
 import { useRef } from "react";
 import { supabase } from "@/lib/supabase";
 
