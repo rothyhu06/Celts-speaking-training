@@ -410,65 +410,70 @@ export default function DashboardPage() {
       {selectedModule && (
         <>
           <div className="drawer-overlay" onClick={() => setSelectedModule(null)} />
-          <div className="fixed inset-x-4 bottom-10 md:inset-x-0 md:mx-auto md:max-w-4xl max-h-[75vh] bg-white z-50 rounded-[2.5rem] shadow-2xl p-10 overflow-hidden flex flex-col animate-in slide-in-from-bottom-4">
-            <div className="flex justify-between items-start mb-10">
-              <div className="space-y-1">
-                <p className="nga-label">{selectedModule.toUpperCase()} PERSPECTIVE</p>
-                <h3 className="text-3xl font-playfair">
-                  {selectedModule === 'p1' ? 'Part 1 Mastery' : selectedModule === 'p2' ? 'Part 2 Linking' : 'Part 3 Criticals'}
-                </h3>
-              </div>
-              <button onClick={() => setSelectedModule(null)} className="p-2 hover:bg-gray-50 rounded-full transition-colors">
-                <ChevronDown size={24} />
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto pr-2 grid grid-cols-1 md:grid-cols-2 gap-12">
-              {/* LEFT COLUMN: Remaining / Pending */}
-              <div className="space-y-6">
-                <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-                  <h4 className="nga-label text-rose-600">Pending Tasks</h4>
-                  <span className="text-[10px] bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full font-bold">
-                    {selectedModule === 'p1' ? (totalQuestions - answeredQuestions) : selectedModule === 'p2' ? (userTopics.length - linkedTopics) : (totalPart3 - answeredPart3)}
-                  </span>
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-10 pointer-events-none">
+            <div className="bg-white w-full max-w-4xl max-h-[85vh] rounded-[2.5rem] shadow-2xl p-8 md:p-12 overflow-hidden flex flex-col pointer-events-auto animate-in zoom-in-95 duration-300">
+              <div className="flex justify-between items-start mb-10">
+                <div className="space-y-1">
+                  <p className="nga-label text-[10px]">{selectedModule.toUpperCase()} PERSPECTIVE</p>
+                  <h3 className="text-3xl font-playfair">
+                    {selectedModule === 'p1' ? 'Part 1 Mastery' : selectedModule === 'p2' ? 'Part 2 Linking' : 'Part 3 Criticals'}
+                  </h3>
                 </div>
-                <div className="space-y-2">
-                  {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => !q.prepared).map(q => (
-                    <Link key={q.id} href="/qa" className="block text-sm py-2 px-3 hover:bg-gray-50 rounded-xl transition-all font-playfair truncate">{q.question}</Link>
-                  )))}
-                  {selectedModule === 'p2' && userTopics.filter(t => !t.linkedStoryId).map(t => (
-                    <Link key={t.id} href="/stories" className="block text-sm py-2 px-3 hover:bg-gray-50 rounded-xl transition-all font-playfair truncate">{t.title}</Link>
-                  ))}
-                  {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => !q.prepared).map(q => (
-                    <Link key={q.id} href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-xs py-2 px-3 hover:bg-gray-50 rounded-xl transition-all font-playfair leading-relaxed">{q.question}</Link>
-                  )))}
-                  {(selectedModule === 'p3' ? answeredPart3 === totalPart3 : selectedModule === 'p1' ? answeredQuestions === totalQuestions : linkedTopics === userTopics.length) && (
-                    <p className="text-xs text-muted italic p-4 text-center">Perfect! All clear.</p>
-                  )}
-                </div>
+                <button onClick={() => setSelectedModule(null)} className="p-3 hover:bg-gray-100 rounded-full transition-all">
+                  <ChevronDown size={24} />
+                </button>
               </div>
 
-              {/* RIGHT COLUMN: Prepared / Linked */}
-              <div className="space-y-6">
-                <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-                  <h4 className="nga-label text-emerald-600">Mastered</h4>
-                  <span className="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full font-bold">
-                    {selectedModule === 'p1' ? answeredQuestions : selectedModule === 'p2' ? linkedTopics : answeredPart3}
-                  </span>
+              <div className="flex-1 overflow-y-auto pr-2 grid grid-cols-1 md:grid-cols-2 gap-12">
+                {/* LEFT COLUMN: Remaining / Pending */}
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+                    <h4 className="nga-label text-rose-600">Pending Tasks</h4>
+                    <span className="text-[10px] bg-rose-50 text-rose-600 px-3 py-1 rounded-full font-bold">
+                      {selectedModule === 'p1' ? (totalQuestions - answeredQuestions) : selectedModule === 'p2' ? (userTopics.length - linkedTopics) : (totalPart3 - answeredPart3)}
+                    </span>
+                  </div>
+                  <div className="space-y-1">
+                    {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => !q.prepared).map(q => (
+                      <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-3 px-4 hover:bg-gray-50 rounded-2xl transition-all font-playfair truncate border border-transparent hover:border-gray-100">{q.question}</Link>
+                    )))}
+                    {selectedModule === 'p2' && userTopics.filter(t => !t.linkedStoryId).map(t => (
+                      <Link key={t.id} href="/stories" className="block text-sm py-3 px-4 hover:bg-gray-50 rounded-2xl transition-all font-playfair truncate border border-transparent hover:border-gray-100">{t.title}</Link>
+                    ))}
+                    {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => !q.prepared).map(q => (
+                      <Link key={q.id} href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-xs py-3 px-4 hover:bg-gray-50 rounded-2xl transition-all font-playfair leading-relaxed border border-transparent hover:border-gray-100">{q.question}</Link>
+                    )))}
+                    {(selectedModule === 'p3' ? (totalPart3 - answeredPart3 === 0) : selectedModule === 'p1' ? (totalQuestions - answeredQuestions === 0) : (userTopics.length - linkedTopics === 0)) && (
+                      <div className="py-12 text-center space-y-2">
+                        <Check size={24} className="mx-auto text-emerald-400" />
+                        <p className="text-xs text-muted italic">All clear!</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div className="space-y-2 opacity-50">
-                  {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => q.prepared).map(q => (
-                    <div key={q.id} className="text-sm py-2 px-3 font-playfair truncate flex items-center gap-2 italic"><Check size={12} className="text-emerald-500"/> {q.question}</div>
-                  )))}
-                  {selectedModule === 'p2' && userTopics.filter(t => t.linkedStoryId).map(t => (
-                    <div key={t.id} className="text-sm py-2 px-3 font-playfair truncate flex items-center gap-2 italic"><Check size={12} className="text-emerald-500"/> {t.title}</div>
-                  ))}
-                  {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => q.prepared).map(q => (
-                    <div key={q.id} className="text-xs py-2 px-3 font-playfair leading-relaxed flex items-start gap-2 italic"><Check size={10} className="text-emerald-500 mt-1 shrink-0"/> {q.question}</div>
-                  )))}
-                  {(selectedModule === 'p3' ? answeredPart3 === 0 : selectedModule === 'p1' ? answeredQuestions === 0 : linkedTopics === 0) && (
-                    <p className="text-xs text-muted italic p-4 text-center">Nothing here yet.</p>
-                  )}
+
+                {/* RIGHT COLUMN: Mastered / Linked */}
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+                    <h4 className="nga-label text-emerald-600">Mastered</h4>
+                    <span className="text-[10px] bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full font-bold">
+                      {selectedModule === 'p1' ? answeredQuestions : selectedModule === 'p2' ? linkedTopics : answeredPart3}
+                    </span>
+                  </div>
+                  <div className="space-y-1 opacity-50">
+                    {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => q.prepared).map(q => (
+                      <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-3 px-4 font-playfair truncate flex items-center gap-3 italic hover:bg-gray-50 rounded-2xl transition-all"><Check size={12} className="text-emerald-500 shrink-0"/> {q.question}</Link>
+                    )))}
+                    {selectedModule === 'p2' && userTopics.filter(t => t.linkedStoryId).map(t => (
+                      <div key={t.id} className="text-sm py-3 px-4 font-playfair truncate flex items-center gap-3 italic"><Check size={12} className="text-emerald-500 shrink-0"/> {t.title}</div>
+                    ))}
+                    {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => q.prepared).map(q => (
+                      <div key={q.id} className="text-xs py-3 px-4 font-playfair leading-relaxed flex items-start gap-3 italic"><Check size={10} className="text-emerald-500 mt-1 shrink-0"/> {q.question}</div>
+                    )))}
+                    {(selectedModule === 'p3' ? answeredPart3 === 0 : selectedModule === 'p1' ? answeredQuestions === 0 : linkedTopics === 0) && (
+                      <p className="text-xs text-muted italic py-12 text-center">Nothing mastered yet.</p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

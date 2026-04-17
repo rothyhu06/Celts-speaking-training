@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useStore } from "@/lib/store";
 import { Plus, ChevronDown, ChevronUp, Edit2, Check, X, Book, Sparkles, Upload, Trash2, Volume2, Square, HelpCircle } from "lucide-react";
 import { Category, Question } from "@/types";
@@ -29,9 +30,38 @@ export default function QAPage() {
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
 
+  const searchParams = useSearchParams();
+  const [highlightedId, setHighlightedId] = useState<string | null>(null);
+
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (mounted && userCategories.length > 0) {
+      const catId = searchParams.get('catId');
+      const qId = searchParams.get('qId');
+
+      if (catId) {
+        if (!expandedCategories.includes(catId)) {
+          setExpandedCategories(prev => [...prev, catId]);
+        }
+        
+        if (qId) {
+          setHighlightedId(qId);
+          setTimeout(() => {
+            const el = document.getElementById(`q-${qId}`);
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }, 300);
+          
+          // Clear highlight after 2 seconds
+          setTimeout(() => setHighlightedId(null), 2000);
+        }
+      }
+    }
+  }, [mounted, searchParams, userCategories.length]);
 
   if (!mounted || !user) return null;
 
@@ -427,7 +457,11 @@ T: 当然！我发现我的注意力往往会下降...`}
                 <div className="pb-12 space-y-12 px-4 animate-in fade-in duration-500">
                   <div className="space-y-10">
                     {category.questions.map((q) => (
-                      <div key={q.id} className="group space-y-4">
+                      <div 
+                        key={q.id} 
+                        id={`q-${q.id}`}
+                        className={`group space-y-4 rounded-3xl transition-all duration-1000 ${highlightedId === q.id ? 'bg-indigo-50/50 p-4 -mx-4 ring-1 ring-indigo-100' : ''}`}
+                      >
                         {editingQuestion?.id === q.id ? (
                           <div className="space-y-10 bg-gray-50/30 p-10 rounded-[2rem] border border-gray-100">
                             <div className="flex justify-between items-center mb-6">
