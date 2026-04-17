@@ -36,6 +36,7 @@ function QAPageContent() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [importStatus, setImportStatus] = useState<string | null>(null);
+  const [snapshot, setSnapshot] = useState<any>(null);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   const searchParams = useSearchParams();
@@ -511,8 +512,18 @@ T: 当然！我发现我的注意力往往会下降...`}
                                   });
                                 }}
                               />
-                              <div className="flex justify-end pt-4 border-t border-gray-100">
-                                <button onClick={() => setEditingQuestion(null)} className="nga-button-outline px-10">Done</button>
+                              <div className="flex justify-end gap-6 pt-4 border-t border-gray-100 italic transition-all">
+                                <button 
+                                  onClick={() => {
+                                    if (snapshot) updateQuestion(category.id, q.id, snapshot);
+                                    setEditingQuestion(null);
+                                    setSnapshot(null);
+                                  }} 
+                                  className="text-[10px] text-gray-400 hover:text-red-500 tracking-widest uppercase font-bold"
+                                >
+                                  Discard Changes
+                                </button>
+                                <button onClick={() => { setEditingQuestion(null); setSnapshot(null); }} className="nga-button-outline px-10">Done</button>
                               </div>
                           </div>
                         ) : (
@@ -530,7 +541,10 @@ T: 当然！我发现我的注意力往往会下降...`}
                               </div>
                               <div className="flex gap-2">
                                 <button 
-                                  onClick={() => setEditingQuestion(q)}
+                                  onClick={() => {
+                                    setEditingQuestion(q);
+                                    setSnapshot({...q});
+                                  }}
                                   className="p-2 text-black transition-all"
                                 >
                                   <Edit2 size={14} strokeWidth={1.5} />

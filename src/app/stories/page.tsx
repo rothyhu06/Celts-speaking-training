@@ -63,14 +63,20 @@ export default function StoriesPage() {
   const [editingTopicTitle, setEditingTopicTitle] = useState("");
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const [localEditingTopic, setLocalEditingTopic] = useState<Topic | null>(null);
+  const [snapshot, setSnapshot] = useState<any>(null);
 
   useEffect(() => { setMounted(true); }, []);
   
   const activeTopic = topics.find((t) => t.id === activeDrawerTopicId) ?? null;
 
   useEffect(() => {
-    if (activeTopic) setLocalEditingTopic(activeTopic);
-    else setLocalEditingTopic(null);
+    if (activeTopic) {
+      setLocalEditingTopic(activeTopic);
+      setSnapshot({...activeTopic});
+    } else {
+      setLocalEditingTopic(null);
+      setSnapshot(null);
+    }
   }, [activeDrawerTopicId]);
 
   if (!mounted || !user) return null;
@@ -609,6 +615,21 @@ export default function StoriesPage() {
                   </div>
                 </div>
               )}
+
+              {/* Drawer Footer Actions */}
+              <div className="flex justify-end gap-6 pt-12 border-t border-gray-100 italic transition-all">
+                <button 
+                  onClick={() => {
+                    if (snapshot && activeTopic) updateTopic(activeTopic.id, snapshot);
+                    setActiveDrawerTopicId(null);
+                    setSnapshot(null);
+                  }} 
+                  className="text-[10px] text-gray-400 hover:text-red-500 tracking-widest uppercase font-bold"
+                >
+                  Discard & Revert
+                </button>
+                <button onClick={() => { setActiveDrawerTopicId(null); setSnapshot(null); }} className="nga-button-outline px-10">Done</button>
+              </div>
             </div>
           </aside>
         </>

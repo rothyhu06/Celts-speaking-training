@@ -27,6 +27,7 @@ function Part3PageContent() {
   const [editingData, setEditingData] = useState<{ topicId: string; q: Part3Question } | null>(null);
   const [expandedTopics, setExpandedTopics] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [snapshot, setSnapshot] = useState<any>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -212,8 +213,18 @@ function Part3PageContent() {
                                   });
                                 }}
                               />
-                              <div className="flex justify-end pt-4 border-t border-gray-100">
-                                <button onClick={() => setEditingData(null)} className="nga-button-outline px-10">Done</button>
+                              <div className="flex justify-end gap-6 pt-4 border-t border-gray-100 italic transition-all">
+                                <button 
+                                  onClick={() => {
+                                    if (snapshot) updatePart3Question(topic.id, q.id, snapshot);
+                                    setEditingData(null);
+                                    setSnapshot(null);
+                                  }} 
+                                  className="text-[10px] text-gray-400 hover:text-red-500 tracking-widest uppercase font-bold"
+                                >
+                                  Discard Changes
+                                </button>
+                                <button onClick={() => { setEditingData(null); setSnapshot(null); }} className="nga-button-outline px-10">Done</button>
                             </div>
                           </div>
                         ) : (
@@ -230,7 +241,10 @@ function Part3PageContent() {
                               </div>
                               <div className="flex gap-2 shrink-0">
                                 <button 
-                                  onClick={() => setEditingData({ topicId: topic.id, q })}
+                                  onClick={() => {
+                                    setEditingData({ topicId: topic.id, q });
+                                    setSnapshot({...q});
+                                  }}
                                   className="p-2 text-black transition-all bg-white rounded-full shadow-sm"
                                 >
                                   <Edit2 size={14} strokeWidth={1.5} />
