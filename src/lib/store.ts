@@ -46,6 +46,8 @@ interface AppState {
   updatePart3Question: (topicId: string, questionId: string, updates: Partial<import('@/types').Part3Question>) => void;
   deletePart3Question: (topicId: string, questionId: string) => void;
   batchImportPart3: (topicId: string, questions: string[]) => void;
+  toggleQuestionPrepared: (categoryId: string, questionId: string) => void;
+  togglePart3QuestionPrepared: (topicId: string, questionId: string) => void;
   
   restoreBackup: (data: Partial<AppState>) => void;
 }
@@ -378,6 +380,10 @@ export const useStore = create<AppState>()(
           ),
         })),
 
+              : t
+          ),
+        })),
+
       batchImportPart3: (topicId, questions) =>
         set((state) => ({
           topics: state.topics.map((t) =>
@@ -392,6 +398,34 @@ export const useStore = create<AppState>()(
                       isAiGenerated: { answer: false, translation: false },
                     })),
                   ],
+                }
+              : t
+          ),
+        })),
+
+      toggleQuestionPrepared: (categoryId, questionId) =>
+        set((state) => ({
+          categories: state.categories.map((c) =>
+            c.id === categoryId
+              ? {
+                  ...c,
+                  questions: c.questions.map((q) =>
+                    q.id === questionId ? { ...q, prepared: !q.prepared } : q
+                  ),
+                }
+              : c
+          ),
+        })),
+
+      togglePart3QuestionPrepared: (topicId, questionId) =>
+        set((state) => ({
+          topics: state.topics.map((t) =>
+            t.id === topicId
+              ? {
+                  ...t,
+                  part3Questions: (t.part3Questions || []).map((q) =>
+                    q.id === questionId ? { ...q, prepared: !q.prepared } : q
+                  ),
                 }
               : t
           ),

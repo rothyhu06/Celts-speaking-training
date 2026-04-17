@@ -17,6 +17,7 @@ export interface Question {
     translation?: string;
     vocabAnalysisText?: string;
   };
+  prepared?: boolean;
 }
 
 export interface Part3Question {
@@ -37,6 +38,7 @@ export interface Part3Question {
     translation?: string;
     vocabAnalysisText?: string;
   };
+  prepared?: boolean;
 }
 
 export interface Category {

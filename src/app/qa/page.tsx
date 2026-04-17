@@ -13,7 +13,7 @@ import { generateGeminiIA } from "@/lib/gemini";
 
 export default function QAPage() {
   const [mounted, setMounted] = useState(false);
-  const { categories, addCategory, addQuestion, updateQuestion, user, updateProfile, batchImportQA, deleteCategory, updateCategory, deleteQuestion } = useStore();
+  const { categories, addCategory, addQuestion, updateQuestion, user, updateProfile, batchImportQA, deleteCategory, updateCategory, deleteQuestion, toggleQuestionPrepared } = useStore();
   const { playingId, toggleSpeech } = useTTS();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [newCategoryName, setNewCategoryName] = useState("");
@@ -463,7 +463,16 @@ T: 当然！我发现我的注意力往往会下降...`}
                         ) : (
                           <>
                             <div className="flex justify-between items-start gap-8">
-                              <h3 className="text-xl font-playfair leading-relaxed">{q.question}</h3>
+                              <div className="flex items-start gap-4 flex-1">
+                                <button 
+                                  onClick={() => toggleQuestionPrepared(category.id, q.id)}
+                                  className={`mt-1.5 p-1 rounded-full border ${q.prepared ? 'bg-black text-white' : 'border-gray-200 text-transparent hover:border-black'}`}
+                                ><Check size={10}/></button>
+                                <div>
+                                  <h4 className={`text-xl font-playfair leading-relaxed transition-all ${q.prepared ? 'opacity-30 line-through' : ''}`}>{q.question}</h4>
+                                  {q.answer && <p className="text-[10px] text-gray-400 mt-2">Answered</p>}
+                                </div>
+                              </div>
                               <div className="flex gap-2">
                                 <button 
                                   onClick={() => setEditingQuestion(q)}
