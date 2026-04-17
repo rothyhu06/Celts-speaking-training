@@ -385,7 +385,7 @@ T: 当然！我发现我的注意力往往会下降...`}
           </div>
         ) : (
           userCategories.map((category: Category) => (
-            <div key={category.id} className="border-b border-gray-100 last:border-0 overflow-hidden bg-white">
+            <div key={category.id} className="border-b border-gray-100 dark:border-white/5 last:border-0 overflow-hidden bg-white dark:bg-[#111216]">
               <div className="w-full flex items-center justify-between py-10 hover:px-4 transition-all group">
                 <div 
                   onClick={() => toggleCategory(category.id)}
@@ -420,7 +420,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                     </div>
                   ) : (
                     <>
-                      <span className="text-2xl font-playfair group-hover:italic transition-all">
+                      <span className="text-2xl font-playfair group-hover:italic transition-all text-black dark:text-white">
                         {category.name.split('&').map((part, i, arr) => (
                           <span key={i}>
                             {part}
@@ -440,7 +440,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                         setEditingCatId(category.id);
                         setEditingCatName(category.name);
                       }}
-                      className="p-2 text-black hover:scale-110 transition-all"
+                      className="p-2 text-black dark:text-gray-400 hover:scale-110 transition-all dark:hover:text-white"
                     >
                       <Edit2 size={14} strokeWidth={1.5} />
                     </button>
@@ -450,7 +450,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                       e.stopPropagation();
                       if (confirm(`Delete entire category "${category.name}"?`)) deleteCategory(category.id);
                     }}
-                    className="p-2 text-black hover:text-red-500 transition-all"
+                    className="p-2 text-black dark:text-gray-400 hover:text-red-500 transition-all"
                   >
                     <Trash2 size={14} strokeWidth={1.5} />
                   </button>

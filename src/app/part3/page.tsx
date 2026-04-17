@@ -153,15 +153,15 @@ function Part3PageContent() {
             const qDone = topic.part3Questions?.filter(q => q.prepared).length || 0;
             
             return (
-            <div key={topic.id} className="nga-card border border-gray-100 p-0 overflow-hidden">
+            <div key={topic.id} className="nga-card border border-gray-100 dark:border-white/5 p-0 overflow-hidden bg-white dark:bg-[#111216]">
               <button
                 onClick={() => toggleTopic(topic.id)}
-                className="w-full text-left p-6 flex justify-between items-center bg-white hover:bg-gray-50/50 transition-colors"
+                className="w-full text-left p-6 flex justify-between items-center bg-transparent hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors"
               >
                 <div className="space-y-1.5 flex-1 pr-6">
                   <div className="flex items-center gap-3">
-                    <span className="text-[10px] font-bold tracking-widest text-[#bbb] uppercase">{qDone}/{qCount}</span>
-                    <h2 className="text-lg font-playfair">Related to: {topic.title}</h2>
+                    <span className="text-[10px] font-bold tracking-widest text-[#bbb] dark:text-gray-500 uppercase">{qDone}/{qCount}</span>
+                    <h2 className="text-lg font-playfair dark:text-white">Related to: {topic.title}</h2>
                   </div>
                 </div>
                 {isExpanded ? <ChevronDown size={20} className="text-gray-300" /> : <ChevronRight size={20} className="text-gray-300" />}
