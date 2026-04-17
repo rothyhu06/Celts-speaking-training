@@ -65,17 +65,19 @@ export default function StoriesPage() {
   const [localEditingTopic, setLocalEditingTopic] = useState<Topic | null>(null);
 
   useEffect(() => { setMounted(true); }, []);
-  if (!mounted || !user) return null;
-
-  const uid = user.id;
-  const userTopics = topics.filter((t) => t.userId === uid);
-  const userStories = stories.filter((s) => s.userId === uid);
-  const activeTopic = userTopics.find((t) => t.id === activeDrawerTopicId) ?? null;
+  
+  const activeTopic = topics.find((t) => t.id === activeDrawerTopicId) ?? null;
 
   useEffect(() => {
     if (activeTopic) setLocalEditingTopic(activeTopic);
     else setLocalEditingTopic(null);
   }, [activeDrawerTopicId]);
+
+  if (!mounted || !user) return null;
+
+  const uid = user.id;
+  const userTopics = topics.filter((t) => t.userId === uid);
+  const userStories = stories.filter((s) => s.userId === uid);
 
   const handleAiGenerate = async (type: 'script' | 'translation' | 'vocab' | 'coaching', topic: Topic, instruction?: string) => {
     if (!topic.linkedStoryId) return;
