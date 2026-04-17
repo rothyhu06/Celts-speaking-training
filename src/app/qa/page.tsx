@@ -501,27 +501,19 @@ T: 当然！我发现我的注意力往往会下降...`}
                                 onVocabAnalysisChange={(val) => setEditingQuestion((prev: any) => ({ ...prev, vocabAnalysisText: val }))}
                                 onAiGenerate={(type, instruction) => handleAiGenerate(type, editingQuestion, category.id, instruction)}
                                 isGenerating={isGenerating}
+                                onSave={() => {
+                                  updateQuestion(category.id, q.id, { 
+                                    answer: editingQuestion.answer,
+                                    translation: editingQuestion.translation,
+                                    chineseLogic: editingQuestion.chineseLogic,
+                                    vocabAnalysisText: editingQuestion.vocabAnalysisText,
+                                    aiSuggestions: editingQuestion.aiSuggestions
+                                  });
+                                }}
                               />
-                              <div className="flex justify-end gap-6 pt-4 border-t border-gray-100">
-                                <button onClick={() => setEditingQuestion(null)} className="nga-label text-[9px]">Discard</button>
-                                <button 
-                                  onClick={() => {
-                                    updateQuestion(category.id, q.id, { 
-                                      answer: editingQuestion.answer,
-                                      translation: editingQuestion.translation,
-                                      chineseLogic: editingQuestion.chineseLogic,
-                                      vocabAnalysisText: editingQuestion.vocabAnalysisText,
-                                      aiCoaching: editingQuestion.aiCoaching,
-                                      isAiGenerated: editingQuestion.isAiGenerated,
-                                      aiSuggestions: editingQuestion.aiSuggestions
-                                    });
-                                    setEditingQuestion(null);
-                                }} 
-                                className="nga-button-outline"
-                              >
-                                Save Changes
-                              </button>
-                            </div>
+                              <div className="flex justify-end pt-4 border-t border-gray-100">
+                                <button onClick={() => setEditingQuestion(null)} className="nga-button-outline px-10">Done</button>
+                              </div>
                           </div>
                         ) : (
                           <>

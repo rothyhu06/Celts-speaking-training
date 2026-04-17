@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Sparkles, Edit3, MessageCircle, Send, Volume2, Square } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Sparkles, Edit3, MessageCircle, Send, Volume2, Square, Cloud, CloudOff, RefreshCw } from "lucide-react";
 
 interface DualEditorProps {
   title: string;
@@ -26,6 +26,7 @@ interface DualEditorProps {
   
   onAiGenerate: (type: 'script' | 'translation' | 'vocab' | 'coaching', instruction?: string) => void;
   isGenerating?: boolean;
+  onSave?: () => void;
 }
 
 export default function DualEditor({
@@ -44,8 +45,42 @@ export default function DualEditor({
   onChineseLogicChange,
   onVocabAnalysisChange,
   onAiGenerate,
-  isGenerating
+  isGenerating,
+  onSave
 }: DualEditorProps) {
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'syncing' | 'saved'>('idle');
+  const [localEnglish, setLocalEnglish] = useState(englishValue);
+  const [localChinese, setLocalChinese] = useState(chineseValue);
+  const [localThought, setLocalThought] = useState(chineseLogicValue);
+  const [localVocab, setLocalVocab] = useState(vocabAnalysisValue);
+  
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Sync local state when props change (e.g. from AI)
+  useEffect(() => { setLocalEnglish(englishValue); }, [englishValue]);
+  useEffect(() => { setLocalChinese(chineseValue); }, [chineseValue]);
+  useEffect(() => { setLocalThought(chineseLogicValue); }, [chineseLogicValue]);
+  useEffect(() => { setLocalVocab(vocabAnalysisValue); }, [vocabAnalysisValue]);
+
+  const triggerAutoSave = () => {
+    if (saveStatus !== 'syncing') setSaveStatus('syncing');
+    
+    if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    
+    saveTimeoutRef.current = setTimeout(() => {
+      if (onSave) {
+        onSave();
+        setSaveStatus('saved');
+        setTimeout(() => setSaveStatus('idle'), 2000);
+      }
+    }, 1500); // 1.5s debounce
+  };
+
+  useEffect(() => {
+    return () => {
+      if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    };
+  }, []);
 
   // Local state for AI instruction prompts
   const [scriptInstruction, setScriptInstruction] = useState("");
@@ -75,16 +110,32 @@ export default function DualEditor({
     <div className="space-y-12 animate-in fade-in duration-700 pb-10">
       {/* Sticky Original Question Header */}
       <div className="sticky top-0 z-10 -mx-10 px-10 pt-4 pb-8 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all">
-        <div className="space-y-3">
-          <label className="nga-label text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">Current Prompt</label>
-          <h2 className="text-2xl font-playfair leading-tight text-black">{title}</h2>
-          {subtitle && (
-            <div className="bg-gray-50/80 rounded-xl p-4 mt-2 border border-gray-100">
-               <p className="text-xs text-muted leading-relaxed font-light whitespace-pre-line italic">
-                 {subtitle}
-               </p>
-            </div>
-          )}
+        <div className="flex items-center justify-between">
+          <div className="space-y-3 flex-1">
+            <label className="nga-label text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">Current Prompt</label>
+            <h2 className="text-2xl font-playfair leading-tight text-black">{title}</h2>
+            {subtitle && (
+              <div className="bg-gray-50/80 rounded-xl p-4 mt-2 border border-gray-100">
+                 <p className="text-xs text-muted leading-relaxed font-light whitespace-pre-line italic">
+                   {subtitle}
+                 </p>
+              </div>
+            )}
+          </div>
+          <div className="ml-6 shrink-0">
+            {saveStatus === 'syncing' && (
+              <div className="flex items-center gap-2 text-indigo-500 animate-pulse">
+                <RefreshCw size={12} className="animate-spin" />
+                <span className="text-[9px] font-bold tracking-widest uppercase">Syncing</span>
+              </div>
+            )}
+            {saveStatus === 'saved' && (
+              <div className="flex items-center gap-2 text-emerald-500">
+                <Cloud size={12} />
+                <span className="text-[9px] font-bold tracking-widest uppercase">Synced</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -109,8 +160,12 @@ export default function DualEditor({
         <textarea
           className="w-full border border-gray-200 rounded-2xl p-4 text-sm outline-none h-24 bg-gray-50 resize-none leading-relaxed font-light italic placeholder:text-gray-300 focus:border-black transition-all"
           placeholder="Type your Chinese logic points here..."
-          value={chineseLogicValue}
-          onChange={(e) => onChineseLogicChange(e.target.value)}
+          value={localThought}
+          onChange={(e) => {
+            setLocalThought(e.target.value);
+            onChineseLogicChange(e.target.value);
+            triggerAutoSave();
+          }}
         />
       </div>
 
@@ -144,8 +199,12 @@ export default function DualEditor({
           <textarea
             className="w-full p-6 rounded-2xl text-lg font-playfair leading-relaxed resize-none h-48 outline-none transition-all duration-500 bg-gray-50 border border-gray-200 focus:border-black focus:bg-white"
             placeholder="Type your manual response here..."
-            value={englishValue}
-            onChange={(e) => onEnglishChange(e.target.value)}
+            value={localEnglish}
+            onChange={(e) => {
+              setLocalEnglish(e.target.value);
+              onEnglishChange(e.target.value);
+              triggerAutoSave();
+            }}
           />
         </div>
 
@@ -231,8 +290,12 @@ export default function DualEditor({
             <textarea
               className="w-full p-4 rounded-2xl text-sm leading-loose resize-none h-32 outline-none transition-all duration-300 bg-gray-50 border border-gray-200 focus:border-black focus:bg-white"
               placeholder="Your manual translation notes..."
-              value={chineseValue}
-              onChange={(e) => onChineseChange(e.target.value)}
+              value={localChinese}
+              onChange={(e) => {
+                setLocalChinese(e.target.value);
+                onChineseChange(e.target.value);
+                triggerAutoSave();
+              }}
             />
           </div>
           
@@ -291,8 +354,14 @@ export default function DualEditor({
             <textarea
               className="w-full p-4 rounded-2xl text-sm leading-loose resize-none h-32 outline-none transition-all duration-300 bg-gray-50 border border-gray-200 focus:border-black focus:bg-white"
               placeholder="Your manual vocab notes..."
-              value={vocabAnalysisValue}
-              onChange={(e) => onVocabAnalysisChange ? onVocabAnalysisChange(e.target.value) : undefined}
+              value={localVocab}
+              onChange={(e) => {
+                setLocalVocab(e.target.value);
+                if (onVocabAnalysisChange) {
+                  onVocabAnalysisChange(e.target.value);
+                  triggerAutoSave();
+                }
+              }}
             />
           </div>
           

@@ -4,6 +4,8 @@ import BottomNav from "@/components/BottomNav";
 import ClientAuthWrapper from "@/components/ClientAuthWrapper";
 import CloudSyncEngine from "@/components/CloudSyncEngine";
 
+import ThemeToggle from "@/components/ThemeToggle";
+
 export const metadata: Metadata = {
   title: "IELTS Flow",
   description: "极简雅思口语备考 Web App — Speaking Preparation Platform",
@@ -25,10 +27,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const saved = localStorage.getItem('theme');
+                  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  if (saved === 'dark' || (!saved && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
       </head>
       <body>
         <ClientAuthWrapper>
           <CloudSyncEngine />
+          <ThemeToggle />
           <main
             style={{
               maxWidth: 680,

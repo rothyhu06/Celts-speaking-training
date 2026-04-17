@@ -56,12 +56,13 @@ export default function StoriesPage() {
   const [newStoryTag, setNewStoryTag] = useState<typeof TAGS[number]>("Person");
   const [newStorySummary, setNewStorySummary] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [tab, setTab] = useState<"topics" | "stories">("topics");
+  const [tab, setTab] = useState<"topics" | "stories" | "map">("topics");
   const [bulkText, setBulkText] = useState("");
   const [isBulkMode, setIsBulkMode] = useState(false);
   const [editingTopicId, setEditingTopicId] = useState<string | null>(null);
   const [editingTopicTitle, setEditingTopicTitle] = useState("");
   const [importStatus, setImportStatus] = useState<string | null>(null);
+  const [localEditingTopic, setLocalEditingTopic] = useState<Topic | null>(null);
 
   useEffect(() => { setMounted(true); }, []);
   if (!mounted || !user) return null;
@@ -70,6 +71,11 @@ export default function StoriesPage() {
   const userTopics = topics.filter((t) => t.userId === uid);
   const userStories = stories.filter((s) => s.userId === uid);
   const activeTopic = userTopics.find((t) => t.id === activeDrawerTopicId) ?? null;
+
+  useEffect(() => {
+    if (activeTopic) setLocalEditingTopic(activeTopic);
+    else setLocalEditingTopic(null);
+  }, [activeDrawerTopicId]);
 
   const handleAiGenerate = async (type: 'script' | 'translation' | 'vocab' | 'coaching', topic: Topic, instruction?: string) => {
     if (!topic.linkedStoryId) return;
@@ -175,19 +181,19 @@ export default function StoriesPage() {
       </header>
 
       {/* Tab */}
-      <div className="flex gap-1 bg-gray-50 p-1 rounded-2xl">
-        {(["topics", "stories"] as const).map((t) => (
+      <div className="flex gap-1 bg-gray-50 dark:bg-white/5 p-1 rounded-2xl">
+        {(["topics", "stories", "map"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className="flex-1 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all"
+            className="flex-1 py-2.5 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all"
             style={{
-              background: tab === t ? "#fff" : "transparent",
-              color: tab === t ? "#0a0a0a" : "#aaa",
-              boxShadow: tab === t ? "0 1px 4px rgba(0,0,0,0.06)" : "none",
+              background: tab === t ? "var(--bg-card)" : "transparent",
+              color: tab === t ? "var(--fg-primary)" : "var(--fg-muted)",
+              boxShadow: tab === t ? "0 2px 8px rgba(0,0,0,0.08)" : "none",
             }}
           >
-            {t === "topics" ? `Topics (${userTopics.length})` : `Stories (${userStories.length})`}
+            {t === "topics" ? `Topics (${userTopics.length})` : t === "stories" ? `Stories (${userStories.length})` : `Logic Map`}
           </button>
         ))}
       </div>
@@ -485,24 +491,36 @@ export default function StoriesPage() {
               </div>
 
               {/* Dual Editor */}
-              {activeTopic.linkedStoryId && (
+              {activeTopic && activeTopic.linkedStoryId && localEditingTopic && (
                 <DualEditor
                   title={activeTopic.title}
                   subtitle={activeTopic.cueCard}
-                  englishValue={activeTopic.script ? activeTopic.script.replace(/^\[Topic:.*?\]\n\n/, "") : ''}
-                  chineseValue={activeTopic.translation || ''}
-                  chineseLogicValue={activeTopic.chineseLogic || ''}
-                  vocabAnalysisValue={activeTopic.vocabAnalysisText || ''}
-                  aiEnglishValue={activeTopic.aiSuggestions?.script}
-                  aiChineseValue={activeTopic.aiSuggestions?.translation}
-                  aiVocabAnalysisValue={activeTopic.aiSuggestions?.vocabAnalysisText}
-                  aiCoachingValue={activeTopic.aiCoaching || ''}
-                  onEnglishChange={(val) => updateTopic(activeTopic.id, { script: val })}
-                  onChineseChange={(val) => updateTopic(activeTopic.id, { translation: val })}
-                  onChineseLogicChange={(val) => updateTopic(activeTopic.id, { chineseLogic: val })}
-                  onVocabAnalysisChange={(val) => updateTopic(activeTopic.id, { vocabAnalysisText: val })}
+                  englishValue={localEditingTopic.script ? localEditingTopic.script.replace(/^\[Topic:.*?\]\n\n/, "") : ''}
+                  chineseValue={localEditingTopic.translation || ''}
+                  chineseLogicValue={localEditingTopic.chineseLogic || ''}
+                  vocabAnalysisValue={localEditingTopic.vocabAnalysisText || ''}
+                  aiEnglishValue={localEditingTopic.aiSuggestions?.script}
+                  aiChineseValue={localEditingTopic.aiSuggestions?.translation}
+                  aiVocabAnalysisValue={localEditingTopic.aiSuggestions?.vocabAnalysisText}
+                  aiCoachingValue={localEditingTopic.aiCoaching || ''}
+                  onEnglishChange={(val) => setLocalEditingTopic(prev => prev ? { ...prev, script: val } : null)}
+                  onChineseChange={(val) => setLocalEditingTopic(prev => prev ? { ...prev, translation: val } : null)}
+                  onChineseLogicChange={(val) => setLocalEditingTopic(prev => prev ? { ...prev, chineseLogic: val } : null)}
+                  onVocabAnalysisChange={(val) => setLocalEditingTopic(prev => prev ? { ...prev, vocabAnalysisText: val } : null)}
                   onAiGenerate={(type, instruction) => handleAiGenerate(type, activeTopic, instruction)}
                   isGenerating={isGenerating}
+                  onSave={() => {
+                    if (localEditingTopic) {
+                      updateTopic(activeTopic.id, {
+                        script: localEditingTopic.script,
+                        translation: localEditingTopic.translation,
+                        chineseLogic: localEditingTopic.chineseLogic,
+                        vocabAnalysisText: localEditingTopic.vocabAnalysisText,
+                        aiCoaching: localEditingTopic.aiCoaching,
+                        aiSuggestions: localEditingTopic.aiSuggestions
+                      });
+                    }
+                  }}
                 />
               )}
 
@@ -592,6 +610,66 @@ export default function StoriesPage() {
             </div>
           </aside>
         </>
+      )}
+      {/* ── LOGIC MAP TAB ── */}
+      {tab === "map" && (
+        <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="space-y-2">
+            <h3 className="text-xl font-playfair italic">Your Strategic Coverage</h3>
+            <p className="text-[10px] text-muted tracking-widest uppercase">Efficiency Perspective: Stories to Topics Mapping</p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-8">
+            {userStories.map((story) => {
+              const linkedTopics = userTopics.filter(t => t.linkedStoryId === story.id);
+              return (
+                <div key={story.id} className="nga-card p-0 overflow-hidden border border-gray-100 dark:border-white/5 bg-white dark:bg-white/[0.02]">
+                  <div className="p-8 border-b border-gray-50 dark:border-white/5 flex justify-between items-center bg-gray-50/30 dark:bg-white/[0.01]">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[9px] bg-black dark:bg-white dark:text-black text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">
+                          {story.tag}
+                        </span>
+                        <h4 className="text-2xl font-playfair">{story.title}</h4>
+                      </div>
+                      <p className="text-xs text-muted line-clamp-1">{story.summary}</p>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-3xl font-playfair text-indigo-500">{linkedTopics.length}</div>
+                      <p className="text-[8px] uppercase tracking-widest text-muted">Topics Covered</p>
+                    </div>
+                  </div>
+
+                  <div className="p-8 bg-transparent">
+                    {linkedTopics.length > 0 ? (
+                      <div className="flex flex-wrap gap-2">
+                        {linkedTopics.map(t => (
+                          <div 
+                            key={t.id} 
+                            onClick={() => { setTab('topics'); setActiveDrawerTopicId(t.id); }}
+                            className="bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 px-4 py-3 rounded-2xl flex items-center gap-3 hover:scale-105 transition-all cursor-pointer group shadow-sm hover:shadow-md"
+                          >
+                            <Link2 size={12} className="text-gray-300 group-hover:text-black dark:group-hover:text-white" />
+                            <span className="text-sm font-playfair group-hover:italic transition-all">{t.title}</span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="py-10 text-center opacity-30 italic text-xs">This story is currently standalone. Link it to some topics!</div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+
+            {userStories.length === 0 && (
+              <div className="py-20 text-center space-y-4 nga-card border-dashed">
+                <BookOpen size={40} className="mx-auto text-gray-200" />
+                <p className="text-sm text-muted font-playfair italic">No stories created yet to map.</p>
+              </div>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

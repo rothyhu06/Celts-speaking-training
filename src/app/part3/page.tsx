@@ -202,26 +202,18 @@ function Part3PageContent() {
                                 onVocabAnalysisChange={(val) => setEditingData({ topicId: topic.id, q: { ...editingData.q, vocabAnalysisText: val } })}
                                 onAiGenerate={(type, instruction) => handleAiGenerate(type, topic.id, editingData.q, instruction)}
                                 isGenerating={isGenerating}
+                                onSave={() => {
+                                  updatePart3Question(topic.id, q.id, { 
+                                    answer: editingData.q.answer,
+                                    translation: editingData.q.translation,
+                                    chineseLogic: editingData.q.chineseLogic,
+                                    vocabAnalysisText: editingData.q.vocabAnalysisText,
+                                    aiSuggestions: editingData.q.aiSuggestions
+                                  });
+                                }}
                               />
-                              <div className="flex justify-end gap-6 pt-4 border-t border-gray-100">
-                                <button onClick={() => setEditingData(null)} className="nga-label text-[9px]">Discard</button>
-                                <button 
-                                  onClick={() => {
-                                    updatePart3Question(topic.id, q.id, { 
-                                      answer: editingData.q.answer,
-                                      translation: editingData.q.translation,
-                                      chineseLogic: editingData.q.chineseLogic,
-                                      vocabAnalysisText: editingData.q.vocabAnalysisText,
-                                      aiCoaching: editingData.q.aiCoaching,
-                                      aiSuggestions: editingData.q.aiSuggestions
-                                    });
-                                    setEditingData(null);
-                                }} 
-                                className="nga-button-outline flex items-center gap-2 px-6"
-                              >
-                                <Check size={14} />
-                                Save
-                              </button>
+                              <div className="flex justify-end pt-4 border-t border-gray-100">
+                                <button onClick={() => setEditingData(null)} className="nga-button-outline px-10">Done</button>
                             </div>
                           </div>
                         ) : (

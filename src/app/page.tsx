@@ -177,6 +177,57 @@ export default function DashboardPage() {
           Target Band {user?.targetBand ?? 7}.0 &nbsp;·&nbsp; {userTopics.length} topics ready
         </p>
       </header>
+ 
+      {/* Skill Radar Section */}
+      <section className="animate-in fade-in duration-700">
+        <div className="nga-card bg-white/40 dark:bg-white/[0.02] backdrop-blur-sm border-gray-100 dark:border-white/5 p-10 flex flex-col md:flex-row items-center gap-12">
+          <div className="relative w-48 h-48 flex-shrink-0">
+            <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-sm">
+              {/* Radar Grid */}
+              {[0.2, 0.4, 0.6, 0.8, 1].map((step) => {
+                const points = [0, 60, 120, 180, 240, 300].map(angle => {
+                  const rad = (angle * Math.PI) / 180;
+                  return `${50 + 45 * step * Math.cos(rad)},${50 + 45 * step * Math.sin(rad)}`;
+                }).join(' ');
+                return <polygon key={step} points={points} fill="none" className="stroke-gray-100 dark:stroke-white/10" strokeWidth="0.5" />;
+              })}
+              {/* Radar Axes */}
+              {[0, 60, 120, 180, 240, 300].map(angle => {
+                const rad = (angle * Math.PI) / 180;
+                return <line key={angle} x1="50" y1="50" x2={50 + 45 * Math.cos(rad)} y2={50 + 45 * Math.sin(rad)} className="stroke-gray-100 dark:stroke-white/10" strokeWidth="0.5" />;
+              })}
+              {/* Data Shape */}
+              {(() => {
+                const stats = [
+                  (answeredQuestions / (totalQuestions || 1)),
+                  (linkedTopics / (userTopics.length || 1)),
+                  (answeredPart3 / (totalPart3 || 1)),
+                  Math.min(1, userStories.length / 10), 
+                  Math.min(1, answeredQuestions / 25), 
+                  0.5, 
+                ];
+                const points = stats.map((val, i) => {
+                  const angle = (i * 60 * Math.PI) / 180;
+                  return `${50 + 45 * val * Math.cos(angle)},${50 + 45 * val * Math.sin(angle)}`;
+                }).join(' ');
+                return <polygon points={points} className="fill-indigo-500/20 stroke-indigo-500" strokeWidth="1.5" />;
+              })()}
+            </svg>
+          </div>
+          <div className="flex-1 space-y-6">
+            <div className="space-y-1">
+              <h3 className="text-2xl font-playfair tracking-tight">Readiness Index</h3>
+              <p className="text-[10px] text-muted tracking-widest uppercase">Preparation Balance Analysis</p>
+            </div>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+              <div className="space-y-1"><p className="nga-label text-[8px] opacity-40">Coverage</p><p className="text-xs font-mono font-bold">{(answeredQuestions / (totalQuestions || 1) * 100).toFixed(0)}%</p></div>
+              <div className="space-y-1"><p className="nga-label text-[8px] opacity-40">Story Map</p><p className="text-xs font-mono font-bold">{(linkedTopics / (userTopics.length || 1) * 100).toFixed(0)}%</p></div>
+              <div className="space-y-1"><p className="nga-label text-[8px] opacity-40">Logic Depth</p><p className="text-xs font-mono font-bold">{(answeredPart3 / (totalPart3 || 1) * 100).toFixed(0)}%</p></div>
+              <div className="space-y-1"><p className="nga-label text-[8px] opacity-40">Knowledge Base</p><p className="text-xs font-mono font-bold">{userStories.length}/10</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Progress Cards */}
       <div className="grid grid-cols-3 gap-4">
