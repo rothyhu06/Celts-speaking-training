@@ -279,8 +279,8 @@ export default function MockPage() {
             >Custom Topic</button>
           </div>
 
-          <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center animate-pulse mt-4">
-            <Mic className="text-blue-500" />
+          <div className="w-16 h-16 bg-[var(--accent-soft)] rounded-full flex items-center justify-center animate-pulse mt-4">
+            <Mic className="text-[var(--accent-color)]" />
           </div>
           <div className="space-y-4 max-w-sm mx-auto">
              <h2 className="text-2xl font-playfair">Ready for your practice?</h2>
@@ -324,7 +324,7 @@ export default function MockPage() {
               {currentSegment.type === 'p3' && 'PART 3: EXTENSIONS'}
               {currentSegment.type === 'done' && 'EXAM COMPLETED'}
             </span>
-            <span className="text-blue-600">{currentIndex} / {segments.length - 2}</span>
+            <span className="text-[var(--accent-color)]">{currentIndex} / {segments.length - 2}</span>
           </div>
 
           <div className="nga-card space-y-8">
@@ -335,7 +335,7 @@ export default function MockPage() {
             {(currentSegment.type === 'p2-prep' || currentSegment.type === 'p2-speak') && (
               <div className="space-y-4">
                 <h2 className="text-2xl font-playfair leading-relaxed">Describe: {currentSegment.t.title}</h2>
-                <div className="bg-gray-50 rounded-2xl p-6">
+                <div className="bg-[var(--bg-secondary)] rounded-2xl p-6">
                   <p className="nga-label mb-3">Cue Card</p>
                   <p className="text-sm font-light leading-relaxed whitespace-pre-line text-muted">
                     {currentSegment.t.cueCard}
@@ -350,7 +350,7 @@ export default function MockPage() {
 
             {currentSegment.type === 'done' && (
               <div className="text-center py-10 space-y-4">
-                <CheckCircle2 size={48} className="text-green-500 mx-auto" />
+                <CheckCircle2 size={48} className="text-[var(--success-color)] mx-auto" />
                 <h2 className="text-3xl font-playfair">Test Concluded</h2>
                 <p className="text-sm text-muted font-light">Processing your transcript and generating AI assessment...</p>
               </div>
@@ -361,7 +361,7 @@ export default function MockPage() {
               {currentSegment.type === 'p2-prep' && (
                 <>
                   <p className="text-5xl font-playfair tracking-widest">{formatTime(timeLeft)}</p>
-                  <p className="text-[10px] uppercase font-bold text-gray-400 tracking-[0.2em]">Prep Time</p>
+                  <p className="text-[10px] uppercase font-bold text-[var(--fg-muted)] tracking-[0.2em]">Prep Time</p>
                   <button onClick={advanceSegment} className="nga-button-outline w-full mt-4">
                     Skip Prep (Ready)
                   </button>
@@ -370,12 +370,12 @@ export default function MockPage() {
 
               {currentSegment.type === 'p2-speak' && (
                 <>
-                  <p className="text-5xl font-playfair tracking-widest text-red-600">{formatTime(timeLeft)}</p>
+                  <p className="text-5xl font-playfair tracking-widest text-[var(--danger-color)]">{formatTime(timeLeft)}</p>
                   <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                    <span className="text-[10px] uppercase font-bold text-red-600 tracking-[0.2em]">Recording</span>
+                    <div className="w-2 h-2 rounded-full bg-[var(--danger-color)] animate-pulse" />
+                    <span className="text-[10px] uppercase font-bold text-[var(--danger-color)] tracking-[0.2em]">Recording</span>
                   </div>
-                  <button onClick={advanceSegment} className="nga-button-outline w-full mt-4 text-red-600 border-red-600">
+                  <button onClick={advanceSegment} className="nga-button-outline w-full mt-4 text-[var(--danger-color)] border-[var(--danger-color)]">
                     Finish Speaking
                   </button>
                 </>
@@ -384,8 +384,8 @@ export default function MockPage() {
               {(currentSegment.type === 'p1' || currentSegment.type === 'p3') && (
                 <>
                   <div className="flex items-center gap-3 py-6">
-                    <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                    <span className="text-[10px] uppercase font-bold text-red-600 tracking-[0.2em]">Recording</span>
+                    <div className="w-2 h-2 rounded-full bg-[var(--danger-color)] animate-pulse" />
+                    <span className="text-[10px] uppercase font-bold text-[var(--danger-color)] tracking-[0.2em]">Recording</span>
                   </div>
                   <button onClick={advanceSegment} className="nga-button w-full">
                     Complete Answer (Next) <ArrowRight size={14} className="ml-2" />
@@ -395,7 +395,7 @@ export default function MockPage() {
             </div>
             
             {isRecording && transcript && (
-              <div className="pt-8 border-t border-gray-100">
+              <div className="pt-8 border-t border-[var(--border-color)]">
                  <p className="nga-label mb-2 text-indigo-400">Live Transcript</p>
                  <p className="text-sm font-light text-gray-600 leading-relaxed italic">{transcript}</p>
               </div>
@@ -407,7 +407,7 @@ export default function MockPage() {
             <div className="space-y-8 animate-in fade-in duration-700">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-playfair">AI Assessment</h2>
-                <span className="text-4xl font-playfair text-indigo-600">{feedback.score}</span>
+                <span className="text-4xl font-playfair text-[var(--accent-color)]">{feedback.score}</span>
               </div>
               <div className="grid grid-cols-1 gap-4">
                 {[
@@ -422,7 +422,7 @@ export default function MockPage() {
                   </div>
                 ))}
               </div>
-              <div className="nga-card border-black/10 space-y-3" style={{ background: "#0a0a0a", color: "#fff" }}>
+              <div className="nga-card border-black/10 space-y-3" className="nga-card space-y-3 bg-[var(--fg-primary)] text-[var(--bg-primary)] border-[var(--border-color)]">
                 <div className="flex items-center gap-2">
                   <Sparkles size={14} />
                   <p className="nga-label" style={{ color: "#888" }}>Key Suggestion</p>
@@ -436,7 +436,7 @@ export default function MockPage() {
                   {fullTranscript.map((t, idx) => (
                     <div key={idx} className="space-y-2">
                       <p className="nga-label text-indigo-500">{t.label}</p>
-                      <p className="text-sm font-light leading-relaxed bg-indigo-50/50 p-4 rounded-2xl">{t.text}</p>
+                      <p className="text-sm font-light leading-relaxed bg-[var(--accent-soft)]/50 p-4 rounded-2xl">{t.text}</p>
                     </div>
                   ))}
                 </div>

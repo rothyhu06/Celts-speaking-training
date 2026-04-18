@@ -120,7 +120,7 @@ function Part3PageContent() {
 
   return (
     <div className="space-y-16 pt-4 animate-in fade-in duration-700">
-      <header className="flex justify-between items-center border-b border-gray-100 pb-12">
+      <header className="flex justify-between items-center border-b border-[var(--border-color)] pb-12">
         <div className="space-y-2">
           <h1 className="text-4xl font-playfair tracking-tight">Part 3</h1>
           <p className="nga-label">Extended Discussion</p>
@@ -133,12 +133,12 @@ function Part3PageContent() {
 
       {userTopics.length === 0 && (
         <div className="flex flex-col items-center justify-center py-20 text-center space-y-6 animate-in slide-in-from-bottom-4">
-          <div className="w-16 h-16 rounded-full bg-gray-50 flex flex-col items-center justify-center">
-            <Sparkles size={24} className="text-gray-300" />
+          <div className="w-16 h-16 rounded-full bg-[var(--bg-secondary)] flex flex-col items-center justify-center">
+            <Sparkles size={24} className="text-[var(--fg-muted)]" />
           </div>
           <div className="space-y-2">
-            <p className="font-playfair text-xl text-gray-800">No Extensions Yet</p>
-            <p className="text-sm font-light text-gray-400 max-w-xs mx-auto leading-relaxed">
+            <p className="font-playfair text-xl text-[var(--fg-primary)]">No Extensions Yet</p>
+            <p className="text-sm font-light text-[var(--fg-muted)] max-w-xs mx-auto leading-relaxed">
               Link Part 3 questions directly inside your Part 2 Topic drawer to see them aggregated here.
             </p>
           </div>
@@ -153,31 +153,31 @@ function Part3PageContent() {
             const qDone = topic.part3Questions?.filter(q => q.prepared).length || 0;
             
             return (
-            <div key={topic.id} className="nga-card border border-gray-100 dark:border-white/5 p-0 overflow-hidden bg-white dark:bg-[#111216]">
+            <div key={topic.id} className="nga-card border border-[var(--border-color)] p-0 overflow-hidden bg-[var(--bg-card)]">
               <button
                 onClick={() => toggleTopic(topic.id)}
-                className="w-full text-left p-6 flex justify-between items-center bg-transparent hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors"
+                className="w-full text-left p-6 flex justify-between items-center bg-transparent hover:bg-[var(--bg-secondary)] transition-colors"
               >
                 <div className="space-y-1.5 flex-1 pr-6">
                   <div className="flex items-center gap-3">
-                    <span className="text-[10px] font-bold tracking-widest text-[#bbb] dark:text-gray-500 uppercase">{qDone}/{qCount}</span>
-                    <h2 className="text-lg font-playfair dark:text-white">Related to: {topic.title}</h2>
+                    <span className="text-[10px] font-bold tracking-widest text-[var(--fg-muted)] uppercase">{qDone}/{qCount}</span>
+                    <h2 className="text-lg font-playfair text-[var(--fg-primary)]">Related to: {topic.title}</h2>
                   </div>
                 </div>
-                {isExpanded ? <ChevronDown size={20} className="text-gray-300" /> : <ChevronRight size={20} className="text-gray-300" />}
+                {isExpanded ? <ChevronDown size={20} className="text-[var(--fg-muted)]" /> : <ChevronRight size={20} className="text-[var(--fg-muted)]" />}
               </button>
 
               {isExpanded && (
-                <div className="pb-12 space-y-12 px-4 animate-in fade-in duration-500 border-t border-gray-50 bg-gray-50/10">
+                <div className="pb-12 space-y-12 px-4 animate-in fade-in duration-500 border-t border-[var(--border-color)] bg-[var(--bg-secondary)]/30">
                   <div className="space-y-10 mt-8">
                     {topic.part3Questions?.map((q) => (
                       <div key={q.id} className="group space-y-4">
                         {editingData?.q.id === q.id ? (
-                          <div className="space-y-10 bg-gray-50/30 p-10 rounded-[2rem] border border-gray-100 shadow-sm">
+                          <div className="space-y-10 bg-[var(--bg-card)] p-10 rounded-[2rem] border border-[var(--border-color)] shadow-2xl">
                             <div className="flex justify-between items-center mb-6">
                               <label className="nga-label">AI Preferences</label>
                               <select 
-                                className="nga-label text-[8px] bg-transparent border-b border-gray-100 outline-none cursor-pointer"
+                                className="nga-label text-[8px] bg-transparent border-b border-[var(--border-color)] outline-none cursor-pointer"
                                 value={user.preferredStyle || ''}
                                 onChange={(e) => updateProfile({ preferredStyle: (e.target.value || undefined) as any })}
                               >
@@ -213,14 +213,14 @@ function Part3PageContent() {
                                   });
                                 }}
                               />
-                              <div className="flex justify-end gap-6 pt-4 border-t border-gray-100 italic transition-all">
+                              <div className="flex justify-end gap-6 pt-4 border-t border-[var(--border-color)] italic transition-all">
                                 <button 
                                   onClick={() => {
                                     if (snapshot) updatePart3Question(topic.id, q.id, snapshot);
                                     setEditingData(null);
                                     setSnapshot(null);
                                   }} 
-                                  className="text-[10px] text-gray-400 hover:text-red-500 tracking-widest uppercase font-bold"
+                                  className="text-[10px] text-[var(--fg-muted)] hover:text-[var(--danger-color)] tracking-widest uppercase font-bold"
                                 >
                                   Discard Changes
                                 </button>
@@ -233,9 +233,9 @@ function Part3PageContent() {
                               <div className="flex items-start gap-4 flex-1">
                                 <button 
                                   onClick={() => togglePart3QuestionPrepared(topic.id, q.id)}
-                                  className={`mt-1.5 p-1 rounded-full border transition-all ${q.prepared ? 'bg-black text-white border-black' : 'border-gray-200 text-transparent hover:border-black'}`}
+                                  className={`mt-1.5 p-1 rounded-full border transition-all ${q.prepared ? 'bg-[var(--fg-primary)] text-[var(--bg-primary)] border-[var(--fg-primary)]' : 'border-[var(--border-color)] text-transparent hover:border-[var(--fg-primary)]'}`}
                                 ><Check size={10}/></button>
-                                <h3 className="text-xl font-playfair leading-relaxed">
+                                <h3 className="text-xl font-playfair leading-relaxed text-[var(--fg-primary)]">
                                   {q.question}
                                 </h3>
                               </div>
@@ -245,18 +245,18 @@ function Part3PageContent() {
                                     setEditingData({ topicId: topic.id, q });
                                     setSnapshot({...q});
                                   }}
-                                  className="p-2 text-black transition-all bg-white rounded-full shadow-sm"
+                                  className="p-2 text-[var(--fg-primary)] transition-all bg-[var(--bg-card)] rounded-full shadow-sm border border-[var(--border-color)] hover:border-[var(--fg-primary)]"
                                 >
                                   <Edit2 size={14} strokeWidth={1.5} />
                                 </button>
                               </div>
                             </div>
                             {q.answer && q.answer.trim().length > 0 && (
-                                <div className="ml-4 pl-4 border-l border-gray-100 mt-4 max-w-[85%] flex items-start gap-3">
-                                  <button onClick={() => toggleSpeech(q.id, q.answer || "", 'user')} className="mt-0.5 flex-shrink-0 text-gray-300 hover:text-indigo-500 transition-colors">
+                                <div className="ml-4 pl-4 border-l border-[var(--border-color)] mt-4 max-w-[85%] flex items-start gap-3">
+                                  <button onClick={() => toggleSpeech(q.id, q.answer || "", 'user')} className="mt-0.5 flex-shrink-0 text-[var(--fg-muted)] hover:text-indigo-500 transition-colors">
                                     {playingId === q.id ? <Square size={14} className="fill-current" /> : <Volume2 size={14} />}
                                   </button>
-                                  <p className="text-sm font-light text-gray-400 line-clamp-2 leading-relaxed flex-1">
+                                  <p className="text-sm font-light text-[var(--fg-muted)] line-clamp-2 leading-relaxed flex-1">
                                       {q.answer}
                                   </p>
                                 </div>

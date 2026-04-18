@@ -124,13 +124,13 @@ export default function DualEditor({
           </div>
           <div className="ml-6 shrink-0">
             {saveStatus === 'syncing' && (
-              <div className="flex items-center gap-2 text-indigo-500 animate-pulse">
+              <div className="flex items-center gap-2 text-[var(--accent-color)] animate-pulse">
                 <RefreshCw size={12} className="animate-spin" />
                 <span className="text-[9px] font-bold tracking-widest uppercase">Syncing</span>
               </div>
             )}
             {saveStatus === 'saved' && (
-              <div className="flex items-center gap-2 text-emerald-500">
+              <div className="flex items-center gap-2 text-[var(--success-color)]">
                 <Cloud size={12} />
                 <span className="text-[9px] font-bold tracking-widest uppercase">Synced</span>
               </div>
@@ -143,14 +143,14 @@ export default function DualEditor({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <MessageCircle size={16} className="text-gray-400" />
+            <MessageCircle size={16} className="text-[var(--fg-muted)]" />
             <label className="nga-label text-[9px]">Chinese Logic / Thought (中文思路)</label>
           </div>
           {chineseLogicValue && (
             <button
               onClick={() => onAiGenerate('script')}
               disabled={isGenerating}
-              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 transition-all border border-indigo-100 disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--accent-soft)] hover:bg-[var(--accent-soft)] text-[var(--accent-color)] transition-all border border-[var(--accent-color)] disabled:opacity-50"
             >
               <Sparkles size={10} />
               <span className="text-[8px] font-bold uppercase tracking-wider">{isGenerating ? "Generating..." : "Regenerate AI"}</span>
@@ -158,7 +158,7 @@ export default function DualEditor({
           )}
         </div>
         <textarea
-          className="w-full border border-gray-100 dark:border-white/5 rounded-2xl p-4 text-sm outline-none h-24 bg-gray-50/50 dark:bg-white/[0.02] resize-none leading-relaxed font-light italic placeholder:text-gray-300 dark:placeholder:text-gray-600 focus:border-indigo-200 dark:focus:border-indigo-900 transition-all dark:text-gray-300"
+          className="w-full border border-[var(--border-color)] dark:border-white/5 rounded-2xl p-4 text-sm outline-none h-24 bg-gray-50/50 dark:bg-[var(--bg-surface)]/[0.02] resize-none leading-relaxed font-light italic placeholder:text-[var(--fg-muted)] dark:placeholder:text-gray-600 focus:border-indigo-200 dark:focus:border-indigo-900 transition-all dark:text-[var(--fg-muted)]"
           placeholder="Type your Chinese logic points here..."
           value={localThought}
           onChange={(e) => {
@@ -174,7 +174,7 @@ export default function DualEditor({
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <Edit3 size={16} className="text-gray-400" />
+              <Edit3 size={16} className="text-[var(--fg-muted)]" />
               <label className="nga-label text-[9px]">Manual English Script (你的草稿)</label>
             </div>
             {!aiEnglishValue ? (
@@ -189,7 +189,7 @@ export default function DualEditor({
               <button 
                 onClick={() => toggleSpeech(englishValue)}
                 disabled={!englishValue}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors text-gray-700 disabled:opacity-30"
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--bg-secondary)] hover:opacity-80 transition-colors text-[var(--fg-secondary)] disabled:opacity-30"
               >
                 {isPlaying ? <Square size={10} className="fill-current" /> : <Volume2 size={12} />}
                 <span className="text-[10px] tracking-wider font-bold">LISTEN</span>
@@ -210,15 +210,15 @@ export default function DualEditor({
 
         {/* AI Script Wrapper */}
         {aiEnglishValue && (
-          <div className="space-y-3 p-1 rounded-3xl bg-gradient-to-br from-indigo-50 to-purple-50 p-4 border border-indigo-100 shadow-[inset_0_1px_4px_rgba(0,0,0,0.02)]">
+          <div className="space-y-3 p-1 rounded-3xl bg-[var(--bg-secondary)] p-4 border border-[var(--accent-color)]/20 shadow-inner">
             <div className="flex items-center justify-between pb-2 px-2">
               <div className="flex items-center gap-2">
-                <Sparkles size={14} className="text-indigo-500" />
-                <label className="nga-label text-[9px] text-indigo-700">AI Suggested Version</label>
+                <Sparkles size={14} className="text-[var(--accent-color)]" />
+                <label className="nga-label text-[9px] text-[var(--accent-color)] font-bold">AI Suggested Version</label>
               </div>
               <button 
                 onClick={() => toggleSpeech(aiEnglishValue)}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-100 hover:bg-indigo-200 transition-colors text-indigo-700"
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--accent-soft)]0/10 hover:bg-[var(--accent-soft)]0/20 transition-colors text-[var(--accent-color)]"
               >
                 {isPlaying ? <Square size={10} className="fill-current" /> : <Volume2 size={12} />}
                 <span className="text-[10px] uppercase font-bold tracking-wider">{isPlaying ? "Stop" : "Listen"}</span>
@@ -226,15 +226,15 @@ export default function DualEditor({
             </div>
             <textarea
               readOnly
-              className="w-full p-6 text-lg font-playfair leading-relaxed resize-none h-48 outline-none bg-white dark:bg-white/[0.05] rounded-2xl border border-indigo-50 dark:border-indigo-900/10 shadow-sm text-gray-800 dark:text-indigo-100"
+              className="w-full p-6 text-xl font-playfair italic leading-relaxed resize-none h-48 outline-none bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] shadow-sm text-[var(--fg-primary)]"
               value={aiEnglishValue}
             />
             {/* Prompt Controller */}
             <div className="flex items-center gap-2 mt-2">
               <input 
                 type="text"
-                placeholder="Instruct AI to adjust (e.g. 'Make it shorter', 'Use more idioms')"
-                className="flex-1 bg-white dark:bg-white/[0.03] border border-indigo-100 dark:border-indigo-900/10 py-3 px-4 rounded-xl text-sm outline-none focus:border-indigo-300 transition-colors shadow-sm dark:text-white"
+                placeholder="Instruct AI to adjust..."
+                className="flex-1 bg-[var(--bg-card)] border border-[var(--border-color)] py-3 px-4 rounded-xl text-sm outline-none focus:border-[var(--accent-color)]/50 transition-colors shadow-sm text-[var(--fg-primary)] placeholder:text-[var(--fg-muted)]"
                 value={scriptInstruction}
                 onChange={(e) => setScriptInstruction(e.target.value)}
                 onKeyDown={(e) => {
@@ -246,7 +246,7 @@ export default function DualEditor({
               <button
                 onClick={() => onAiGenerate('script', scriptInstruction.trim())}
                 disabled={isGenerating}
-                className="bg-indigo-600 text-white p-3 rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center justify-center shrink-0"
+                className="bg-[var(--accent-color)] text-white p-3 rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center justify-center shrink-0"
               >
                 <Send size={16} />
               </button>
@@ -259,8 +259,8 @@ export default function DualEditor({
       {aiCoachingValue && (
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <Sparkles size={16} className="text-indigo-500" />
-            <label className="nga-label text-[10px] text-indigo-500 font-bold uppercase tracking-widest">AI Master Coach</label>
+            <Sparkles size={16} className="text-[var(--accent-color)]" />
+            <label className="nga-label text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-widest">AI Master Coach</label>
           </div>
           <div className="w-full p-8 rounded-[2rem] text-sm leading-loose bg-[var(--fg-primary)] text-[var(--bg-primary)] outline-none shadow-2xl border border-[var(--border-color)]">
             <div className="whitespace-pre-wrap font-playfair italic leading-relaxed text-base opacity-90">{aiCoachingValue}</div>
@@ -300,21 +300,21 @@ export default function DualEditor({
           </div>
           
           {aiChineseValue && (
-            <div className="space-y-3 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 dark:from-emerald-500/[0.05] dark:to-teal-500/[0.05] p-3 rounded-2xl border border-emerald-100 dark:border-emerald-900/10 transition-all">
+            <div className="space-y-3 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 dark:from-emerald-500/[0.05] dark:to-teal-500/[0.05] p-3 rounded-2xl border border-[var(--success-color)] dark:border-emerald-900/10 transition-all">
                <div className="flex items-center gap-2 px-1">
-                 <Sparkles size={12} className="text-emerald-600" />
+                 <Sparkles size={12} className="text-[var(--success-color)]" />
                  <label className="nga-label text-[8px] text-emerald-700">AI Translation</label>
                </div>
                <textarea
                   readOnly
-                  className="w-full p-4 text-sm leading-loose resize-none h-32 outline-none bg-white dark:bg-white/[0.05] rounded-xl shadow-sm text-gray-800 dark:text-emerald-100"
+                  className="w-full p-4 text-sm leading-loose resize-none h-32 outline-none bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)]/[0.05] rounded-xl shadow-sm text-[var(--fg-primary)] dark:text-emerald-100"
                   value={aiChineseValue}
                 />
                 <div className="flex items-center gap-2">
                   <input 
                     type="text"
                     placeholder="Adjust style..."
-                    className="flex-1 bg-white dark:bg-white/[0.03] border border-emerald-100 dark:border-emerald-900/10 py-2.5 px-3 rounded-xl text-xs outline-none focus:border-emerald-300 transition-colors shadow-sm dark:text-white"
+                    className="flex-1 bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)]/[0.03] border border-[var(--success-color)] dark:border-emerald-900/10 py-2.5 px-3 rounded-xl text-xs outline-none focus:border-emerald-300 transition-colors shadow-sm dark:text-white"
                     value={translationInstruction}
                     onChange={(e) => setTranslationInstruction(e.target.value)}
                     onKeyDown={(e) => {
@@ -326,7 +326,7 @@ export default function DualEditor({
                   <button
                     onClick={() => onAiGenerate('translation', translationInstruction.trim())}
                     disabled={isGenerating}
-                    className="bg-emerald-600 text-white p-2.5 rounded-xl hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                    className="bg-[var(--success-color)] text-white p-2.5 rounded-xl hover:bg-emerald-700 transition-colors disabled:opacity-50"
                   >
                     <Send size={14} />
                   </button>
@@ -366,21 +366,21 @@ export default function DualEditor({
           </div>
           
           {aiVocabAnalysisValue && (
-            <div className="space-y-3 bg-gradient-to-br from-amber-500/5 to-orange-500/5 dark:from-amber-500/[0.05] dark:to-orange-500/[0.05] p-3 rounded-2xl border border-amber-100 dark:border-amber-900/10 transition-all">
+            <div className="space-y-3 bg-gradient-to-br from-amber-500/5 to-orange-500/5 dark:from-amber-500/[0.05] dark:to-orange-500/[0.05] p-3 rounded-2xl border border-[var(--warning-color)] dark:border-amber-900/10 transition-all">
                <div className="flex items-center gap-2 px-1">
-                 <Sparkles size={12} className="text-amber-600" />
+                 <Sparkles size={12} className="text-[var(--warning-color)]" />
                  <label className="nga-label text-[8px] text-amber-700">AI Vocab Extraction</label>
                </div>
                <textarea
                   readOnly
-                  className="w-full p-4 text-sm leading-loose resize-none h-32 outline-none bg-white dark:bg-white/[0.05] rounded-xl shadow-sm text-gray-800 dark:text-amber-100"
+                  className="w-full p-4 text-sm leading-loose resize-none h-32 outline-none bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)]/[0.05] rounded-xl shadow-sm text-[var(--fg-primary)] dark:text-amber-100"
                   value={aiVocabAnalysisValue}
                 />
                 <div className="flex items-center gap-2">
                   <input 
                     type="text"
                     placeholder="E.g. extract advanced idioms"
-                    className="flex-1 bg-white dark:bg-white/[0.03] border border-amber-100 dark:border-amber-900/10 py-2.5 px-3 rounded-xl text-xs outline-none focus:border-amber-300 transition-colors shadow-sm dark:text-white"
+                    className="flex-1 bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)]/[0.03] border border-[var(--warning-color)] dark:border-amber-900/10 py-2.5 px-3 rounded-xl text-xs outline-none focus:border-amber-300 transition-colors shadow-sm dark:text-white"
                     value={vocabInstruction}
                     onChange={(e) => setVocabInstruction(e.target.value)}
                     onKeyDown={(e) => {
@@ -392,7 +392,7 @@ export default function DualEditor({
                   <button
                     onClick={() => onAiGenerate('vocab', vocabInstruction.trim())}
                     disabled={isGenerating}
-                    className="bg-amber-500 text-white p-2.5 rounded-xl hover:bg-amber-600 transition-colors disabled:opacity-50"
+                    className="bg-[var(--warning-color)] text-white p-2.5 rounded-xl hover:bg-amber-600 transition-colors disabled:opacity-50"
                   >
                     <Send size={14} />
                   </button>

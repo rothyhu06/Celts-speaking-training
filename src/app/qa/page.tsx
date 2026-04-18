@@ -214,38 +214,40 @@ function QAPageContent() {
 
       {/* Bilingual Import Guide Modal */}
       {isGuideOpen && (
-        <div className="fixed inset-0 bg-white/80 dark:bg-black/40 backdrop-blur-xl z-[100] flex items-center justify-center p-6 animate-in fade-in zoom-in-95 duration-300">
-          <div className="w-full max-w-2xl bg-white dark:bg-[#111216] border border-gray-100 dark:border-white/5 shadow-2xl rounded-[3rem] overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-10 border-b border-gray-50 flex justify-between items-center">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] flex items-center justify-center p-6 animate-in fade-in zoom-in-95 duration-300">
+          <div className="w-full max-w-2xl bg-[var(--bg-card)] border border-[var(--border-color)] shadow-2xl rounded-[3rem] overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="p-10 border-b border-[var(--border-color)] flex justify-between items-center">
               <div className="space-y-1">
-                <h2 className="text-3xl font-playfair tracking-tight">Import Guide</h2>
-                <p className="nga-label text-[10px] text-gray-400">导入指南 (中英双语版)</p>
+                <h2 className="text-3xl font-playfair tracking-tight text-[var(--fg-primary)]">Import Guide</h2>
+                <p className="nga-label text-[10px] text-[var(--fg-muted)]">导入指南 (中英双语版)</p>
               </div>
               <button 
                 onClick={() => setIsGuideOpen(false)}
-                className="p-3 hover:bg-gray-50 dark:hover:bg-white/5 rounded-full transition-colors"
+                className="p-3 hover:bg-[var(--bg-secondary)] rounded-full transition-colors text-[var(--fg-muted)] hover:text-[var(--fg-primary)]"
               >
-                <X size={20} strokeWidth={1.5} className="dark:text-gray-400" />
+                <X size={20} strokeWidth={1.5} />
               </button>
             </div>
             
             <div className="flex-1 overflow-y-auto p-10 space-y-12 custom-scrollbar">
-              {/* General Rules */}
-              <section className="space-y-6">
+              {/*                <section className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px] font-bold">1</div>
-                  <h3 className="text-sm font-bold tracking-widest uppercase">General Rules (通用规则)</h3>
+                  <div className="w-6 h-6 rounded-full bg-[var(--fg-primary)] text-[var(--bg-primary)] flex items-center justify-center text-[10px] font-bold">1</div>
+                  <h3 className="text-sm font-bold tracking-widest uppercase text-[var(--fg-primary)]">General Rules (通用规则)</h3>
                 </div>
                 <div className="pl-9 space-y-4">
-                  <p className="text-sm leading-relaxed text-gray-600">
-                    <strong className="text-black">File Types:</strong> .txt or .docx only. Word files are automatically parsed for plain text.
+                  <p className="text-sm leading-relaxed text-[var(--fg-secondary)]">
+                    <strong className="text-[var(--fg-primary)]">File Types:</strong> .txt or .docx only. Word files are automatically parsed for plain text.
                     <br/>
-                    <small className="text-gray-400">支持文件格式：仅限 .txt 或 .docx。Word 文件会自动提取文本解析。</small>
+                    <small className="text-[var(--fg-muted)]">支持文件格式：仅限 .txt 或 .docx。Word 文件会自动提取文本解析。</small>
                   </p>
-                  <p className="text-sm leading-relaxed text-gray-600">
-                    <strong className="text-black">Trigger:</strong> Any line ending with a <span className="underline">?</span> will start a new question block.
+                  <p className="text-sm leading-relaxed text-[var(--fg-secondary)]">
+                    <strong className="text-[var(--fg-primary)]">Trigger:</strong> Any line ending with a <span className="underline">?</span> will start a new question block.
                     <br/>
-                    <small className="text-gray-400">触发机制：任何以 ? 结尾的行都会被识别为新题目的开始。</small>
+                    <small className="text-[var(--fg-muted)]">触发机制：任何以 ? 结尾的行都会被识别为新题目的开始。</small>
+                  </p>
+                </div>
+              </section>�行都会被识别为新题目的开始。</small>
                   </p>
                 </div>
               </section>
@@ -264,9 +266,9 @@ function QAPageContent() {
                     { en: 'Translation', zh: '中文翻译', markers: 'T:, Translation:, 翻译:' },
                     { en: 'Vocab', zh: '词汇笔记', markers: 'V:, Vocab:, 词汇:' }
                   ].map((item, idx) => (
-                    <div key={idx} className="bg-gray-50/50 p-4 rounded-2xl border border-gray-50">
-                      <p className="text-[10px] uppercase tracking-tighter font-bold text-gray-400 mb-1">{item.en} ({item.zh})</p>
-                      <code className="text-[11px] font-mono text-indigo-600">{item.markers}</code>
+                    <div key={idx} className="bg-[var(--bg-secondary)]/50 p-4 rounded-2xl border border-[var(--border-color)]">
+                      <p className="text-[10px] uppercase tracking-tighter font-bold text-[var(--fg-muted)] mb-1">{item.en} ({item.zh})</p>
+                      <code className="text-[11px] font-mono text-[var(--accent-color)]">{item.markers}</code>
                     </div>
                   ))}
                 </div>
@@ -299,7 +301,7 @@ T: 当然！我发现我的注意力往往会下降...`}
               </section>
             </div>
 
-            <div className="p-10 border-t border-gray-50 flex justify-center">
+            <div className="p-10 border-t border-[var(--border-color)] flex justify-center">
               <button 
                 onClick={() => setIsGuideOpen(false)}
                 className="nga-button-outline px-12"
@@ -311,9 +313,9 @@ T: 当然！我发现我的注意力往往会下降...`}
         </div>
       )}
 
-      <header className="flex justify-between items-center border-b border-gray-100 pb-12">
+      <header className="flex justify-between items-center border-b border-[var(--border-color)] pb-12">
         <div className="space-y-2">
-          <h1 className="text-4xl font-playfair tracking-tight">
+          <h1 className="text-4xl font-playfair tracking-tight text-[var(--fg-primary)]">
             {"Part 1 Q&A".split('&').map((part, i, arr) => (
               <span key={i}>
                 {part}
@@ -333,7 +335,7 @@ T: 当然！我发现我的注意力往往会下降...`}
         <div className="flex gap-4">
           <button 
             onClick={() => fileInputRef.current?.click()}
-            className="p-3 border border-black/5 rounded-full hover:bg-black hover:text-white transition-all group relative"
+            className="p-3 border border-[var(--border-color)] rounded-full hover:bg-[var(--fg-primary)] hover:text-[var(--bg-primary)] transition-all group relative text-[var(--fg-primary)] shadow-sm"
             title="Import from file (.txt, .docx)&#10;Supported labels:&#10;Topic: / 主题:&#10;Q: / 问题:&#10;A: / 答案:&#10;T: / 翻译:&#10;V: / 词汇:"
           >
             <Upload size={20} strokeWidth={1.5} />
@@ -347,14 +349,14 @@ T: 当然！我发现我的注意力往往会下降...`}
           </button>
           <button 
             onClick={() => setIsGuideOpen(true)}
-            className="p-3 border border-black/5 rounded-full hover:bg-black hover:text-white transition-all group relative mr-2"
+            className="p-3 border border-[var(--border-color)] rounded-full hover:bg-[var(--fg-primary)] hover:text-[var(--bg-primary)] transition-all group relative mr-2 text-[var(--fg-primary)] shadow-sm"
             title="View Import Guide (查看导入指南)"
           >
             <HelpCircle size={20} strokeWidth={1.5} />
           </button>
           <button 
             onClick={() => setIsAddingCategory(true)}
-            className="p-3 border border-black/5 rounded-full hover:bg-black hover:text-white transition-all"
+            className="p-3 border border-[var(--border-color)] rounded-full hover:bg-[var(--fg-primary)] hover:text-[var(--bg-primary)] transition-all text-[var(--fg-primary)] shadow-sm"
           >
             <Plus size={20} strokeWidth={1.5} />
           </button>
@@ -362,25 +364,25 @@ T: 当然！我发现我的注意力往往会下降...`}
       </header>
 
       {isAddingCategory && (
-        <div className="nga-card border-black/20 animate-in fade-in slide-in-from-top-4">
+        <div className="nga-card border-[var(--border-color)] animate-in fade-in slide-in-from-top-4 bg-[var(--bg-card)]">
           <div className="flex gap-4 items-center px-4">
             <input 
               autoFocus
-              className="flex-1 border-b border-black py-4 outline-none text-lg font-playfair italic placeholder:text-gray-200"
+              className="flex-1 border-b border-[var(--fg-primary)] py-4 outline-none text-lg font-playfair italic placeholder:text-[var(--fg-muted)] bg-transparent text-[var(--fg-primary)]"
               placeholder="Enter category name..."
               value={newCategoryName}
               onChange={(e) => setNewCategoryName(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
             />
-            <button onClick={handleAddCategory} className="p-2 text-black"><Check size={20} /></button>
-            <button onClick={() => setIsAddingCategory(false)} className="p-2 text-gray-400"><X size={20} /></button>
+            <button onClick={handleAddCategory} className="p-2 text-[var(--fg-primary)]"><Check size={20} /></button>
+            <button onClick={() => setIsAddingCategory(false)} className="p-2 text-[var(--fg-muted)]"><X size={20} /></button>
           </div>
         </div>
       )}
 
       <div className="space-y-0">
         {userCategories.length === 0 ? (
-          <div className="text-center py-20 text-gray-300 italic font-playfair border-t border-dashed border-gray-100">
+          <div className="text-center py-20 text-[var(--fg-muted)] italic font-playfair border-t border-dashed border-[var(--border-color)]">
             Click the "+" to curate your first category.
           </div>
         ) : (
@@ -416,7 +418,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                       >
                         <Check size={20} />
                       </button>
-                      <button onClick={() => setEditingCatId(null)} className="p-2 text-gray-400"><X size={20} /></button>
+                      <button onClick={() => setEditingCatId(null)} className="p-2 text-[var(--fg-muted)]"><X size={20} /></button>
                     </div>
                   ) : (
                     <>
@@ -450,7 +452,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                       e.stopPropagation();
                       if (confirm(`Delete entire category "${category.name}"?`)) deleteCategory(category.id);
                     }}
-                    className="p-2 text-black dark:text-gray-400 hover:text-red-500 transition-all"
+                    className="p-2 text-black dark:text-[var(--fg-muted)] hover:text-[var(--danger-color)] transition-all"
                   >
                     <Trash2 size={14} strokeWidth={1.5} />
                   </button>
@@ -469,14 +471,14 @@ T: 当然！我发现我的注意力往往会下降...`}
                       <div 
                         key={q.id} 
                         id={`q-${q.id}`}
-                        className={`group space-y-4 rounded-3xl transition-all duration-1000 ${highlightedId === q.id ? 'bg-indigo-50/50 p-4 -mx-4 ring-1 ring-indigo-100' : ''}`}
+                        className={`group space-y-4 rounded-3xl transition-all duration-1000 ${highlightedId === q.id ? 'bg-[var(--accent-soft)]/50 p-4 -mx-4 ring-1 ring-indigo-100' : ''}`}
                       >
                         {editingQuestion?.id === q.id ? (
-                          <div className="space-y-10 bg-gray-50/30 p-10 rounded-[2rem] border border-gray-100">
+                          <div className="space-y-10 bg-[var(--bg-secondary)]/30 p-10 rounded-[2rem] border border-[var(--border-color)]">
                             <div className="flex justify-between items-center mb-6">
                               <label className="nga-label">AI Preferences</label>
                               <select 
-                                className="nga-label text-[8px] bg-transparent border-b border-gray-100 outline-none cursor-pointer"
+                                className="nga-label text-[8px] bg-transparent border-b border-[var(--border-color)] outline-none cursor-pointer"
                                 value={user.preferredStyle || ''}
                                 onChange={(e) => updateProfile({ preferredStyle: (e.target.value || undefined) as any })}
                               >
@@ -512,14 +514,14 @@ T: 当然！我发现我的注意力往往会下降...`}
                                   });
                                 }}
                               />
-                              <div className="flex justify-end gap-6 pt-4 border-t border-gray-100 italic transition-all">
+                              <div className="flex justify-end gap-6 pt-4 border-t border-[var(--border-color)] italic transition-all">
                                 <button 
                                   onClick={() => {
                                     if (snapshot) updateQuestion(category.id, q.id, snapshot);
                                     setEditingQuestion(null);
                                     setSnapshot(null);
                                   }} 
-                                  className="text-[10px] text-gray-400 hover:text-red-500 tracking-widest uppercase font-bold"
+                                  className="text-[10px] text-[var(--fg-muted)] hover:text-[var(--danger-color)] tracking-widest uppercase font-bold"
                                 >
                                   Discard Changes
                                 </button>
@@ -536,7 +538,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                                 ><Check size={10}/></button>
                                 <div>
                                   <h4 className={`text-xl font-playfair leading-snug transition-all`}>{q.question}</h4>
-                                  {q.answer && <p className="text-[10px] text-gray-400 mt-2">Answered</p>}
+                                  {q.answer && <p className="text-[10px] text-[var(--fg-muted)] mt-2">Answered</p>}
                                 </div>
                               </div>
                               <div className="flex gap-2">
@@ -553,38 +555,38 @@ T: 当然！我发现我的注意力往往会下降...`}
                                   onClick={() => {
                                     if (confirm('Delete this question?')) deleteQuestion(category.id, q.id);
                                   }}
-                                  className="p-2 text-black hover:text-red-500 transition-all"
+                                  className="p-2 text-black hover:text-[var(--danger-color)] transition-all"
                                 >
                                   <Trash2 size={14} strokeWidth={1.5} />
                                 </button>
                               </div>
                             </div>
-                            <div className="pl-6 border-l border-gray-100 space-y-4">
+                            <div className="pl-6 border-l border-[var(--border-color)] space-y-4">
                               <div className="flex items-start gap-3">
                                 {q.answer && (
-                                  <button onClick={() => toggleSpeech(q.id, q.answer, 'user')} className="mt-1 flex-shrink-0 text-gray-300 hover:text-indigo-500 transition-colors">
+                                  <button onClick={() => toggleSpeech(q.id, q.answer, 'user')} className="mt-1 flex-shrink-0 text-[var(--fg-muted)] hover:text-indigo-500 transition-colors">
                                     {playingId === q.id ? <Square size={14} className="fill-current" /> : <Volume2 size={14} />}
                                   </button>
                                 )}
                                 <p className="text-sm text-muted leading-loose whitespace-pre-wrap font-light flex-1">
-                                  {q.answer || <span className="italic text-gray-300">No response recorded yet.</span>}
+                                  {q.answer || <span className="italic text-[var(--fg-muted)]">No response recorded yet.</span>}
                                 </p>
                               </div>
                               {q.translation && (
-                                <p className="text-xs text-gray-400 italic leading-relaxed">{q.translation}</p>
+                                <p className="text-xs text-[var(--fg-muted)] italic leading-relaxed">{q.translation}</p>
                               )}
                               {q.vocabAnalysisText && (
-                                <div className="pt-2 border-t border-gray-50">
+                                <div className="pt-2 border-t border-[var(--border-color)]">
                                   <p className="text-xs text-gray-500 italic whitespace-pre-wrap">{q.vocabAnalysisText}</p>
                                 </div>
                               )}
                               {q.vocabAnalysis && q.vocabAnalysis.length > 0 && !q.vocabAnalysisText && (
-                                <div className="flex flex-wrap gap-x-4 gap-y-2 pt-2 border-t border-gray-50">
+                                <div className="flex flex-wrap gap-x-4 gap-y-2 pt-2 border-t border-[var(--border-color)]">
                                   {q.vocabAnalysis.map((v: any, i: number) => (
                                     <span key={i} className="text-[10px] font-playfair italic">
                                       <span className="text-black">{v.phrase}</span>
-                                      <span className="text-gray-300 mx-1">:</span>
-                                      <span className="text-gray-400">{v.translation}</span>
+                                      <span className="text-[var(--fg-muted)] mx-1">:</span>
+                                      <span className="text-[var(--fg-muted)]">{v.translation}</span>
                                     </span>
                                   ))}
                                 </div>
@@ -597,7 +599,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                   </div>
 
                   {addingToCategory === category.id ? (
-                    <div className="space-y-6 pt-12 border-t border-gray-100 animate-in slide-in-from-bottom-4">
+                    <div className="space-y-6 pt-12 border-t border-[var(--border-color)] animate-in slide-in-from-bottom-4">
                       <input 
                         autoFocus
                         className="w-full border-b border-black py-2 outline-none text-xl font-playfair italic placeholder:text-gray-200"
@@ -606,7 +608,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                         onChange={e => setNewQ(e.target.value)}
                       />
                       <textarea 
-                        className="w-full border border-gray-100 rounded-2xl p-6 text-sm outline-none h-32 bg-gray-50/30 resize-none leading-relaxed"
+                        className="w-full border border-[var(--border-color)] rounded-2xl p-6 text-sm outline-none h-32 bg-[var(--bg-secondary)]/30 resize-none leading-relaxed"
                         placeholder="Draft your response here..."
                         value={newA}
                         onChange={e => setNewA(e.target.value)}
@@ -619,7 +621,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                   ) : (
                     <button 
                       onClick={() => setAddingToCategory(category.id)}
-                      className="w-full py-6 border border-dashed border-gray-100 rounded-2xl text-[10px] uppercase tracking-[0.2em] font-bold text-gray-300 hover:border-black hover:text-black transition-all flex items-center justify-center gap-2 mt-4"
+                      className="w-full py-6 border border-dashed border-[var(--border-color)] rounded-2xl text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--fg-muted)] hover:border-black hover:text-black transition-all flex items-center justify-center gap-2 mt-4"
                     >
                       <Plus size={14} />
                       New Entry

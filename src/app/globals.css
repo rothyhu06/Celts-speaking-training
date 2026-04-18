@@ -6,29 +6,49 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
   
-  /* High-Contrast Light Theme (Daylight) */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f4f4f5;
+  /* High-End Light Theme (Lumina) */
+  --bg-primary: #fcfcfd;
+  --bg-secondary: #f3f4f6;
+  --bg-surface: #ffffff;
   --bg-card: #ffffff;
-  --fg-primary: #000000;
-  --fg-secondary: #3f3f46;
-  --fg-muted: #71717a;
-  --border-color: #e4e4e7;
-  --accent-color: #4f46e5;
-  --glass-bg: rgba(255, 255, 255, 0.9);
+  --fg-primary: #0f172a;
+  --fg-secondary: #475569;
+  --fg-muted: #94a3b8;
+  --border-color: #e2e8f0;
+  --accent-color: #6366f1;
+  --accent-soft: rgba(99, 102, 241, 0.1);
+  --success-color: #10b981;
+  --success-soft: rgba(16, 185, 129, 0.1);
+  --danger-color: #f43f5e;
+  --danger-soft: rgba(244, 63, 94, 0.1);
+  --warning-color: #f59e0b;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .dark {
-  /* High-Contrast Dark Theme (Midnight Ink) */
-  --bg-primary: #09090b;
-  --bg-secondary: #18181b;
-  --bg-card: #141417;
-  --fg-primary: #ffffff;
-  --fg-secondary: #d1d5db;
-  --fg-muted: #9ca3af;
-  --border-color: #27272a;
+  /* High-End Dark Theme (Obsidian) */
+  --bg-primary: #020617;
+  --bg-secondary: #0f172a;
+  --bg-surface: #1e293b;
+  --bg-card: #1e293b;
+  --fg-primary: #f8fafc;
+  --fg-secondary: #cbd5e1;
+  --fg-muted: #64748b;
+  --border-color: #334155;
   --accent-color: #818cf8;
-  --glass-bg: rgba(9, 9, 11, 0.9);
+  --accent-soft: rgba(129, 140, 248, 0.15);
+  --success-color: #34d399;
+  --success-soft: rgba(52, 211, 153, 0.15);
+  --danger-color: #fb7185;
+  --danger-soft: rgba(251, 113, 133, 0.15);
+  --warning-color: #fbbf24;
+  --glass-bg: rgba(15, 23, 42, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.25);
 }
 
 * {
@@ -71,6 +91,12 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 20px;
   padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.4s ease, background-color 0.4s ease;
+}
+.nga-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .nga-card-sm {
@@ -83,21 +109,27 @@ body {
 .nga-button {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 22px;
+  gap: 8px;
+  padding: 12px 28px;
   background: var(--fg-primary);
   color: var(--bg-primary);
   border-radius: 100px;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  transition: opacity 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   border: none;
+  box-shadow: var(--shadow-sm);
 }
-.nga-button:hover { opacity: 0.75; }
-.nga-button:disabled { opacity: 0.3; cursor: not-allowed; }
+.nga-button:hover { 
+  opacity: 0.9; 
+  transform: scale(1.02);
+  box-shadow: var(--shadow-md);
+}
+.nga-button:active { transform: scale(0.98); }
+.nga-button:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
 
 .nga-button-outline {
   display: inline-flex;
@@ -207,7 +239,13 @@ body {
 /* ─── Scrollbar ──────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--fg-muted); }
+
+/* ─── Global Smooth Transitions ──────────────── */
+* {
+  transition: background-color 0.4s ease, border-color 0.4s ease, opacity 0.4s ease;
+}
 
 /* ─── 3D Flashcards ──────────────────────────── */
 .perspective-1000 { perspective: 1000px; }

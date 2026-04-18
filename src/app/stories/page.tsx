@@ -173,7 +173,7 @@ export default function StoriesPage() {
       )}
 
       {/* Header */}
-      <header className="flex justify-between items-start border-b border-gray-100 pb-10">
+      <header className="flex justify-between items-start border-b border-[var(--border-color)] pb-10">
         <div className="space-y-2">
           <h1 className="text-4xl font-playfair tracking-tight">Part 2</h1>
           <p className="nga-label">Stories <span className="font-sans opacity-40">&</span> Topics</p>
@@ -189,7 +189,7 @@ export default function StoriesPage() {
       </header>
 
       {/* Tab */}
-      <div className="flex gap-1 bg-gray-50 dark:bg-white/5 p-1 rounded-2xl">
+      <div className="flex gap-1 bg-[var(--bg-secondary)] p-1.5 rounded-[1.5rem] border border-[var(--border-color)]">
         {(["topics", "stories", "map"] as const).map((t) => (
           <button
             key={t}
@@ -210,17 +210,17 @@ export default function StoriesPage() {
       {tab === "topics" && (
         <div className="space-y-4">
           {isAddingTopic && (
-            <div className="nga-card space-y-4 animate-in slide-in-from-top-4">
+            <div className="nga-card space-y-4 animate-in slide-in-from-top-4 bg-[var(--bg-card)] border border-[var(--border-color)]">
               <input
                 autoFocus
-                className="w-full border-b border-black py-3 outline-none text-lg font-playfair italic placeholder:text-gray-200"
+                className="w-full border-b border-[var(--fg-primary)] py-3 outline-none text-lg font-playfair italic placeholder:text-[var(--fg-muted)] bg-transparent text-[var(--fg-primary)]"
                 placeholder="Topic title..."
                 value={newTopicTitle}
                 onChange={(e) => setNewTopicTitle(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && newTopicTitle.trim() && (addTopic(newTopicTitle.trim(), newTopicCueCard.trim()), setNewTopicTitle(""), setNewTopicCueCard(""), setIsAddingTopic(false))}
               />
               <textarea
-                className="w-full border border-gray-100 rounded-xl p-4 text-sm outline-none h-24 bg-gray-50/30 resize-none leading-relaxed font-light placeholder:text-gray-200"
+                className="w-full border border-[var(--border-color)] rounded-xl p-4 text-sm outline-none h-24 bg-[var(--bg-secondary)] resize-none leading-relaxed font-light placeholder:text-[var(--fg-muted)] text-[var(--fg-primary)]"
                 placeholder="Cue card (optional)..."
                 value={newTopicCueCard}
                 onChange={(e) => setNewTopicCueCard(e.target.value)}
@@ -243,18 +243,18 @@ export default function StoriesPage() {
           {/* Bulk import */}
           <button
             onClick={() => setIsBulkMode(true)}
-            className="w-full text-[9px] nga-label flex items-center justify-center gap-2 py-3 border border-dashed border-gray-200 rounded-xl hover:border-black transition-all"
+            className="w-full text-[9px] nga-label flex items-center justify-center gap-2 py-3 border border-dashed border-[var(--border-color)] rounded-xl hover:border-[var(--fg-primary)] transition-all text-[var(--fg-muted)] hover:text-[var(--fg-primary)] bg-[var(--bg-secondary)]"
           >
             <Upload size={12} />
             Batch Import Question Bank (批量录入题库)
           </button>
           
           {isBulkMode && (
-            <div className="fixed inset-0 z-[100] bg-black/40 flex items-center justify-center p-4">
-              <div className="bg-white rounded-3xl w-full max-w-2xl p-8 space-y-6 animate-in zoom-in-95 duration-300">
+            <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-[var(--bg-card)] rounded-[2.5rem] w-full max-w-2xl p-8 space-y-6 animate-in zoom-in-95 duration-300 border border-[var(--border-color)] shadow-2xl">
                 <div className="flex justify-between items-center">
-                  <h3 className="font-playfair text-2xl">Batch Import Topics</h3>
-                  <button onClick={() => setIsBulkMode(false)} className="text-gray-400 hover:text-black">
+                  <h3 className="font-playfair text-2xl text-[var(--fg-primary)]">Batch Import Topics</h3>
+                  <button onClick={() => setIsBulkMode(false)} className="text-[var(--fg-muted)] hover:text-[var(--fg-primary)]">
                     <X size={20} />
                   </button>
                 </div>
@@ -263,7 +263,7 @@ export default function StoriesPage() {
                 </p>
                 <textarea
                   autoFocus
-                  className="w-full border border-gray-100 rounded-xl p-4 text-sm outline-none h-64 bg-gray-50/50 resize-none leading-relaxed"
+                  className="w-full border border-[var(--border-color)] rounded-xl p-4 text-sm outline-none h-64 bg-[var(--bg-secondary)] resize-none leading-relaxed text-[var(--fg-primary)] placeholder:text-[var(--fg-muted)] opacity-80"
                   placeholder="Describe a person...&#10;You should say:&#10;- who...&#10;&#10;Describe an object...&#10;You should say:&#10;- what..."
                   value={bulkText}
                   onChange={(e) => setBulkText(e.target.value)}
@@ -277,7 +277,7 @@ export default function StoriesPage() {
           )}
 
           {userTopics.length === 0 ? (
-            <div className="text-center py-16 text-gray-300 italic font-playfair border border-dashed border-gray-100 rounded-2xl">
+            <div className="text-center py-16 text-[var(--fg-muted)] italic font-playfair border border-dashed border-[var(--border-color)] rounded-2xl">
               No topics yet. Add one above.
             </div>
           ) : (
@@ -317,17 +317,17 @@ export default function StoriesPage() {
                         >
                           <Check size={16} />
                         </button>
-                        <button onClick={() => setEditingTopicId(null)} className="p-1 text-gray-400"><X size={16} /></button>
+                        <button onClick={() => setEditingTopicId(null)} className="p-1 text-[var(--fg-muted)]"><X size={16} /></button>
                       </div>
                     ) : (
                       <>
                         <p className="font-playfair text-base leading-snug">{topic.title}</p>
                         {linked ? (
-                          <span className="inline-flex items-center gap-1 mt-2 text-[9px] uppercase tracking-widest font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">
+                          <span className="inline-flex items-center gap-1 mt-2 text-[9px] uppercase tracking-widest font-bold text-[var(--accent-color)] bg-[var(--accent-soft)] px-2 py-1 rounded-md">
                             <Link2 size={8} /> {linked.title}
                           </span>
                         ) : (
-                          <span className="inline-block mt-2 text-[9px] uppercase tracking-widest font-semibold text-gray-300">
+                          <span className="inline-block mt-2 text-[9px] uppercase tracking-widest font-semibold text-[var(--fg-muted)]">
                             Unlinked
                           </span>
                         )}
@@ -345,7 +345,7 @@ export default function StoriesPage() {
                         e.stopPropagation(); 
                         if (confirm("Delete this topic?")) deleteTopic(topic.id); 
                       }}
-                      className="p-1.5 text-black hover:text-red-500 transition-all"
+                      className="p-1.5 text-black hover:text-[var(--danger-color)] transition-all"
                     >
                       <Trash2 size={13} strokeWidth={1.5} />
                     </button>
@@ -382,14 +382,14 @@ export default function StoriesPage() {
                 onChange={(e) => setNewStoryTitle(e.target.value)}
               />
               <select
-                className="w-full border-b border-gray-100 py-2 outline-none text-sm bg-transparent"
+                className="w-full border-b border-[var(--border-color)] py-2 outline-none text-sm bg-transparent"
                 value={newStoryTag}
                 onChange={(e) => setNewStoryTag(e.target.value as typeof TAGS[number])}
               >
                 {TAGS.map((t) => <option key={t} value={t}>{t}</option>)}
               </select>
               <textarea
-                className="w-full border border-gray-100 rounded-xl p-4 text-sm outline-none h-20 bg-gray-50/30 resize-none font-light placeholder:text-gray-200"
+                className="w-full border border-[var(--border-color)] rounded-xl p-4 text-sm outline-none h-20 bg-[var(--bg-secondary)]/30 resize-none font-light placeholder:text-gray-200"
                 placeholder="Short summary (optional)..."
                 value={newStorySummary}
                 onChange={(e) => setNewStorySummary(e.target.value)}
@@ -410,7 +410,7 @@ export default function StoriesPage() {
           )}
 
           {userStories.length === 0 ? (
-            <div className="text-center py-16 text-gray-300 italic font-playfair border border-dashed border-gray-100 rounded-2xl">
+            <div className="text-center py-16 text-[var(--fg-muted)] italic font-playfair border border-dashed border-[var(--border-color)] rounded-2xl">
               No stories yet. Add one above.
             </div>
           ) : (
@@ -419,7 +419,7 @@ export default function StoriesPage() {
               return (
                 <div key={story.id} className="nga-card group">
                   <div className="flex items-start gap-4">
-                    <span className="text-[8px] bg-indigo-600 text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter shrink-0 mt-0.5">
+                    <span className="text-[8px] bg-[var(--accent-color)] text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter shrink-0 mt-0.5">
                       {story.tag}
                     </span>
                     <div className="flex-1 min-w-0">
@@ -429,7 +429,7 @@ export default function StoriesPage() {
                     </div>
                     <button
                       onClick={() => { if (confirm("Delete story?")) deleteStory(story.id); }}
-                      className="p-1.5 text-black hover:text-red-500 transition-all"
+                      className="p-1.5 text-black hover:text-[var(--danger-color)] transition-all"
                     >
                       <Trash2 size={13} strokeWidth={1.5} />
                     </button>
@@ -535,19 +535,19 @@ export default function StoriesPage() {
 
               {/* Part 3 Questions */}
               {activeTopic.linkedStoryId && (
-                <div className="pt-12 border-t border-gray-100 space-y-6">
+                <div className="pt-12 border-t border-[var(--border-color)] space-y-6">
                   <div className="space-y-2">
                     <p className="nga-label">Part 3 Extensions</p>
                     <h3 className="text-xl font-playfair">Extended Discussion Questions</h3>
                   </div>
 
                   {activeTopic.transitionTip && (
-                    <div className="bg-blue-50/30 border border-blue-100 rounded-2xl p-6">
+                    <div className="bg-[var(--accent-soft)]/30 border border-[var(--accent-color)]/20 rounded-2xl p-6">
                       <div className="flex items-start gap-3">
-                        <Sparkles size={16} className="text-blue-500 mt-0.5" />
+                        <Sparkles size={16} className="text-[var(--accent-color)] mt-0.5" />
                         <div className="space-y-1">
-                          <p className="text-sm font-medium text-blue-900">AI Transition Tip</p>
-                          <p className="text-xs text-blue-700/80 leading-relaxed font-light">
+                          <p className="text-sm font-medium text-[var(--accent-color)]">AI Transition Tip</p>
+                          <p className="text-xs text-[var(--accent-color)]/80 leading-relaxed font-light">
                             {activeTopic.transitionTip}
                           </p>
                         </div>
@@ -557,14 +557,14 @@ export default function StoriesPage() {
 
                   <div className="space-y-4">
                     {(activeTopic.part3Questions || []).map((q) => (
-                      <div key={q.id} className="bg-white border border-gray-100 rounded-xl p-5 flex justify-between items-start gap-4 group hover:shadow-sm hover:border-gray-200 transition-all cursor-pointer" onClick={() => router.push(`/part3?topicId=${activeTopic.id}&questionId=${q.id}`)}>
+                      <div key={q.id} className="bg-white border border-[var(--border-color)] rounded-xl p-5 flex justify-between items-start gap-4 group hover:shadow-sm hover:border-gray-200 transition-all cursor-pointer" onClick={() => router.push(`/part3?topicId=${activeTopic.id}&questionId=${q.id}`)}>
                         <div className="flex-1 space-y-2">
                           <p className="text-sm font-medium leading-relaxed font-playfair">{q.question}</p>
                           {q.answer && q.answer.trim().length > 0 && (
-                            <p className="text-[10px] text-gray-400 font-light flex items-center gap-1"><MessageCircle size={10} /> Answered</p>
+                            <p className="text-[10px] text-[var(--fg-muted)] font-light flex items-center gap-1"><MessageCircle size={10} /> Answered</p>
                           )}
                         </div>
-                        <button onClick={(e) => { e.stopPropagation(); if (confirm('Delete question?')) deletePart3Question(activeTopic.id, q.id); }} className="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-500 transition-all shrink-0">
+                        <button onClick={(e) => { e.stopPropagation(); if (confirm('Delete question?')) deletePart3Question(activeTopic.id, q.id); }} className="opacity-0 group-hover:opacity-100 text-[var(--fg-muted)] hover:text-[var(--danger-color)] transition-all shrink-0">
                           <Trash2 size={14} />
                         </button>
                       </div>
@@ -577,7 +577,7 @@ export default function StoriesPage() {
                       <div className="space-y-3 animate-in slide-in-from-top-4">
                         <textarea
                           autoFocus
-                          className="w-full border border-gray-100 dark:border-white/5 rounded-xl p-4 text-sm outline-none h-32 bg-gray-50/50 dark:bg-white/[0.02] resize-none leading-relaxed dark:text-gray-300"
+                          className="w-full border border-[var(--border-color)] dark:border-white/5 rounded-xl p-4 text-sm outline-none h-32 bg-[var(--bg-secondary)]/50 dark:bg-white/[0.02] resize-none leading-relaxed dark:text-[var(--fg-muted)]"
                           placeholder="Paste Part 3 questions, one per line..."
                           value={part3BulkText}
                           onChange={(e) => setPart3BulkText(e.target.value)}
@@ -606,7 +606,7 @@ export default function StoriesPage() {
                             addPart3Question(activeTopic.id, newPart3Q.trim());
                             setNewPart3Q("");
                           } : () => setIsBulkPart3(true)}
-                          className="p-4 text-black transition-all flex items-center justify-center border-b border-black hover:bg-gray-50"
+                          className="p-4 text-[var(--fg-primary)] transition-all flex items-center justify-center border-b border-[var(--fg-primary)] hover:bg-[var(--bg-secondary)]"
                           title={newPart3Q.trim() ? "Add Question" : "Batch Import"}
                         >
                           {newPart3Q.trim() ? <Check size={16} strokeWidth={1.5} /> : <Upload size={16} strokeWidth={1.5} />}
@@ -618,14 +618,14 @@ export default function StoriesPage() {
               )}
 
               {/* Drawer Footer Actions */}
-              <div className="flex justify-end gap-6 pt-12 border-t border-gray-100 italic transition-all">
+              <div className="flex justify-end gap-6 pt-12 border-t border-[var(--border-color)] italic transition-all">
                 <button 
                   onClick={() => {
                     if (snapshot && activeTopic) updateTopic(activeTopic.id, snapshot);
                     setActiveDrawerTopicId(null);
                     setSnapshot(null);
                   }} 
-                  className="text-[10px] text-gray-400 hover:text-red-500 tracking-widest uppercase font-bold"
+                  className="text-[10px] text-[var(--fg-muted)] hover:text-[var(--danger-color)] tracking-widest uppercase font-bold"
                 >
                   Discard & Revert
                 </button>
@@ -647,11 +647,11 @@ export default function StoriesPage() {
             {userStories.map((story) => {
               const linkedTopics = userTopics.filter(t => t.linkedStoryId === story.id);
               return (
-                <div key={story.id} className="nga-card p-0 overflow-hidden border border-gray-100 dark:border-white/5 bg-white dark:bg-white/[0.02]">
-                  <div className="p-8 border-b border-gray-50 dark:border-white/5 flex justify-between items-center bg-gray-50/30 dark:bg-white/[0.01]">
+                <div key={story.id} className="nga-card p-0 overflow-hidden border border-[var(--border-color)] bg-[var(--bg-card)]">
+                  <div className="p-8 border-b border-[var(--border-color)] flex justify-between items-center bg-[var(--bg-secondary)]">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-[9px] bg-indigo-600 text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter shrink-0">
+                        <span className="text-[9px] bg-[var(--accent-color)] text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter shrink-0">
                           {story.tag}
                         </span>
                         <h4 className="text-2xl font-playfair dark:text-white leading-none">{story.title}</h4>
@@ -671,10 +671,10 @@ export default function StoriesPage() {
                           <div 
                             key={t.id} 
                             onClick={() => { setTab('topics'); setActiveDrawerTopicId(t.id); }}
-                            className="bg-[var(--bg-card)] border border-gray-100 dark:border-white/10 px-4 py-3 rounded-2xl flex items-center gap-3 hover:scale-105 transition-all cursor-pointer group shadow-sm hover:shadow-md"
+                            className="bg-[var(--bg-card)] border border-[var(--border-color)] px-4 py-3 rounded-2xl flex items-center gap-3 hover:scale-105 transition-all cursor-pointer group shadow-sm hover:shadow-md hover:border-indigo-400"
                           >
-                            <Link2 size={12} className="text-gray-300 group-hover:text-black dark:group-hover:text-white" />
-                            <span className="text-sm font-playfair group-hover:italic transition-all dark:text-gray-300 dark:group-hover:text-white">{t.title}</span>
+                            <Link2 size={12} className="text-[var(--fg-muted)] group-hover:text-black dark:group-hover:text-white" />
+                            <span className="text-sm font-playfair group-hover:italic transition-all dark:text-[var(--fg-muted)] dark:group-hover:text-white">{t.title}</span>
                           </div>
                         ))}
                       </div>

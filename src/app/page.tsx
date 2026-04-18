@@ -68,10 +68,10 @@ export default function DashboardPage() {
   const p3Coverage = totalPart3 > 0 ? Math.round((answeredPart3 / totalPart3) * 100) : 0;
 
   const TAG_COLORS: Record<string, string> = {
-    Person: "#0a0a0a",
-    Object: "#555",
-    Place: "#3b82f6",
-    Event: "#8b5cf6",
+    Person: "var(--fg-primary)",
+    Object: "var(--fg-secondary)",
+    Place: "var(--accent-color)",
+    Event: "var(--warning-color)",
   };
 
   const handleExportJSON = () => {
@@ -189,12 +189,12 @@ export default function DashboardPage() {
                   const rad = (angle * Math.PI) / 180;
                   return `${50 + 45 * step * Math.cos(rad)},${50 + 45 * step * Math.sin(rad)}`;
                 }).join(' ');
-                return <polygon key={step} points={points} fill="none" className="stroke-gray-100 dark:stroke-white/10" strokeWidth="0.5" />;
+                return <polygon key={step} points={points} fill="none" className="stroke-[var(--border-color)] opacity-40" strokeWidth="0.5" />;
               })}
               {/* Radar Axes */}
               {[0, 60, 120, 180, 240, 300].map(angle => {
                 const rad = (angle * Math.PI) / 180;
-                return <line key={angle} x1="50" y1="50" x2={50 + 45 * Math.cos(rad)} y2={50 + 45 * Math.sin(rad)} className="stroke-gray-100 dark:stroke-white/10" strokeWidth="0.5" />;
+                return <line key={angle} x1="50" y1="50" x2={50 + 45 * Math.cos(rad)} y2={50 + 45 * Math.sin(rad)} className="stroke-[var(--border-color)] opacity-40" strokeWidth="0.5" />;
               })}
               {/* Data Shape */}
               {(() => {
@@ -210,7 +210,7 @@ export default function DashboardPage() {
                   const angle = (i * 60 * Math.PI) / 180;
                   return `${50 + 45 * val * Math.cos(angle)},${50 + 45 * val * Math.sin(angle)}`;
                 }).join(' ');
-                return <polygon points={points} className="fill-indigo-500/20 stroke-indigo-500" strokeWidth="1.5" />;
+                return <polygon points={points} className="fill-[var(--accent-color)] opacity-20 stroke-[var(--accent-color)]" strokeWidth="1.5" />;
               })()}
             </svg>
           </div>
@@ -241,7 +241,7 @@ export default function DashboardPage() {
           </div>
           <p className="text-2xl font-playfair">{p1Coverage}%</p>
           <div className="progress-bar bg-[var(--bg-secondary)]">
-            <div className="progress-fill bg-indigo-500" style={{ width: `${p1Coverage}%` }} />
+            <div className="progress-fill bg-[var(--accent-color)]" style={{ width: `${p1Coverage}%` }} />
           </div>
           <p className="text-[10px] text-[var(--fg-muted)] font-light">
             {answeredQuestions}/{totalQuestions} done
@@ -258,7 +258,7 @@ export default function DashboardPage() {
           </div>
           <p className="text-2xl font-playfair">{p2Coverage}%</p>
           <div className="progress-bar bg-[var(--bg-secondary)]">
-            <div className="progress-fill bg-indigo-500" style={{ width: `${p2Coverage}%` }} />
+            <div className="progress-fill bg-[var(--accent-soft)]0" style={{ width: `${p2Coverage}%` }} />
           </div>
           <p className="text-[10px] text-[var(--fg-muted)] font-light">
             {linkedTopics}/{userTopics.length} linked
@@ -275,7 +275,7 @@ export default function DashboardPage() {
           </div>
           <p className="text-2xl font-playfair">{p3Coverage}%</p>
           <div className="progress-bar bg-[var(--bg-secondary)]">
-            <div className="progress-fill bg-indigo-500" style={{ width: `${p3Coverage}%` }} />
+            <div className="progress-fill bg-[var(--accent-soft)]0" style={{ width: `${p3Coverage}%` }} />
           </div>
           <p className="text-[10px] text-[var(--fg-muted)] font-light">
             {answeredPart3}/{totalPart3} done
@@ -291,7 +291,7 @@ export default function DashboardPage() {
         </div>
 
         {userStories.length === 0 ? (
-          <div className="text-center py-12 text-muted italic font-playfair border border-dashed border-gray-100 rounded-2xl">
+          <div className="text-center py-12 text-muted italic font-playfair border border-dashed border-[var(--border-color)] rounded-2xl">
             Add stories in Part 2 to see the visual map.
           </div>
         ) : (
@@ -302,7 +302,7 @@ export default function DashboardPage() {
                 <div key={story.id} className="nga-card p-4 group bg-[var(--bg-card)] border-[var(--border-color)]">
                   <div className="flex items-start gap-4">
                     <span
-                      className="flex-shrink-0 text-[10px] font-bold tracking-widest uppercase px-3 py-1 bg-indigo-500 text-white rounded-full"
+                      className="flex-shrink-0 text-[10px] font-bold tracking-widest uppercase px-3 py-1 bg-[var(--accent-color)] text-[var(--bg-primary)] rounded-full"
                     >
                       {story.tag}
                     </span>
@@ -367,20 +367,20 @@ export default function DashboardPage() {
                 <h3 className="text-sm font-bold tracking-widest uppercase text-indigo-900 underline decoration-indigo-200 underline-offset-8 decoration-4">01 Site Highlights / 网站亮点</h3>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="nga-card-sm border-indigo-100 bg-indigo-50/20">
-                  <p className="text-xs leading-loose font-medium text-black">
-                    <strong className="text-indigo-600">The Master Story System:</strong> Don't memorize 50 topics. Create 10 "Master Stories" and <strong>Link</strong> them to multiple topics to reduce memory load by 90%.
+                <div className="nga-card-sm border-indigo-500/20 bg-[var(--accent-soft)]0/5">
+                  <p className="text-xs leading-loose font-medium text-[var(--fg-primary)]">
+                    <strong className="text-[var(--accent-color)]">The Master Story System:</strong> Don't memorize 50 topics. Create 10 "Master Stories" and <strong>Link</strong> them to multiple topics to reduce memory load by 90%.
                   </p>
-                  <p className="text-xs leading-loose text-muted mt-2 border-t border-indigo-50 pt-2 italic">
-                    <strong className="text-black">万能素材串联法：</strong> 别再死记硬背 50 个话题。创建 10 个“万能故事（Story）”，然后将其<strong>关联（Link）</strong>到多个话题（Topic）上，瞬间减轻 90% 的记忆负担。
+                  <p className="text-xs leading-loose text-[var(--fg-muted)] mt-2 border-t border-indigo-500/10 pt-2 italic">
+                    <strong className="text-[var(--fg-primary)]">万能素材串联法：</strong> 别再死记硬背 50 个话题。创建 10 个“万能故事（Story）”，然后将其<strong>关联（Link）</strong>到多个话题（Topic）上，瞬间减轻 90% 的记忆负担。
                   </p>
                 </div>
-                <div className="nga-card-sm border-purple-100 bg-purple-50/20">
-                  <p className="text-xs leading-loose font-medium text-black">
-                    <strong className="text-purple-600">Iterative AI Lab:</strong> Use the "AI Suggestion" box then refine it with specific instructions (e.g. "Use idioms", "Make it more natural"). Don't settle for the first draft.
+                <div className="nga-card-sm border-purple-500/20 bg-[var(--warning-color)]/5">
+                  <p className="text-xs leading-loose font-medium text-[var(--fg-primary)]">
+                    <strong className="text-[var(--warning-color)]">Iterative AI Lab:</strong> Use the "AI Suggestion" box then refine it with specific instructions (e.g. "Use idioms", "Make it more natural"). Don't settle for the first draft.
                   </p>
-                  <p className="text-xs leading-loose text-muted mt-2 border-t border-purple-50 pt-2 italic">
-                    <strong className="text-black">AI 实验室迭代：</strong> 获取 AI 建议后，利用下方的“自定义指令”进行反复打磨（例如：“加入习语”、“语气更自然”），直到生成最适合你的满分范文。
+                  <p className="text-xs leading-loose text-[var(--fg-muted)] mt-2 border-t border-purple-500/10 pt-2 italic">
+                    <strong className="text-[var(--fg-primary)]">AI 实验室迭代：</strong> 获取 AI 建议后，利用下方的“自定义指令”进行反复打磨（例如：“加入习语”、“语气更自然”），直到生成最适合你的满分范文。
                   </p>
                 </div>
               </div>
@@ -389,45 +389,45 @@ export default function DashboardPage() {
             {/* 02: Step-by-Step / 各模块用法 */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 px-2">
-                <BookOpen size={16} className="text-emerald-500" />
+                <BookOpen size={16} className="text-[var(--success-color)]" />
                 <h3 className="text-sm font-bold tracking-widest uppercase text-emerald-900 underline decoration-emerald-200 underline-offset-8 decoration-4">02 Training Workflow / 各模块用法</h3>
               </div>
               <div className="grid grid-cols-1 gap-4">
-                <div className="nga-card-sm border-gray-100">
+                <div className="nga-card-sm border-[var(--border-color)] bg-[var(--bg-card)]">
                   <div className="flex flex-col md:flex-row gap-6 md:gap-12">
                     <div className="flex-1 space-y-2">
-                      <p className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 text-emerald-700">Part 1: Concise & Personal</p>
-                      <p className="text-xs leading-loose text-muted">Upload your basic Q&A pairs via file import. Use AI to polish them into concise, 2-3 sentence natural spoken responses. Check the "?" icon in Part 1 for rapid import tips.</p>
+                      <p className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 text-[var(--success-color)]">Part 1: Concise & Personal</p>
+                      <p className="text-xs leading-loose text-[var(--fg-muted)]">Upload your basic Q&A pairs via file import. Use AI to polish them into concise, 2-3 sentence natural spoken responses. Check the "?" icon in Part 1 for rapid import tips.</p>
                     </div>
-                    <div className="flex-1 space-y-2 border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-12">
-                      <p className="text-xs font-bold uppercase tracking-widest text-emerald-700">第一部分：简洁、生活化</p>
-                      <p className="text-xs leading-loose text-muted font-light italic">利用文件导入批量上传你的 Q&A。让 AI 将其润色为 2-3 句的地道口语。记得点击 Part 1 页面的“？”查看批量导入秘籍。</p>
+                    <div className="flex-1 space-y-2 border-t md:border-t-0 md:border-l border-[var(--border-color)] pt-4 md:pt-0 md:pl-12">
+                      <p className="text-xs font-bold uppercase tracking-widest text-[var(--success-color)]">第一部分：简洁、生活化</p>
+                      <p className="text-xs leading-loose text-[var(--fg-muted)] font-light italic">利用文件导入批量上传你的 Q&A。让 AI 将其润色为 2-3 句的地道口语。记得点击 Part 1 页面的“？”查看批量导入秘籍。</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="nga-card-sm border-gray-100">
+                <div className="nga-card-sm border-[var(--border-color)] bg-[var(--bg-card)]">
                   <div className="flex flex-col md:flex-row gap-6 md:gap-12">
                     <div className="flex-1 space-y-2">
-                      <p className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 text-indigo-700">Part 2: Storytelling Strategy</p>
-                      <p className="text-xs leading-loose text-muted">Navigate to "AI Lab" to manage your stories. Map each story to related topics. This creates a "One-Story-to-Many-Topics" network, transforming a random pool into a logical system.</p>
+                      <p className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 text-indigo-500">Part 2: Storytelling Strategy</p>
+                      <p className="text-xs leading-loose text-[var(--fg-muted)]">Navigate to "AI Lab" to manage your stories. Map each story to related topics. This creates a "One-Story-to-Many-Topics" network, transforming a random pool into a logical system.</p>
                     </div>
-                    <div className="flex-1 space-y-2 border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-12">
-                      <p className="text-xs font-bold uppercase tracking-widest text-indigo-700">第二部分：故事串联法</p>
-                      <p className="text-xs leading-loose text-muted font-light italic">核心在于“AI 实验室”。在这里建立你的故事轴，并将其映射到各个相关的话题。这能把零散的话题变成有逻辑的系统，大幅减少备考量。</p>
+                    <div className="flex-1 space-y-2 border-t md:border-t-0 md:border-l border-[var(--border-color)] pt-4 md:pt-0 md:pl-12">
+                      <p className="text-xs font-bold uppercase tracking-widest text-indigo-500">第二部分：故事串联法</p>
+                      <p className="text-xs leading-loose text-[var(--fg-muted)] font-light italic">核心在于“AI 实验室”。在这里建立你的故事轴，并将其映射到各个相关的话题。这能把零散的话题变成有逻辑的系统，大幅减少备考量。</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="nga-card-sm border-gray-100">
+                <div className="nga-card-sm border-[var(--border-color)] bg-[var(--bg-card)]">
                   <div className="flex flex-col md:flex-row gap-6 md:gap-12">
                     <div className="flex-1 space-y-2">
-                      <p className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 text-rose-700">Mock Room: Full Simulation</p>
-                      <p className="text-xs leading-loose text-muted">Practice with professional timers and recording. After finishing, click "Ask for Diagnosis" to receive a full Band Score report with detailed 4-category IELTS feedback.</p>
+                      <p className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 text-rose-500">Mock Room: Full Simulation</p>
+                      <p className="text-xs leading-loose text-[var(--fg-muted)]">Practice with professional timers and recording. After finishing, click "Ask for Diagnosis" to receive a full Band Score report with detailed 4-category IELTS feedback.</p>
                     </div>
-                    <div className="flex-1 space-y-2 border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-12">
-                      <p className="text-xs font-bold uppercase tracking-widest text-rose-700">模拟考场：全真计时模拟</p>
-                      <p className="text-xs leading-loose text-muted font-light italic">在 Mock Room 中开启倒计时进行录音练习。练习结束后，一键开启“诊断报告”，获取专家级的 Band Score 评分和四维度反馈报告。</p>
+                    <div className="flex-1 space-y-2 border-t md:border-t-0 md:border-l border-[var(--border-color)] pt-4 md:pt-0 md:pl-12">
+                      <p className="text-xs font-bold uppercase tracking-widest text-rose-500">模拟考场：全真计时模拟</p>
+                      <p className="text-xs leading-loose text-[var(--fg-muted)] font-light italic">在 Mock Room 中开启倒计时进行录音练习。练习结束后，一键开启“诊断报告”，获取专家级的 Band Score 评分和四维度反馈报告。</p>
                     </div>
                   </div>
                 </div>
@@ -437,14 +437,14 @@ export default function DashboardPage() {
             {/* 03: Data / 数据安全 */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 px-2">
-                <RefreshCw size={16} className="text-gray-400" />
+                <RefreshCw size={16} className="text-[var(--fg-muted)]" />
                 <h3 className="text-sm font-bold tracking-widest uppercase text-gray-500">03 Sync & Safety / 数据同步与备份</h3>
               </div>
-              <div className="nga-card-sm bg-gray-50/50 border-gray-100">
-                <p className="text-xs leading-loose text-muted">
+              <div className="nga-card-sm bg-[var(--bg-secondary)] border-[var(--border-color)]">
+                <p className="text-xs leading-loose text-[var(--fg-muted)]">
                   Use the <strong>Sync</strong> button to save to cloud. Use <strong>Backup</strong> regularly to download a local JSON copy. Double protection for your study progress.
                 </p>
-                <p className="text-xs leading-loose text-muted mt-2 border-t border-gray-100 pt-2 italic">
+                <p className="text-xs leading-loose text-[var(--fg-muted)] mt-2 border-t border-[var(--border-color)] pt-2 italic">
                   点击顶部的 <strong>Sync</strong> 可云端同步；定期点击 <strong>Backup</strong> 下载本地快照。双重保障你的备考心血。
                 </p>
               </div>
@@ -466,12 +466,12 @@ export default function DashboardPage() {
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="relative w-full max-w-5xl bg-[var(--bg-card)] backdrop-blur-[40px] rounded-[3.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.6)] border border-gray-100 dark:border-white/5 overflow-hidden flex flex-col max-h-[90vh] pointer-events-auto"
+            className="relative w-full max-w-5xl bg-[var(--bg-card)] backdrop-blur-[40px] rounded-[3.5rem] shadow-2xl border border-[var(--border-color)] overflow-hidden flex flex-col max-h-[90vh] pointer-events-auto"
           >
             {/* Modal Header */}
             <div className="p-10 pb-4 flex justify-between items-start">
               <div className="space-y-1">
-                <p className="nga-label text-[10px] text-indigo-500 font-bold tracking-[0.25em] uppercase">
+                <p className="nga-label text-[10px] text-[var(--accent-color)] font-bold tracking-[0.25em] uppercase">
                   {selectedModule.toUpperCase()} PERSPECTIVE
                 </p>
                 <h2 className="text-4xl font-playfair tracking-tight mt-1 text-[var(--fg-primary)] font-bold">
@@ -489,7 +489,7 @@ export default function DashboardPage() {
             {/* Modal Content - Dual Section */}
             <div className="flex-1 overflow-hidden flex flex-col md:flex-row p-8 pt-0 gap-8">
               {/* LEFT COLUMN: PENDING (Soft Background) */}
-              <div className="flex-1 bg-gray-100/30 dark:bg-white/[0.02] rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-gray-100/30 dark:border-white/5">
+              <div className="flex-1 bg-[var(--bg-secondary)] rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-[var(--border-color)] shadow-inner">
                 <div className="flex items-center justify-between mb-8 px-2">
                   <h4 className="nga-label text-[10px] text-[var(--fg-muted)] font-bold uppercase tracking-widest flex items-center gap-2">
                      <div className="w-1.5 h-1.5 rounded-full bg-rose-400" />
@@ -503,7 +503,7 @@ export default function DashboardPage() {
                 <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-1.5">
                   {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => !q.prepared).map((q, idx) => (
                     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={q.id}>
-                      <Link href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-[15px] py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] rounded-2xl transition-all font-playfair border border-transparent hover:border-gray-100 dark:hover:border-white/10 text-black dark:text-gray-100 truncate hover:whitespace-normal group">
+                      <Link href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-[15px] py-4 px-6 hover:bg-[var(--bg-card)] rounded-2xl transition-all font-playfair border border-transparent hover:border-[var(--border-color)] text-[var(--fg-primary)] truncate hover:whitespace-normal group">
                         <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
                         {q.question}
                       </Link>
@@ -511,7 +511,7 @@ export default function DashboardPage() {
                   )))}
                   {selectedModule === 'p2' && userTopics.filter(t => !t.linkedStoryId).map((t, idx) => (
                     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={t.id}>
-                      <Link href="/stories" className="block text-[15px] py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] rounded-2xl transition-all font-playfair border border-transparent hover:border-gray-100 dark:hover:border-white/10 text-black dark:text-gray-100 truncate hover:whitespace-normal group">
+                      <Link href="/stories" className="block text-[15px] py-4 px-6 hover:bg-[var(--bg-card)] rounded-2xl transition-all font-playfair border border-transparent hover:border-[var(--border-color)] text-[var(--fg-primary)] truncate hover:whitespace-normal group">
                          <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
                         {t.title}
                       </Link>
@@ -519,7 +519,7 @@ export default function DashboardPage() {
                   ))}
                   {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => !q.prepared).map((q, idx) => (
                     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={q.id}>
-                      <Link href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-sm py-4 px-6 hover:bg-white dark:hover:bg-white/[0.05] rounded-2xl transition-all font-playfair leading-relaxed border border-transparent hover:border-gray-100 dark:hover:border-white/10 text-black dark:text-gray-100 truncate hover:whitespace-normal group">
+                      <Link href={`/part3?topicId=${t.id}&questionId=${q.id}`} className="block text-sm py-4 px-6 hover:bg-[var(--bg-card)] rounded-2xl transition-all font-playfair leading-relaxed border border-transparent hover:border-[var(--border-color)] text-[var(--fg-primary)] truncate hover:whitespace-normal group">
                          <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
                         {q.question}
                       </Link>
@@ -528,8 +528,8 @@ export default function DashboardPage() {
                   
                   {(selectedModule === 'p3' ? (totalPart3 - answeredPart3 === 0) : selectedModule === 'p1' ? (totalQuestions - answeredQuestions === 0) : (userTopics.length - linkedTopics === 0)) && (
                     <div className="h-full flex flex-col items-center justify-center py-20 text-center space-y-4">
-                      <div className="w-14 h-14 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                        <Check size={28} className="text-emerald-500" />
+                      <div className="w-14 h-14 rounded-full bg-[var(--success-color)]/10 flex items-center justify-center">
+                        <Check size={28} className="text-[var(--success-color)]" />
                       </div>
                       <p className="font-playfair italic text-[var(--fg-muted)]">Everything is in place.</p>
                     </div>
@@ -538,46 +538,46 @@ export default function DashboardPage() {
               </div>
 
               {/* RIGHT COLUMN: REVIEWS / MASTERED (Tinted Background) */}
-              <div className="flex-1 bg-emerald-500/5 dark:bg-emerald-500/[0.05] rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-emerald-500/10">
+              <div className="flex-1 bg-[var(--success-color)]/5 dark:bg-[var(--success-color)]/[0.05] rounded-[2.5rem] p-8 flex flex-col overflow-hidden border border-emerald-500/10">
                 <div className="flex items-center justify-between mb-8 px-2">
-                  <h4 className="nga-label text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-2">
+                  <h4 className="nga-label text-[10px] text-[var(--success-color)] font-bold uppercase tracking-widest flex items-center gap-2">
                     <Check size={14} /> Ready for Mock
                   </h4>
-                  <span className="text-[11px] font-mono font-bold text-emerald-500">
+                  <span className="text-[11px] font-mono font-bold text-[var(--success-color)]">
                     {selectedModule === 'p1' ? answeredQuestions : selectedModule === 'p2' ? linkedTopics : answeredPart3} Items
                   </span>
                 </div>
                 
                 <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-1 opacity-70">
                   {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => q.prepared).map(q => (
-                    <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-4 px-6 font-playfair italic flex items-start gap-4 hover:bg-white/50 dark:hover:bg-white/[0.05] rounded-2xl transition-all text-black dark:text-emerald-100 truncate hover:whitespace-normal group">
-                      <Check size={14} className="text-emerald-500 shrink-0 mt-1" />
+                    <Link key={q.id} href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-sm py-4 px-6 font-playfair italic flex items-start gap-4 hover:bg-[var(--bg-secondary)] rounded-2xl transition-all text-[var(--fg-secondary)] truncate hover:whitespace-normal group">
+                      <Check size={14} className="text-[var(--success-color)] shrink-0 mt-1" />
                       {q.question}
                     </Link>
                   )))}
                   {selectedModule === 'p2' && userTopics.filter(t => t.linkedStoryId).map(t => (
-                    <div key={t.id} className="text-sm py-4 px-6 flex items-start gap-4 italic font-playfair truncate hover:whitespace-normal">
-                      <Check size={14} className="text-emerald-500 shrink-0 mt-1" />
+                    <div key={t.id} className="text-sm py-4 px-6 flex items-start gap-4 italic font-playfair truncate hover:whitespace-normal text-[var(--fg-secondary)]">
+                      <Check size={14} className="text-[var(--success-color)] shrink-0 mt-1" />
                       {t.title}
                     </div>
                   ))}
                   {selectedModule === 'p3' && userTopics.flatMap(t => (t.part3Questions || []).filter(q => q.prepared).map(q => (
-                    <div key={q.id} className="text-xs py-4 px-6 font-playfair leading-relaxed flex items-start gap-4 italic truncate hover:whitespace-normal">
-                      <Check size={12} className="text-emerald-500 shrink-0 mt-1" />
+                    <div key={q.id} className="text-xs py-4 px-6 font-playfair leading-relaxed flex items-start gap-4 italic truncate hover:whitespace-normal text-[var(--fg-secondary)]">
+                      <Check size={12} className="text-[var(--success-color)] shrink-0 mt-1" />
                       {q.question}
                     </div>
                   )))}
                   {(selectedModule === 'p3' ? answeredPart3 === 0 : selectedModule === 'p1' ? answeredQuestions === 0 : linkedTopics === 0) && (
                     <div className="h-full flex flex-col items-center justify-center py-20 opacity-20 text-center group">
-                      <p className="text-[10px] uppercase tracking-[0.3em]">No records yet</p>
+                      <p className="text-[10px] uppercase tracking-[0.3em] text-[var(--fg-muted)]">No records yet</p>
                     </div>
                   )}
                 </div>
               </div>
             </div>
             
-            <div className="px-10 py-6 bg-gray-50/50 dark:bg-white/[0.01] border-t border-gray-100 dark:border-white/5 text-right">
-               <p className="text-[9px] uppercase tracking-widest text-gray-400 dark:text-gray-500">Press ESC or click outside to close</p>
+            <div className="px-10 py-6 bg-[var(--bg-secondary)] border-t border-[var(--border-color)] text-right">
+               <p className="text-[9px] uppercase tracking-widest text-[var(--fg-muted)]">Press ESC or click outside to close</p>
             </div>
           </motion.div>
         </div>

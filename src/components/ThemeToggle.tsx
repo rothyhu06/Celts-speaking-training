@@ -28,7 +28,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="fixed top-6 right-6 z-[110] p-3 rounded-full bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-sm transition-all hover:scale-110 active:scale-95 text-fg-primary"
+      className="fixed top-6 right-6 z-[110] p-3 rounded-full bg-[var(--glass-bg)] backdrop-blur-xl border border-[var(--glass-border)] shadow-[var(--shadow-md)] transition-all hover:scale-110 active:scale-95 text-[var(--fg-primary)]"
     >
       <AnimatePresence mode="wait">
         {theme === "light" ? (
