@@ -470,7 +470,7 @@ export default function DashboardPage() {
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="relative w-full max-w-5xl bg-white/95 dark:bg-[#111216]/98 backdrop-blur-[40px] rounded-[3.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.6)] border border-gray-100 dark:border-white/5 overflow-hidden flex flex-col max-h-[90vh] pointer-events-auto"
+            className="relative w-full max-w-5xl bg-[var(--bg-card)] backdrop-blur-[40px] rounded-[3.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] dark:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.6)] border border-gray-100 dark:border-white/5 overflow-hidden flex flex-col max-h-[90vh] pointer-events-auto"
           >
             {/* Modal Header */}
             <div className="p-10 pb-4 flex justify-between items-start">

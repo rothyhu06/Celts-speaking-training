@@ -8,26 +8,26 @@
   
   /* Light Theme */
   --bg-primary: #ffffff;
-  --bg-secondary: #fafafa;
+  --bg-secondary: #f7f7f7;
   --bg-card: #ffffff;
-  --fg-primary: #0a0a0a;
-  --fg-secondary: #444444;
-  --fg-muted: #666666;
-  --border-color: #f0f0f0;
-  --accent-color: #4f46e5;
-  --glass-bg: rgba(255, 255, 255, 0.8);
+  --fg-primary: #000000;
+  --fg-secondary: #333333;
+  --fg-muted: #555555;
+  --border-color: #e5e5e5;
+  --accent-color: #6366f1;
+  --glass-bg: rgba(255, 255, 255, 0.9);
 }
 
 .dark {
   --bg-primary: #0a0a0a;
-  --bg-secondary: #0f1115;
+  --bg-secondary: #111111;
   --bg-card: #16181d;
-  --fg-primary: #f3f4f6;
-  --fg-secondary: #d1d5db;
-  --fg-muted: #9ca3af;
-  --border-color: #1f2229;
+  --fg-primary: #ffffff;
+  --fg-secondary: #cccccc;
+  --fg-muted: #a1a1aa;
+  --border-color: #262a33;
   --accent-color: #818cf8;
-  --glass-bg: rgba(10, 10, 10, 0.85);
+  --glass-bg: rgba(10, 10, 10, 0.9);
 }
 
 * {

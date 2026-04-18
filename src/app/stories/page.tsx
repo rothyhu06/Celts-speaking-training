@@ -479,16 +479,17 @@ export default function StoriesPage() {
                           onClick={() => updateTopic(activeTopic.id, {
                             linkedStoryId: isLinked ? undefined : story.id,
                           })}
-                          className="text-left flex items-center gap-4 p-4 rounded-xl border transition-all"
-                          style={{
-                            borderColor: isLinked ? "var(--fg-primary)" : "var(--bg-card)",
-                            background: isLinked ? "var(--fg-primary)" : "transparent",
-                            color: isLinked ? "var(--bg-primary)" : "var(--fg-primary)",
-                          }}
+                          className={`text-left flex items-center gap-4 p-4 rounded-xl border transition-all ${
+                            isLinked 
+                              ? "bg-black text-white border-black dark:bg-white dark:text-black dark:border-white" 
+                              : "bg-transparent text-[var(--fg-primary)] border-[var(--border-color)] hover:border-black dark:hover:border-white"
+                          }`}
                         >
                           <div className="flex-1">
                             <p className="text-sm font-medium">{story.title}</p>
-                            <p className="text-[10px] text-indigo-500 font-bold uppercase tracking-widest mt-0.5">{story.tag}</p>
+                            <p className={`text-[10px] font-bold uppercase tracking-widest mt-0.5 ${isLinked ? 'text-white/70 dark:text-black/70' : 'text-indigo-500'}`}>
+                              {story.tag}
+                            </p>
                           </div>
                           {isLinked && <Check size={14} />}
                         </button>
@@ -670,7 +671,7 @@ export default function StoriesPage() {
                           <div 
                             key={t.id} 
                             onClick={() => { setTab('topics'); setActiveDrawerTopicId(t.id); }}
-                            className="bg-white dark:bg-white/[0.05] border border-gray-100 dark:border-white/10 px-4 py-3 rounded-2xl flex items-center gap-3 hover:scale-105 transition-all cursor-pointer group shadow-sm hover:shadow-md"
+                            className="bg-[var(--bg-card)] border border-gray-100 dark:border-white/10 px-4 py-3 rounded-2xl flex items-center gap-3 hover:scale-105 transition-all cursor-pointer group shadow-sm hover:shadow-md"
                           >
                             <Link2 size={12} className="text-gray-300 group-hover:text-black dark:group-hover:text-white" />
                             <span className="text-sm font-playfair group-hover:italic transition-all dark:text-gray-300 dark:group-hover:text-white">{t.title}</span>
