@@ -385,7 +385,7 @@ T: 当然！我发现我的注意力往往会下降...`}
           </div>
         ) : (
           userCategories.map((category: Category) => (
-            <div key={category.id} className="border-b border-gray-100 dark:border-white/5 last:border-0 overflow-hidden bg-white dark:bg-[#111216]">
+            <div key={category.id} className="border-b border-[var(--border-color)] last:border-0 overflow-hidden bg-[var(--bg-card)]">
               <div className="w-full flex items-center justify-between py-10 hover:px-4 transition-all group">
                 <div 
                   onClick={() => toggleCategory(category.id)}
@@ -395,7 +395,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                     <div className="flex gap-4 items-center flex-1 pr-10" onClick={(e) => e.stopPropagation()}>
                       <input 
                         autoFocus
-                        className="flex-1 border-b border-black py-1 outline-none text-2xl font-playfair italic bg-transparent"
+                        className="flex-1 border-b border-[var(--fg-primary)] py-1 outline-none text-2xl font-playfair italic bg-transparent text-[var(--fg-primary)]"
                         value={editingCatName}
                         onChange={(e) => setEditingCatName(e.target.value)}
                         onKeyDown={(e) => {
@@ -412,7 +412,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                           updateCategory(category.id, { name: editingCatName });
                           setEditingCatId(null);
                         }} 
-                        className="p-2 text-black"
+                        className="p-2 text-[var(--fg-primary)]"
                       >
                         <Check size={20} />
                       </button>
@@ -420,7 +420,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                     </div>
                   ) : (
                     <>
-                      <span className="text-2xl font-playfair group-hover:italic transition-all text-black dark:text-white">
+                      <span className="text-2xl font-playfair group-hover:italic transition-all text-[var(--fg-primary)]">
                         {category.name.split('&').map((part, i, arr) => (
                           <span key={i}>
                             {part}
@@ -440,7 +440,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                         setEditingCatId(category.id);
                         setEditingCatName(category.name);
                       }}
-                      className="p-2 text-black dark:text-gray-400 hover:scale-110 transition-all dark:hover:text-white"
+                      className="p-2 text-[var(--fg-primary)] opacity-40 hover:opacity-100 hover:scale-110 transition-all"
                     >
                       <Edit2 size={14} strokeWidth={1.5} />
                     </button>

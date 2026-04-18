@@ -109,14 +109,14 @@ export default function DualEditor({
   return (
     <div className="space-y-12 animate-in fade-in duration-700 pb-10">
       {/* Sticky Original Question Header */}
-      <div className="sticky top-0 z-10 -mx-10 px-10 pt-4 pb-8 bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-md border-b border-gray-100 dark:border-white/5 shadow-sm transition-all">
+      <div className="sticky top-0 z-10 -mx-10 px-10 pt-4 pb-8 bg-[var(--glass-bg)] backdrop-blur-md border-b border-[var(--border-color)] shadow-sm transition-all">
         <div className="flex items-center justify-between">
           <div className="space-y-3 flex-1">
-            <label className="nga-label text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-[0.2em]">Current Prompt</label>
-            <h2 className="text-2xl font-playfair leading-tight text-black dark:text-white">{title}</h2>
+            <label className="nga-label text-[10px] font-bold uppercase tracking-[0.2em]">Current Prompt</label>
+            <h2 className="text-2xl font-playfair leading-tight text-[var(--fg-primary)] font-bold">{title}</h2>
             {subtitle && (
-              <div className="bg-gray-100/50 dark:bg-white/[0.03] rounded-xl p-4 mt-2 border border-black/[0.03] dark:border-white/5">
-                 <p className="text-xs text-muted dark:text-gray-400 leading-relaxed font-light whitespace-pre-line italic">
+              <div className="bg-[var(--bg-secondary)] rounded-xl p-4 mt-2 border border-[var(--border-color)] shadow-inner">
+                 <p className="text-xs text-[var(--fg-secondary)] leading-relaxed font-light whitespace-pre-line italic">
                    {subtitle}
                  </p>
               </div>
@@ -197,7 +197,7 @@ export default function DualEditor({
             )}
           </div>
           <textarea
-            className="w-full p-6 rounded-2xl text-lg font-playfair leading-relaxed resize-none h-48 outline-none transition-all duration-500 bg-gray-50/50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/5 focus:border-indigo-400 dark:focus:border-indigo-900 focus:bg-white dark:focus:bg-[#1a1c22] text-black dark:text-white"
+            className="w-full p-6 rounded-2xl text-lg font-playfair leading-relaxed resize-none h-48 outline-none transition-all duration-500 bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-indigo-400 focus:bg-[var(--bg-card)] text-[var(--fg-primary)]"
             placeholder="Type your manual response here..."
             value={localEnglish}
             onChange={(e) => {
@@ -259,11 +259,11 @@ export default function DualEditor({
       {aiCoachingValue && (
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <Sparkles size={16} className="text-black dark:text-indigo-400" />
-            <label className="nga-label text-[9px] text-black dark:text-indigo-300 font-bold">AI Coach Guidance</label>
+            <Sparkles size={16} className="text-indigo-500" />
+            <label className="nga-label text-[10px] text-indigo-500 font-bold uppercase tracking-widest">AI Master Coach</label>
           </div>
-          <div className="w-full p-6 rounded-2xl text-sm leading-loose bg-black dark:bg-white/5 text-white outline-none shadow-xl border border-white/5">
-            <div className="whitespace-pre-wrap font-light">{aiCoachingValue}</div>
+          <div className="w-full p-8 rounded-[2rem] text-sm leading-loose bg-[var(--fg-primary)] text-[var(--bg-primary)] outline-none shadow-2xl border border-[var(--border-color)]">
+            <div className="whitespace-pre-wrap font-playfair italic leading-relaxed text-base opacity-90">{aiCoachingValue}</div>
           </div>
         </div>
       )}
@@ -280,7 +280,7 @@ export default function DualEditor({
                  <button
                  onClick={() => onAiGenerate('translation', translationInstruction.trim())}
                  disabled={isGenerating}
-                 className="bg-black text-white px-3 py-1.5 rounded-full text-[8px] flex items-center gap-1 hover:bg-gray-800 transition-colors tracking-widest uppercase disabled:opacity-30 disabled:cursor-not-allowed"
+                 className="bg-[var(--fg-primary)] text-[var(--bg-primary)] px-3 py-1.5 rounded-full text-[8px] flex items-center gap-1 hover:opacity-80 transition-opacity tracking-widest uppercase disabled:opacity-30 disabled:cursor-not-allowed"
                >
                  <Sparkles size={10} />
                  Generate
@@ -288,7 +288,7 @@ export default function DualEditor({
               )}
             </div>
             <textarea
-              className="w-full p-4 rounded-2xl text-sm leading-loose resize-none h-32 outline-none transition-all duration-300 bg-gray-50/50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/5 focus:border-indigo-400 dark:focus:border-indigo-900 focus:bg-white dark:focus:bg-[#1a1c22] text-black dark:text-white"
+              className="w-full p-4 rounded-2xl text-sm leading-loose resize-none h-32 outline-none transition-all duration-300 bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-indigo-400 focus:bg-[var(--bg-card)] text-[var(--fg-primary)]"
               placeholder="Your manual translation notes..."
               value={localChinese}
               onChange={(e) => {
@@ -344,7 +344,7 @@ export default function DualEditor({
                  <button
                  onClick={() => onAiGenerate('vocab', vocabInstruction.trim())}
                  disabled={isGenerating}
-                 className="bg-black text-white px-3 py-1.5 rounded-full text-[8px] flex items-center gap-1 hover:bg-gray-800 transition-colors tracking-widest uppercase disabled:opacity-30 disabled:cursor-not-allowed"
+                 className="bg-[var(--fg-primary)] text-[var(--bg-primary)] px-3 py-1.5 rounded-full text-[8px] flex items-center gap-1 hover:opacity-80 transition-opacity tracking-widest uppercase disabled:opacity-30 disabled:cursor-not-allowed"
                >
                  <Sparkles size={10} />
                  Generate
@@ -352,7 +352,7 @@ export default function DualEditor({
               )}
             </div>
             <textarea
-              className="w-full p-4 rounded-2xl text-sm leading-loose resize-none h-32 outline-none transition-all duration-300 bg-gray-50/50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/5 focus:border-indigo-400 dark:focus:border-indigo-900 focus:bg-white dark:focus:bg-[#1a1c22] text-black dark:text-white"
+              className="w-full p-4 rounded-2xl text-sm leading-loose resize-none h-32 outline-none transition-all duration-300 bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-indigo-400 focus:bg-[var(--bg-card)] text-[var(--fg-primary)]"
               placeholder="Your manual vocab notes..."
               value={localVocab}
               onChange={(e) => {

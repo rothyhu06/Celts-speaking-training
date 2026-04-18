@@ -252,24 +252,30 @@ export default function MockPage() {
 
   return (
     <div className="animate-in fade-in duration-700 space-y-10 min-h-screen">
-      <header className="border-b border-gray-100 pb-10 space-y-2">
-        <h1 className="text-4xl font-playfair tracking-tight">Systematic Mock</h1>
+      <header className="border-b border-[var(--border-color)] pb-10 space-y-2">
+        <h1 className="text-4xl font-playfair tracking-tight text-[var(--fg-primary)]">Systematic Mock</h1>
         <p className="nga-label">Full Length IELTS Speaking Module</p>
       </header>
 
       {segments.length === 0 || currentSegment.type === 'intro' ? (
         <div className="flex flex-col items-center justify-center text-center space-y-8 py-10">
           {/* Mode Switcher */}
-          <div className="flex bg-gray-50 p-1 rounded-2xl w-full max-w-xs mx-auto">
+          <div className="flex bg-[var(--bg-secondary)] p-1.5 rounded-[1.5rem] w-full max-w-xs mx-auto border border-[var(--border-color)]">
             <button 
               onClick={() => setExamMode('full')}
-              className="flex-1 py-3 text-xs uppercase tracking-wider font-bold rounded-xl transition-all"
-              style={{ background: examMode === 'full' ? '#fff' : 'transparent', color: examMode === 'full' ? '#000' : '#aaa', boxShadow: examMode === 'full' ? '0 2px 8px rgba(0,0,0,0.05)' : 'none' }}
+              className={`flex-1 py-3 text-[10px] uppercase tracking-wider font-bold rounded-2xl transition-all ${
+                examMode === 'full' 
+                ? "bg-[var(--bg-card)] text-[var(--fg-primary)] shadow-sm" 
+                : "text-[var(--fg-muted)] hover:text-[var(--fg-primary)]"
+              }`}
             >Full Exam</button>
             <button 
               onClick={() => setExamMode('custom')}
-              className="flex-1 py-3 text-xs uppercase tracking-wider font-bold rounded-xl transition-all"
-              style={{ background: examMode === 'custom' ? '#fff' : 'transparent', color: examMode === 'custom' ? '#000' : '#aaa', boxShadow: examMode === 'custom' ? '0 2px 8px rgba(0,0,0,0.05)' : 'none' }}
+              className={`flex-1 py-3 text-[10px] uppercase tracking-wider font-bold rounded-2xl transition-all ${
+                examMode === 'custom' 
+                ? "bg-[var(--bg-card)] text-[var(--fg-primary)] shadow-sm" 
+                : "text-[var(--fg-muted)] hover:text-[var(--fg-primary)]"
+              }`}
             >Custom Topic</button>
           </div>
 
@@ -279,14 +285,14 @@ export default function MockPage() {
           <div className="space-y-4 max-w-sm mx-auto">
              <h2 className="text-2xl font-playfair">Ready for your practice?</h2>
              {examMode === 'full' ? (
-               <p className="text-sm font-light text-muted leading-relaxed">
+               <p className="text-sm font-light text-[var(--fg-muted)] leading-relaxed">
                  This simulates a real exam. We will test you on 3 random Part 1 questions, 1 Part 2 Topic, and 3 Part 3 Extensions.
                </p>
              ) : (
                <div className="space-y-4 pt-2 text-left">
                  <p className="nga-label">Select a Topic</p>
                  <select 
-                   className="w-full bg-white border border-gray-200 rounded-xl p-4 text-sm outline-none font-playfair cursor-pointer"
+                   className="w-full bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-4 text-sm outline-none font-playfair cursor-pointer text-[var(--fg-primary)] shadow-sm"
                    value={customTopicId}
                    onChange={(e) => setCustomTopicId(e.target.value)}
                  >

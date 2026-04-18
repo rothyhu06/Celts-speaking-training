@@ -6,33 +6,36 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
   
-  /* Light Theme */
+  /* High-Contrast Light Theme (Daylight) */
   --bg-primary: #ffffff;
-  --bg-secondary: #f7f7f7;
+  --bg-secondary: #f4f4f5;
   --bg-card: #ffffff;
   --fg-primary: #000000;
-  --fg-secondary: #333333;
-  --fg-muted: #555555;
-  --border-color: #e5e5e5;
-  --accent-color: #6366f1;
+  --fg-secondary: #3f3f46;
+  --fg-muted: #71717a;
+  --border-color: #e4e4e7;
+  --accent-color: #4f46e5;
   --glass-bg: rgba(255, 255, 255, 0.9);
 }
 
 .dark {
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #111111;
-  --bg-card: #16181d;
+  /* High-Contrast Dark Theme (Midnight Ink) */
+  --bg-primary: #09090b;
+  --bg-secondary: #18181b;
+  --bg-card: #141417;
   --fg-primary: #ffffff;
-  --fg-secondary: #cccccc;
-  --fg-muted: #a1a1aa;
-  --border-color: #262a33;
+  --fg-secondary: #d1d5db;
+  --fg-muted: #9ca3af;
+  --border-color: #27272a;
   --accent-color: #818cf8;
-  --glass-bg: rgba(10, 10, 10, 0.9);
+  --glass-bg: rgba(9, 9, 11, 0.9);
 }
 
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  border-color: var(--border-color);
+  color: var(--fg-primary);
 }
 
 html {

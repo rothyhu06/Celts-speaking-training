@@ -124,25 +124,25 @@ export default function DashboardPage() {
     <div className="animate-in fade-in duration-700 space-y-12">
       <header className="space-y-2 pt-2 relative">
         <div className="absolute right-0 top-0 flex gap-4 items-center">
-          {syncMessage && <span className="text-[10px] text-black font-bold animate-pulse">{syncMessage}</span>}
+          {syncMessage && <span className="text-[10px] text-[var(--fg-primary)] font-bold animate-pulse">{syncMessage}</span>}
           <button 
             onClick={handleManualSync}
             disabled={isSyncing}
-            className={`nga-label text-[10px] hover:text-black transition-colors flex items-center gap-1.5 ${isSyncing ? 'opacity-30' : ''}`}
+            className={`nga-label text-[10px] hover:text-[var(--fg-primary)] transition-colors flex items-center gap-1.5 ${isSyncing ? 'opacity-30' : ''}`}
             title="Sync with Cloud"
           >
             <RefreshCw size={14} className={isSyncing ? 'animate-spin' : ''} /> Sync
           </button>
           <button 
             onClick={handleExportPrint}
-            className="nga-label text-[10px] hover:text-black transition-colors flex items-center gap-1"
+            className="nga-label text-[10px] hover:text-[var(--fg-primary)] transition-colors flex items-center gap-1"
             title="Print to PDF"
           >
             <Printer size={10} /> PDF
           </button>
           <button 
             onClick={() => fileInputRef.current?.click()}
-            className="nga-label text-[10px] hover:text-black transition-colors flex items-center gap-1"
+            className="nga-label text-[10px] hover:text-[var(--fg-primary)] transition-colors flex items-center gap-1"
             title="Restore JSON Backup"
           >
             <Upload size={10} /> Restore
@@ -156,14 +156,14 @@ export default function DashboardPage() {
           />
           <button 
             onClick={handleExportJSON}
-            className="nga-label text-[10px] hover:text-black transition-colors flex items-center gap-1"
+            className="nga-label text-[10px] hover:text-[var(--fg-primary)] transition-colors flex items-center gap-1"
             title="Download JSON Backup"
           >
             <Download size={10} /> Backup
           </button>
           <button 
             onClick={() => logout()}
-            className="nga-label text-[10px] hover:text-black transition-colors"
+            className="nga-label text-[10px] hover:text-[var(--fg-primary)] transition-colors"
           >
             Sign Out
           </button>
@@ -180,7 +180,7 @@ export default function DashboardPage() {
  
       {/* Skill Radar Section */}
       <section className="animate-in fade-in duration-700">
-        <div className="nga-card bg-white/40 dark:bg-white/[0.02] backdrop-blur-sm border-gray-100 dark:border-white/5 p-10 flex flex-col md:flex-row items-center gap-12">
+        <div className="nga-card bg-[var(--bg-card)] border-[var(--border-color)] p-10 flex flex-col md:flex-row items-center gap-12 shadow-sm">
           <div className="relative w-48 h-48 flex-shrink-0">
             <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-sm">
               {/* Radar Grid */}
@@ -233,51 +233,51 @@ export default function DashboardPage() {
       <div className="grid grid-cols-3 gap-4">
         <div 
           onClick={() => setSelectedModule("p1")}
-          className="nga-card space-y-4 cursor-pointer hover:border-black transition-all group active:scale-95"
+          className="nga-card space-y-4 cursor-pointer hover:border-[var(--fg-primary)] transition-all group active:scale-95 bg-[var(--bg-card)]"
         >
           <div className="flex items-center justify-between">
             <span className="nga-label">Part 1</span>
-            <MessageSquare size={14} className="text-muted group-hover:text-black transition-colors" />
+            <MessageSquare size={14} className="text-[var(--fg-muted)] group-hover:text-[var(--fg-primary)] transition-colors" />
           </div>
           <p className="text-2xl font-playfair">{p1Coverage}%</p>
-          <div className="progress-bar">
-            <div className="progress-fill" style={{ width: `${p1Coverage}%` }} />
+          <div className="progress-bar bg-[var(--bg-secondary)]">
+            <div className="progress-fill bg-indigo-500" style={{ width: `${p1Coverage}%` }} />
           </div>
-          <p className="text-[10px] text-muted font-light">
+          <p className="text-[10px] text-[var(--fg-muted)] font-light">
             {answeredQuestions}/{totalQuestions} done
           </p>
         </div>
         
         <div 
           onClick={() => setSelectedModule("p2")}
-          className="nga-card space-y-4 cursor-pointer hover:border-black transition-all group active:scale-95"
+          className="nga-card space-y-4 cursor-pointer hover:border-[var(--fg-primary)] transition-all group active:scale-95 bg-[var(--bg-card)]"
         >
           <div className="flex items-center justify-between">
             <span className="nga-label">Part 2</span>
-            <BookOpen size={14} className="text-muted group-hover:text-black transition-colors" />
+            <BookOpen size={14} className="text-[var(--fg-muted)] group-hover:text-[var(--fg-primary)] transition-colors" />
           </div>
           <p className="text-2xl font-playfair">{p2Coverage}%</p>
-          <div className="progress-bar">
-            <div className="progress-fill" style={{ width: `${p2Coverage}%` }} />
+          <div className="progress-bar bg-[var(--bg-secondary)]">
+            <div className="progress-fill bg-indigo-500" style={{ width: `${p2Coverage}%` }} />
           </div>
-          <p className="text-[10px] text-muted font-light">
+          <p className="text-[10px] text-[var(--fg-muted)] font-light">
             {linkedTopics}/{userTopics.length} linked
           </p>
         </div>
 
         <div 
           onClick={() => setSelectedModule("p3")}
-          className="nga-card space-y-4 cursor-pointer hover:border-black transition-all group active:scale-95"
+          className="nga-card space-y-4 cursor-pointer hover:border-[var(--fg-primary)] transition-all group active:scale-95 bg-[var(--bg-card)]"
         >
           <div className="flex items-center justify-between">
             <span className="nga-label">Part 3</span>
-            <MessageCircle size={14} className="text-muted group-hover:text-black transition-colors" />
+            <MessageCircle size={14} className="text-[var(--fg-muted)] group-hover:text-[var(--fg-primary)] transition-colors" />
           </div>
           <p className="text-2xl font-playfair">{p3Coverage}%</p>
-          <div className="progress-bar">
-            <div className="progress-fill" style={{ width: `${p3Coverage}%` }} />
+          <div className="progress-bar bg-[var(--bg-secondary)]">
+            <div className="progress-fill bg-indigo-500" style={{ width: `${p3Coverage}%` }} />
           </div>
-          <p className="text-[10px] text-muted font-light">
+          <p className="text-[10px] text-[var(--fg-muted)] font-light">
             {answeredPart3}/{totalPart3} done
           </p>
         </div>
@@ -299,32 +299,28 @@ export default function DashboardPage() {
             {userStories.map((story) => {
               const linked = userTopics.filter((t) => t.linkedStoryId === story.id);
               return (
-                <div key={story.id} className="nga-card-sm group">
+                <div key={story.id} className="nga-card p-4 group bg-[var(--bg-card)] border-[var(--border-color)]">
                   <div className="flex items-start gap-4">
                     <span
-                      className="flex-shrink-0 text-[9px] font-bold tracking-widest uppercase px-2 py-1 rounded-md"
-                      style={{
-                        background: `${TAG_COLORS[story.tag] ?? "#0a0a0a"}12`,
-                        color: TAG_COLORS[story.tag] ?? "#0a0a0a",
-                      }}
+                      className="flex-shrink-0 text-[10px] font-bold tracking-widest uppercase px-3 py-1 bg-indigo-500 text-white rounded-full"
                     >
                       {story.tag}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <p className="font-playfair text-sm font-medium truncate">{story.title}</p>
+                      <p className="font-playfair text-sm font-medium truncate text-[var(--fg-primary)]">{story.title}</p>
                       {linked.length > 0 ? (
                         <div className="flex flex-wrap gap-2 mt-2">
                           {linked.map((t) => (
                             <span
                               key={t.id}
-                              className="text-[9px] uppercase tracking-wider bg-gray-50 px-2 py-1 rounded-md text-muted"
+                              className="text-[9px] uppercase tracking-wider bg-[var(--bg-secondary)] px-2 py-1 rounded-md text-[var(--fg-muted)]"
                             >
                               {t.title.length > 30 ? t.title.slice(0, 30) + "…" : t.title}
                             </span>
                           ))}
                         </div>
                       ) : (
-                        <p className="text-xs text-muted/50 mt-1 italic">No topics linked yet</p>
+                        <p className="text-xs text-[var(--fg-muted)] opacity-50 mt-1 italic">No topics linked yet</p>
                       )}
                     </div>
                   </div>
@@ -349,13 +345,13 @@ export default function DashboardPage() {
       <section className="space-y-4 pb-20">
         <button 
           onClick={() => setIsGuideOpen(!isGuideOpen)}
-          className="w-full flex items-center justify-between py-6 px-8 rounded-3xl border border-gray-100 bg-gray-50/30 hover:bg-gray-50 transition-all group"
+          className="w-full flex items-center justify-between py-6 px-8 rounded-3xl border border-[var(--border-color)] bg-[var(--bg-secondary)] hover:bg-[var(--bg-card)] transition-all group"
         >
           <div className="flex items-center gap-3">
-            <HelpCircle size={18} className="text-black" />
+            <HelpCircle size={18} className="text-[var(--fg-primary)]" />
             <div className="flex flex-col items-start">
-              <h2 className="text-lg font-playfair">System Guide</h2>
-              <p className="text-[9px] uppercase tracking-widest text-gray-400 font-bold">使用指南 (Bilingual)</p>
+              <h2 className="text-lg font-playfair text-[var(--fg-primary)]">System Guide</h2>
+              <p className="text-[9px] uppercase tracking-widest text-[var(--fg-muted)] font-bold">使用指南 (Bilingual)</p>
             </div>
           </div>
           {isGuideOpen ? <ChevronUp size={18} strokeWidth={1} /> : <ChevronDown size={18} strokeWidth={1} />}
@@ -478,13 +474,13 @@ export default function DashboardPage() {
                 <p className="nga-label text-[10px] text-indigo-500 font-bold tracking-[0.25em] uppercase">
                   {selectedModule.toUpperCase()} PERSPECTIVE
                 </p>
-                <h2 className="text-4xl font-playfair tracking-tight mt-1 text-black dark:text-white font-bold">
+                <h2 className="text-4xl font-playfair tracking-tight mt-1 text-[var(--fg-primary)] font-bold">
                   {selectedModule === 'p1' ? 'Part 1 Mastery' : selectedModule === 'p2' ? 'Topic Linkage' : 'Part 3 Insights'}
                 </h2>
               </div>
               <button 
                 onClick={() => setSelectedModule(null)}
-                className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 rounded-full transition-all group border border-gray-100 dark:border-white/5 shadow-sm"
+                className="p-3 bg-[var(--bg-secondary)] hover:bg-[var(--bg-card)] rounded-full transition-all group border border-[var(--border-color)] shadow-sm"
               >
                 <X size={20} className="text-[var(--fg-muted)] group-hover:text-[var(--fg-primary)]" />
               </button>
@@ -604,17 +600,17 @@ function QuickLink({
   return (
     <Link
       href={href}
-      className="nga-card flex items-center gap-5 hover:shadow-sm transition-all group bg-white dark:bg-white/[0.02]"
+      className="nga-card flex items-center gap-5 hover:shadow-sm transition-all group bg-[var(--bg-card)] border-[var(--border-color)]"
       style={{ textDecoration: "none" }}
     >
-      <div className="p-3 rounded-full border border-gray-100 dark:border-white/10 group-hover:bg-black dark:group-hover:bg-white group-hover:text-white dark:group-hover:text-black group-hover:border-black dark:group-hover:border-white transition-all">
+      <div className="p-3 rounded-full border border-[var(--border-color)] group-hover:bg-[var(--fg-primary)] group-hover:text-[var(--bg-primary)] group-hover:border-[var(--fg-primary)] transition-all">
         {icon}
       </div>
       <div className="flex-1">
-        <p className="font-medium text-sm">{title}</p>
-        <p className="text-xs text-muted font-light">{sub}</p>
+        <p className="font-medium text-sm text-[var(--fg-primary)]">{title}</p>
+        <p className="text-xs text-[var(--fg-muted)] font-light">{sub}</p>
       </div>
-      <ArrowRight size={16} className="text-muted group-hover:text-black transition-colors" />
+      <ArrowRight size={16} className="text-[var(--fg-muted)] group-hover:text-[var(--fg-primary)] transition-colors" />
     </Link>
   );
 }
