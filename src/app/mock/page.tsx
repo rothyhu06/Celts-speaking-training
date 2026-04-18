@@ -422,7 +422,7 @@ export default function MockPage() {
                   </div>
                 ))}
               </div>
-              <div className="nga-card border-black/10 space-y-3" className="nga-card space-y-3 bg-[var(--fg-primary)] text-[var(--bg-primary)] border-[var(--border-color)]">
+              <div className="nga-card space-y-3 bg-[var(--fg-primary)] text-[var(--bg-primary)] border-[var(--border-color)]/10">
                 <div className="flex items-center gap-2">
                   <Sparkles size={14} />
                   <p className="nga-label" style={{ color: "#888" }}>Key Suggestion</p>

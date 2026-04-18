@@ -230,7 +230,7 @@ function QAPageContent() {
             </div>
             
             <div className="flex-1 overflow-y-auto p-10 space-y-12 custom-scrollbar">
-              {/*                <section className="space-y-6">
+              <section className="space-y-6">
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full bg-[var(--fg-primary)] text-[var(--bg-primary)] flex items-center justify-center text-[10px] font-bold">1</div>
                   <h3 className="text-sm font-bold tracking-widest uppercase text-[var(--fg-primary)]">General Rules (通用规则)</h3>
@@ -245,9 +245,6 @@ function QAPageContent() {
                     <strong className="text-[var(--fg-primary)]">Trigger:</strong> Any line ending with a <span className="underline">?</span> will start a new question block.
                     <br/>
                     <small className="text-[var(--fg-muted)]">触发机制：任何以 ? 结尾的行都会被识别为新题目的开始。</small>
-                  </p>
-                </div>
-              </section>行都会被识别为新题目的开始。</small>
                   </p>
                 </div>
               </section>
