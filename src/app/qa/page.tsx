@@ -540,7 +540,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                                   {q.prepared ? <Check size={12} strokeWidth={3} /> : <div className="w-1.5 h-1.5 rounded-full bg-transparent" />}
                                 </button>
                                 <div>
-                                  <h4 className={`text-xl font-playfair leading-snug transition-all`}>{q.question}</h4>
+                                  <h4 className={`text-xl font-bold leading-snug transition-all`}>{q.question}</h4>
                                   {q.answer && <p className="text-[10px] text-[var(--fg-muted)] mt-2">Answered</p>}
                                 </div>
                               </div>
@@ -605,7 +605,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                     <div className="space-y-6 pt-12 border-t border-[var(--border-color)] animate-in slide-in-from-bottom-4">
                       <input 
                         autoFocus
-                        className="w-full border-b border-[var(--fg-primary)] py-2 outline-none text-xl font-playfair italic placeholder:text-[var(--fg-muted)] bg-transparent text-[var(--fg-primary)]"
+                        className="w-full border-b border-[var(--fg-primary)] py-2 outline-none text-xl font-semibold placeholder:text-[var(--fg-muted)] bg-transparent text-[var(--fg-primary)]"
                         placeholder="New question..."
                         value={newQ}
                         onChange={e => setNewQ(e.target.value)}

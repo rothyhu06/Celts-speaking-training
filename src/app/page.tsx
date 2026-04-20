@@ -169,9 +169,9 @@ export default function DashboardPage() {
           </button>
         </div>
         <p className="nga-label">IELTS Flow</p>
-        <h1 className="text-4xl font-playfair tracking-tight">
+        <h1 className="text-4xl font-bold tracking-tight">
           Good {getGreeting()},{" "}
-          <span className="italic">{user?.name || "Candidate"}</span>.
+          <span>{user?.name || "Candidate"}</span>.
         </h1>
         <p className="text-sm text-muted font-light">
           Target Band {user?.targetBand ?? 7}.0 &nbsp;·&nbsp; {userTopics.length} topics ready
@@ -216,7 +216,7 @@ export default function DashboardPage() {
           </div>
           <div className="flex-1 space-y-6">
             <div className="space-y-1">
-              <h3 className="text-2xl font-playfair tracking-tight">Readiness Index</h3>
+              <h3 className="text-2xl font-bold tracking-tight">Readiness Index</h3>
               <p className="text-[10px] text-muted tracking-widest uppercase">Preparation Balance Analysis</p>
             </div>
             <div className="grid grid-cols-2 gap-x-8 gap-y-4">
@@ -286,7 +286,7 @@ export default function DashboardPage() {
       {/* Visual Map */}
       <section className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-playfair">Visual Map</h2>
+          <h2 className="text-xl font-bold">Visual Map</h2>
           <span className="nga-label">{userStories.length} Stories</span>
         </div>
 
@@ -307,7 +307,7 @@ export default function DashboardPage() {
                       {story.tag}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <p className="font-playfair text-sm font-medium truncate text-[var(--fg-primary)]">{story.title}</p>
+                      <p className="font-semibold text-sm truncate text-[var(--fg-primary)]">{story.title}</p>
                       {linked.length > 0 ? (
                         <div className="flex flex-wrap gap-2 mt-2">
                           {linked.map((t) => (
@@ -333,7 +333,7 @@ export default function DashboardPage() {
 
       {/* Quick Actions */}
       <section className="space-y-4 pb-4">
-        <h2 className="text-xl font-playfair">Quick Actions</h2>
+        <h2 className="text-xl font-bold">Quick Actions</h2>
         <div className="grid grid-cols-1 gap-3">
           <QuickLink href="/qa" icon={<MessageSquare size={18} strokeWidth={1.5} />} title="Manage Part 1 Q&A" sub="Add questions & draft answers" />
           <QuickLink href="/stories" icon={<Sparkles size={18} strokeWidth={1.5} />} title="AI Lab — Part 2" sub="Link stories & generate scripts" />
@@ -503,7 +503,7 @@ export default function DashboardPage() {
                 <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-1.5">
                   {selectedModule === 'p1' && userCategories.map(c => c.questions.filter(q => !q.prepared).map((q, idx) => (
                     <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.03 }} key={q.id}>
-                      <Link href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-[15px] py-4 px-6 hover:bg-[var(--bg-card)] rounded-2xl transition-all font-playfair border border-transparent hover:border-[var(--border-color)] text-[var(--fg-primary)] truncate hover:whitespace-normal group">
+                      <Link href={`/qa?catId=${c.id}&qId=${q.id}`} className="block text-[15px] py-4 px-6 hover:bg-[var(--bg-card)] rounded-2xl transition-all font-medium border border-transparent hover:border-[var(--border-color)] text-[var(--fg-primary)] truncate hover:whitespace-normal group">
                         <span className="opacity-20 mr-4 text-xs font-mono">{idx + 1}</span>
                         {q.question}
                       </Link>

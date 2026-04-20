@@ -321,7 +321,7 @@ export default function StoriesPage() {
                       </div>
                     ) : (
                       <>
-                        <p className="font-playfair text-base leading-snug">{topic.title}</p>
+                        <p className="text-base font-bold leading-snug">{topic.title}</p>
                         {linked ? (
                           <span className="inline-flex items-center gap-1 mt-2 text-[9px] uppercase tracking-widest font-bold text-[var(--accent-color)] bg-[var(--accent-soft)] px-2 py-1 rounded-md">
                             <Link2 size={8} /> {linked.title}
@@ -454,7 +454,7 @@ export default function StoriesPage() {
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1 flex-1">
                   <p className="nga-label">Topic</p>
-                  <h2 className="text-2xl font-playfair leading-snug text-[var(--fg-primary)]">{activeTopic.title}</h2>
+                  <h2 className="text-2xl font-bold leading-snug text-[var(--fg-primary)]">{activeTopic.title}</h2>
                 </div>
                 <button
                   onClick={() => setActiveDrawerTopicId(null)}
@@ -590,7 +590,7 @@ export default function StoriesPage() {
                     ) : (
                       <div className="flex gap-2">
                         <input
-                          className="flex-1 border-b border-[var(--fg-primary)] py-4 outline-none text-sm font-playfair italic bg-transparent placeholder:text-[var(--fg-muted)]"
+                          className="flex-1 border-b border-[var(--fg-primary)] py-4 outline-none text-sm font-semibold bg-transparent placeholder:text-[var(--fg-muted)]"
                           placeholder="Enter a new Part 3 question..."
                           value={newPart3Q}
                           onChange={(e) => setNewPart3Q(e.target.value)}
@@ -654,7 +654,7 @@ export default function StoriesPage() {
                         <span className="text-[9px] bg-[var(--accent-color)] text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter shrink-0">
                           {story.tag}
                         </span>
-                        <h4 className="text-2xl font-playfair dark:text-white leading-none">{story.title}</h4>
+                        <h4 className="text-2xl font-bold dark:text-white leading-none">{story.title}</h4>
                       </div>
                       <p className="text-xs text-muted line-clamp-1">{story.summary}</p>
                     </div>
