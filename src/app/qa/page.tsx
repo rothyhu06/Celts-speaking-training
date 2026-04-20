@@ -531,8 +531,14 @@ T: 当然！我发现我的注意力往往会下降...`}
                               <div className="flex items-start gap-4 flex-1">
                                 <button 
                                   onClick={() => toggleQuestionPrepared(category.id, q.id)}
-                                  className={`mt-1.5 p-1 rounded-full border ${q.prepared ? 'bg-[var(--fg-primary)] text-[var(--bg-primary)]' : 'border-[var(--border-color)] text-transparent hover:border-[var(--fg-primary)]'}`}
-                                ><Check size={10}/></button>
+                                  className={`mt-1.5 w-5 h-5 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                                    q.prepared 
+                                      ? 'bg-[var(--success-color)] border-[var(--success-color)] text-white' 
+                                      : 'border-[var(--border-color)] text-transparent hover:border-[var(--fg-primary)]'
+                                  }`}
+                                >
+                                  {q.prepared ? <Check size={12} strokeWidth={3} /> : <div className="w-1.5 h-1.5 rounded-full bg-transparent" />}
+                                </button>
                                 <div>
                                   <h4 className={`text-xl font-playfair leading-snug transition-all`}>{q.question}</h4>
                                   {q.answer && <p className="text-[10px] text-[var(--fg-muted)] mt-2">Answered</p>}
