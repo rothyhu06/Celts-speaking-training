@@ -172,7 +172,7 @@ export default function FlashcardsPage() {
 
             <button
               onClick={(e) => { e.stopPropagation(); nextCard(); }}
-              className="p-4 rounded-full bg-[var(--fg-primary)] text-[var(--bg-primary)] hover:opacity-80 transition-all shadow-md"
+              className="p-4 rounded-full bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--fg-muted)] hover:text-[var(--fg-primary)] hover:border-[var(--fg-primary)] transition-all shadow-sm"
             >
               <ArrowRight size={20} />
             </button>
