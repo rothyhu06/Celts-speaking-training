@@ -181,7 +181,7 @@ export default function DualEditor({
               <button
                 onClick={() => onAiGenerate('script', scriptInstruction.trim())}
                 disabled={isGenerating}
-                className="bg-[var(--fg-primary)] text-[var(--bg-primary)] px-3 py-1.5 rounded-full text-[8px] font-bold flex items-center gap-1 hover:opacity-90 transition-all tracking-widest uppercase disabled:opacity-30 disabled:cursor-not-allowed"
+                className="bg-[var(--bg-primary)] text-[var(--fg-primary)] border border-[var(--border-color)] px-3 py-1.5 rounded-full text-[8px] font-bold flex items-center gap-1 hover:bg-[var(--bg-secondary)] transition-all tracking-widest uppercase disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
               >
                 <Sparkles size={10} /> Generate AI Version
               </button>
@@ -218,7 +218,7 @@ export default function DualEditor({
               </div>
               <button 
                 onClick={() => toggleSpeech(aiEnglishValue)}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--accent-soft)]0/10 hover:bg-[var(--accent-soft)]0/20 transition-colors text-[var(--accent-color)]"
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--accent-soft)] hover:opacity-80 transition-colors text-[var(--accent-color)] font-bold border border-[var(--accent-color)]/20 shadow-sm"
               >
                 {isPlaying ? <Square size={10} className="fill-current" /> : <Volume2 size={12} />}
                 <span className="text-[10px] uppercase font-bold tracking-wider">{isPlaying ? "Stop" : "Listen"}</span>
@@ -262,8 +262,8 @@ export default function DualEditor({
             <Sparkles size={16} className="text-[var(--accent-color)]" />
             <label className="nga-label text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-widest">AI Master Coach</label>
           </div>
-          <div className="w-full p-8 rounded-[2rem] text-sm leading-loose bg-[var(--fg-primary)] text-[var(--bg-primary)] outline-none shadow-2xl border border-[var(--border-color)] dark:border-white/10">
-            <div className="whitespace-pre-wrap font-playfair italic leading-relaxed text-base opacity-90 !text-[var(--bg-primary)]">{aiCoachingValue}</div>
+          <div className="w-full p-8 rounded-[2rem] text-sm leading-loose bg-[var(--bg-secondary)]/50 text-[var(--fg-primary)] outline-none shadow-sm border border-[var(--border-color)]">
+            <div className="whitespace-pre-wrap font-playfair italic leading-relaxed text-base opacity-95 text-[var(--fg-primary)]">{aiCoachingValue}</div>
           </div>
         </div>
       )}
@@ -280,7 +280,7 @@ export default function DualEditor({
                  <button
                  onClick={() => onAiGenerate('translation', translationInstruction.trim())}
                  disabled={isGenerating}
-                 className="bg-[var(--fg-primary)] text-[var(--bg-primary)] px-3 py-1.5 rounded-full text-[8px] flex items-center gap-1 hover:opacity-80 transition-opacity tracking-widest uppercase disabled:opacity-30 disabled:cursor-not-allowed"
+                 className="bg-[var(--bg-primary)] text-[var(--fg-primary)] border border-[var(--border-color)] px-3 py-1.5 rounded-full text-[8px] font-bold flex items-center gap-1 hover:bg-[var(--bg-secondary)] transition-all tracking-widest uppercase disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
                >
                  <Sparkles size={10} />
                  Generate
@@ -344,7 +344,7 @@ export default function DualEditor({
                  <button
                  onClick={() => onAiGenerate('vocab', vocabInstruction.trim())}
                  disabled={isGenerating}
-                 className="bg-[var(--fg-primary)] text-[var(--bg-primary)] px-3 py-1.5 rounded-full text-[8px] flex items-center gap-1 hover:opacity-80 transition-opacity tracking-widest uppercase disabled:opacity-30 disabled:cursor-not-allowed"
+                 className="bg-[var(--bg-primary)] text-[var(--fg-primary)] border border-[var(--border-color)] px-3 py-1.5 rounded-full text-[8px] font-bold flex items-center gap-1 hover:bg-[var(--bg-secondary)] transition-all tracking-widest uppercase disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
                >
                  <Sparkles size={10} />
                  Generate

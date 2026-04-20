@@ -278,11 +278,11 @@ function QAPageContent() {
                   <h3 className="text-sm font-bold tracking-widest uppercase text-[var(--fg-primary)]">Example Template (示例模板)</h3>
                 </div>
                 <div className="pl-9">
-                  <div className="bg-[var(--fg-primary)] text-[var(--bg-primary)] p-8 rounded-3xl relative overflow-hidden">
+                  <div className="bg-[var(--bg-secondary)]/50 text-[var(--fg-primary)] p-8 rounded-3xl relative overflow-hidden border border-[var(--border-color)]">
                     <div className="absolute top-0 right-0 p-4 opacity-10">
                       <Book size={60} />
                     </div>
-                    <pre className="text-xs font-mono leading-loose whitespace-pre-wrap opacity-80 !text-[var(--bg-primary)]">
+                    <pre className="text-xs font-mono leading-loose whitespace-pre-wrap opacity-80 text-[var(--fg-primary)]">
 {`主题: Work & Study
 Q: Do you prefer to study in the morning or evening?
 A: Well, for me, I'm definitely a morning person. 

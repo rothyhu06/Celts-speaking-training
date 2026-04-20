@@ -479,9 +479,9 @@ export default function StoriesPage() {
                           onClick={() => updateTopic(activeTopic.id, {
                             linkedStoryId: isLinked ? undefined : story.id,
                           })}
-                          className={`text-left flex items-center gap-4 p-4 rounded-xl border transition-all ${
+                          className={`text-left flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
                             isLinked 
-                              ? "bg-[var(--fg-primary)] text-[var(--bg-primary)] border-[var(--fg-primary)]" 
+                              ? "bg-[var(--bg-primary)] text-[var(--fg-primary)] border-[var(--fg-primary)] shadow-md" 
                               : "bg-transparent text-[var(--fg-primary)] border-[var(--border-color)] hover:border-[var(--fg-primary)]"
                           }`}
                         >
