@@ -446,19 +446,19 @@ export default function StoriesPage() {
         <>
           <div className="drawer-overlay" onClick={() => setActiveDrawerTopicId(null)} />
           <aside
-            className="fixed top-0 right-0 bottom-0 bg-white dark:bg-[#111216] z-50 overflow-y-auto slide-in-from-right w-full md:w-[560px]"
-            style={{ boxShadow: "-8px 0 40px rgba(0,0,0,0.08)" }}
+            className="fixed top-0 right-0 bottom-0 bg-[var(--bg-card)] z-50 overflow-y-auto slide-in-from-right w-full md:w-[560px] border-l border-[var(--border-color)]"
+            style={{ boxShadow: "-8px 0 40px rgba(0,0,0,0.05)" }}
           >
             <div className="p-8 space-y-10">
               {/* Drawer header */}
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1 flex-1">
                   <p className="nga-label">Topic</p>
-                  <h2 className="text-2xl font-playfair leading-snug">{activeTopic.title}</h2>
+                  <h2 className="text-2xl font-playfair leading-snug text-[var(--fg-primary)]">{activeTopic.title}</h2>
                 </div>
                 <button
                   onClick={() => setActiveDrawerTopicId(null)}
-                  className="p-2 rounded-full hover:bg-gray-100 transition-all mt-1"
+                  className="p-2 rounded-full hover:bg-[var(--bg-secondary)] transition-all mt-1 text-[var(--fg-primary)]"
                 >
                   <X size={18} strokeWidth={1.5} />
                 </button>

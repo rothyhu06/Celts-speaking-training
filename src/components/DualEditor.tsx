@@ -109,7 +109,7 @@ export default function DualEditor({
   return (
     <div className="space-y-12 animate-in fade-in duration-700 pb-10">
       {/* Sticky Original Question Header */}
-      <div className="sticky top-0 z-10 -mx-10 px-10 pt-4 pb-8 bg-[var(--glass-bg)] backdrop-blur-md border-b border-[var(--border-color)] shadow-sm transition-all">
+      <div className="sticky top-0 z-20 -mx-10 px-10 pt-4 pb-8 bg-[var(--bg-card)] border-b border-[var(--border-color)] shadow-sm transition-all">
         <div className="flex items-center justify-between">
           <div className="space-y-3 flex-1">
             <label className="nga-label text-[10px] font-bold uppercase tracking-[0.2em]">Current Prompt</label>
@@ -158,7 +158,7 @@ export default function DualEditor({
           )}
         </div>
         <textarea
-          className="w-full border border-[var(--border-color)] dark:border-white/5 rounded-2xl p-4 text-sm outline-none h-24 bg-gray-50/50 dark:bg-[var(--bg-surface)]/[0.02] resize-none leading-relaxed font-light italic placeholder:text-[var(--fg-muted)] dark:placeholder:text-gray-600 focus:border-indigo-200 dark:focus:border-indigo-900 transition-all dark:text-[var(--fg-muted)]"
+          className="w-full border border-[var(--border-color)] rounded-2xl p-4 text-sm outline-none h-24 bg-[var(--bg-secondary)] resize-none leading-relaxed font-light italic placeholder:text-[var(--fg-muted)] focus:border-[var(--accent-color)]/30 transition-all text-[var(--fg-primary)]"
           placeholder="Type your Chinese logic points here..."
           value={localThought}
           onChange={(e) => {
