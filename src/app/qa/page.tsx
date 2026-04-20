@@ -540,7 +540,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                                   {q.prepared ? <Check size={12} strokeWidth={3} /> : <div className="w-1.5 h-1.5 rounded-full bg-transparent" />}
                                 </button>
                                 <div>
-                                  <h4 className={`text-xl font-bold leading-snug transition-all`}>{q.question}</h4>
+                                  <h4 className={`text-xl font-artsy leading-snug transition-all text-[var(--fg-primary)] opacity-90`}>{q.question}</h4>
                                   {q.answer && <p className="text-[10px] text-[var(--fg-muted)] mt-2">Answered</p>}
                                 </div>
                               </div>
