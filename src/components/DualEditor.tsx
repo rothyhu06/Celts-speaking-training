@@ -181,7 +181,7 @@ export default function DualEditor({
               <button
                 onClick={() => onAiGenerate('script', scriptInstruction.trim())}
                 disabled={isGenerating}
-                className="bg-black text-white px-3 py-1.5 rounded-full text-[8px] flex items-center gap-1 hover:bg-gray-800 transition-colors tracking-widest uppercase disabled:opacity-30 disabled:cursor-not-allowed"
+                className="bg-[var(--fg-primary)] text-[var(--bg-primary)] px-3 py-1.5 rounded-full text-[8px] font-bold flex items-center gap-1 hover:opacity-90 transition-all tracking-widest uppercase disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <Sparkles size={10} /> Generate AI Version
               </button>
@@ -262,8 +262,8 @@ export default function DualEditor({
             <Sparkles size={16} className="text-[var(--accent-color)]" />
             <label className="nga-label text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-widest">AI Master Coach</label>
           </div>
-          <div className="w-full p-8 rounded-[2rem] text-sm leading-loose bg-[var(--fg-primary)] text-[var(--bg-primary)] outline-none shadow-2xl border border-[var(--border-color)]">
-            <div className="whitespace-pre-wrap font-playfair italic leading-relaxed text-base opacity-90">{aiCoachingValue}</div>
+          <div className="w-full p-8 rounded-[2rem] text-sm leading-loose bg-[var(--fg-primary)] text-[var(--bg-primary)] outline-none shadow-2xl border border-[var(--border-color)] dark:border-white/10">
+            <div className="whitespace-pre-wrap font-playfair italic leading-relaxed text-base opacity-90 !text-[var(--bg-primary)]">{aiCoachingValue}</div>
           </div>
         </div>
       )}

@@ -74,7 +74,7 @@ body {
 
 /* ─── Typography ─────────────────────────────── */
 .font-playfair { font-family: var(--font-serif); }
-.text-muted { color: var(--color-muted); }
+.text-muted { color: var(--fg-muted); }
 
 /* ─── NGA Design System ───────────────────────── */
 .nga-label {

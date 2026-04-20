@@ -207,7 +207,7 @@ function QAPageContent() {
   return (
     <div className="space-y-16 pt-4 animate-in fade-in duration-700">
       {importStatus && (
-        <div className="fixed top-20 right-6 bg-black text-white text-[10px] uppercase tracking-widest px-6 py-3 rounded-full shadow-2xl z-50 animate-in slide-in-from-right-4 duration-500">
+        <div className="fixed top-20 right-6 bg-[var(--fg-primary)] text-[var(--bg-primary)] text-[10px] uppercase tracking-widest px-6 py-3 rounded-full shadow-2xl z-50 animate-in slide-in-from-right-4 duration-500">
           {importStatus}
         </div>
       )}
@@ -252,8 +252,8 @@ function QAPageContent() {
               {/* Keywords Section */}
               <section className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px] font-bold">2</div>
-                  <h3 className="text-sm font-bold tracking-widest uppercase">Keywords (识别关键字)</h3>
+                  <div className="w-6 h-6 rounded-full bg-[var(--fg-primary)] text-[var(--bg-primary)] flex items-center justify-center text-[10px] font-bold">2</div>
+                  <h3 className="text-sm font-bold tracking-widest uppercase text-[var(--fg-primary)]">Keywords (识别关键字)</h3>
                 </div>
                 <div className="pl-9 grid grid-cols-2 gap-4">
                   {[
@@ -274,15 +274,15 @@ function QAPageContent() {
               {/* Template Section */}
               <section className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-[10px] font-bold">3</div>
-                  <h3 className="text-sm font-bold tracking-widest uppercase">Example Template (示例模板)</h3>
+                  <div className="w-6 h-6 rounded-full bg-[var(--fg-primary)] text-[var(--bg-primary)] flex items-center justify-center text-[10px] font-bold">3</div>
+                  <h3 className="text-sm font-bold tracking-widest uppercase text-[var(--fg-primary)]">Example Template (示例模板)</h3>
                 </div>
                 <div className="pl-9">
-                  <div className="bg-black text-white p-8 rounded-3xl relative overflow-hidden">
+                  <div className="bg-[var(--fg-primary)] text-[var(--bg-primary)] p-8 rounded-3xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4 opacity-10">
                       <Book size={60} />
                     </div>
-                    <pre className="text-xs font-mono leading-loose whitespace-pre-wrap opacity-80">
+                    <pre className="text-xs font-mono leading-loose whitespace-pre-wrap opacity-80 !text-[var(--bg-primary)]">
 {`主题: Work & Study
 Q: Do you prefer to study in the morning or evening?
 A: Well, for me, I'm definitely a morning person. 
@@ -531,7 +531,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                               <div className="flex items-start gap-4 flex-1">
                                 <button 
                                   onClick={() => toggleQuestionPrepared(category.id, q.id)}
-                                  className={`mt-1.5 p-1 rounded-full border ${q.prepared ? 'bg-black text-white' : 'border-gray-200 text-transparent hover:border-black'}`}
+                                  className={`mt-1.5 p-1 rounded-full border ${q.prepared ? 'bg-[var(--fg-primary)] text-[var(--bg-primary)]' : 'border-[var(--border-color)] text-transparent hover:border-[var(--fg-primary)]'}`}
                                 ><Check size={10}/></button>
                                 <div>
                                   <h4 className={`text-xl font-playfair leading-snug transition-all`}>{q.question}</h4>
@@ -544,7 +544,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                                     setEditingQuestion(q);
                                     setSnapshot({...q});
                                   }}
-                                  className="p-2 text-black transition-all"
+                                  className="p-2 text-[var(--fg-primary)] transition-all"
                                 >
                                   <Edit2 size={14} strokeWidth={1.5} />
                                 </button>
@@ -552,7 +552,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                                   onClick={() => {
                                     if (confirm('Delete this question?')) deleteQuestion(category.id, q.id);
                                   }}
-                                  className="p-2 text-black hover:text-[var(--danger-color)] transition-all"
+                                  className="p-2 text-[var(--fg-primary)] hover:text-[var(--danger-color)] transition-all"
                                 >
                                   <Trash2 size={14} strokeWidth={1.5} />
                                 </button>
@@ -581,7 +581,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                                 <div className="flex flex-wrap gap-x-4 gap-y-2 pt-2 border-t border-[var(--border-color)]">
                                   {q.vocabAnalysis.map((v: any, i: number) => (
                                     <span key={i} className="text-[10px] font-playfair italic">
-                                      <span className="text-black">{v.phrase}</span>
+                                      <span className="text-[var(--fg-primary)]">{v.phrase}</span>
                                       <span className="text-[var(--fg-muted)] mx-1">:</span>
                                       <span className="text-[var(--fg-muted)]">{v.translation}</span>
                                     </span>
@@ -599,7 +599,7 @@ T: 当然！我发现我的注意力往往会下降...`}
                     <div className="space-y-6 pt-12 border-t border-[var(--border-color)] animate-in slide-in-from-bottom-4">
                       <input 
                         autoFocus
-                        className="w-full border-b border-black py-2 outline-none text-xl font-playfair italic placeholder:text-gray-200"
+                        className="w-full border-b border-[var(--fg-primary)] py-2 outline-none text-xl font-playfair italic placeholder:text-[var(--fg-muted)] bg-transparent text-[var(--fg-primary)]"
                         placeholder="New question..."
                         value={newQ}
                         onChange={e => setNewQ(e.target.value)}
@@ -611,14 +611,14 @@ T: 当然！我发现我的注意力往往会下降...`}
                         onChange={e => setNewA(e.target.value)}
                       />
                       <div className="flex justify-end gap-6 items-center">
-                        <button onClick={() => setAddingToCategory(null)} className="nga-label text-[9px] hover:text-black transition-colors">Discard</button>
+                        <button onClick={() => setAddingToCategory(null)} className="nga-label text-[9px] hover:text-[var(--fg-primary)] transition-colors">Discard</button>
                         <button onClick={() => handleAddQuestion(category.id)} className="nga-button-outline">Add Entry</button>
                       </div>
                     </div>
                   ) : (
                     <button 
                       onClick={() => setAddingToCategory(category.id)}
-                      className="w-full py-6 border border-dashed border-[var(--border-color)] rounded-2xl text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--fg-muted)] hover:border-black hover:text-black transition-all flex items-center justify-center gap-2 mt-4"
+                      className="w-full py-6 border border-dashed border-[var(--border-color)] rounded-2xl text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--fg-muted)] hover:border-[var(--fg-primary)] hover:text-[var(--fg-primary)] transition-all flex items-center justify-center gap-2 mt-4"
                     >
                       <Plus size={14} />
                       New Entry

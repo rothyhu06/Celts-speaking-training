@@ -167,7 +167,7 @@ export default function StoriesPage() {
   return (
     <div className="animate-in fade-in duration-700 space-y-10">
       {importStatus && (
-        <div className="fixed top-20 right-6 bg-black text-white text-[10px] uppercase tracking-widest px-6 py-3 rounded-full shadow-2xl z-50 slide-in-from-right-4 animate-in">
+        <div className="fixed top-20 right-6 bg-[var(--fg-primary)] text-[var(--bg-primary)] text-[10px] uppercase tracking-widest px-6 py-3 rounded-full shadow-2xl z-50 slide-in-from-right-4 animate-in">
           {importStatus}
         </div>
       )}
@@ -181,7 +181,7 @@ export default function StoriesPage() {
         <div className="flex gap-3">
           <button
             onClick={() => tab === "topics" ? setIsAddingTopic(true) : setIsAddingStory(true)}
-            className="p-3 border border-black/5 rounded-full hover:bg-black hover:text-white transition-all"
+            className="p-3 border border-[var(--border-color)] rounded-full hover:bg-[var(--fg-primary)] hover:text-[var(--bg-primary)] transition-all text-[var(--fg-primary)]"
           >
             <Plus size={20} strokeWidth={1.5} />
           </button>
@@ -258,7 +258,7 @@ export default function StoriesPage() {
                     <X size={20} />
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 leading-relaxed">
+                <p className="text-xs text-[var(--fg-muted)] leading-relaxed">
                   Paste raw text here. Topics separated by empty lines (double enter) will be split automatically. The first line of each block becomes the Title, the rest becomes the Cue Card.
                 </p>
                 <textarea
@@ -294,29 +294,29 @@ export default function StoriesPage() {
                   <div className="flex-1 min-w-0">
                     {isEditing ? (
                       <div className="flex gap-4 items-center" onClick={(e) => e.stopPropagation()}>
-                        <input 
-                          autoFocus
-                          className="flex-1 border-b border-black py-1 outline-none text-base font-playfair italic bg-transparent"
-                          value={editingTopicTitle}
-                          onChange={(e) => setEditingTopicTitle(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
+                          <input 
+                            autoFocus
+                            className="flex-1 border-b border-[var(--fg-primary)] py-1 outline-none text-base font-playfair italic bg-transparent text-[var(--fg-primary)]"
+                            value={editingTopicTitle}
+                            onChange={(e) => setEditingTopicTitle(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                updateTopic(topic.id, { title: editingTopicTitle });
+                                setEditingTopicId(null);
+                              } else if (e.key === 'Escape') {
+                                setEditingTopicId(null);
+                              }
+                            }}
+                          />
+                          <button 
+                            onClick={() => {
                               updateTopic(topic.id, { title: editingTopicTitle });
                               setEditingTopicId(null);
-                            } else if (e.key === 'Escape') {
-                              setEditingTopicId(null);
-                            }
-                          }}
-                        />
-                        <button 
-                          onClick={() => {
-                            updateTopic(topic.id, { title: editingTopicTitle });
-                            setEditingTopicId(null);
-                          }} 
-                          className="p-1 text-black"
-                        >
-                          <Check size={16} />
-                        </button>
+                            }} 
+                            className="p-1 text-[var(--fg-primary)]"
+                          >
+                            <Check size={16} />
+                          </button>
                         <button onClick={() => setEditingTopicId(null)} className="p-1 text-[var(--fg-muted)]"><X size={16} /></button>
                       </div>
                     ) : (
@@ -345,7 +345,7 @@ export default function StoriesPage() {
                         e.stopPropagation(); 
                         if (confirm("Delete this topic?")) deleteTopic(topic.id); 
                       }}
-                      className="p-1.5 text-black hover:text-[var(--danger-color)] transition-all"
+                      className="p-1.5 text-[var(--fg-primary)] hover:text-[var(--danger-color)] transition-all"
                     >
                       <Trash2 size={13} strokeWidth={1.5} />
                     </button>
@@ -356,7 +356,7 @@ export default function StoriesPage() {
                           setEditingTopicId(topic.id);
                           setEditingTopicTitle(topic.title);
                         }}
-                        className="p-1.5 text-black hover:scale-110 transition-all"
+                        className="p-1.5 text-[var(--fg-primary)] hover:scale-110 transition-all"
                       >
                         <Edit2 size={14} strokeWidth={1.5} />
                       </button>
@@ -376,7 +376,7 @@ export default function StoriesPage() {
             <div className="nga-card space-y-4 animate-in slide-in-from-top-4">
               <input
                 autoFocus
-                className="w-full border-b border-black py-3 outline-none text-lg font-playfair italic placeholder:text-gray-200"
+                className="w-full border-b border-[var(--fg-primary)] py-3 outline-none text-lg font-playfair italic placeholder:text-[var(--fg-muted)] bg-transparent text-[var(--fg-primary)]"
                 placeholder="Story title..."
                 value={newStoryTitle}
                 onChange={(e) => setNewStoryTitle(e.target.value)}
@@ -429,7 +429,7 @@ export default function StoriesPage() {
                     </div>
                     <button
                       onClick={() => { if (confirm("Delete story?")) deleteStory(story.id); }}
-                      className="p-1.5 text-black hover:text-[var(--danger-color)] transition-all"
+                      className="p-1.5 text-[var(--fg-primary)] hover:text-[var(--danger-color)] transition-all"
                     >
                       <Trash2 size={13} strokeWidth={1.5} />
                     </button>
@@ -481,8 +481,8 @@ export default function StoriesPage() {
                           })}
                           className={`text-left flex items-center gap-4 p-4 rounded-xl border transition-all ${
                             isLinked 
-                              ? "bg-black text-white border-black dark:bg-white dark:text-black dark:border-white" 
-                              : "bg-transparent text-[var(--fg-primary)] border-[var(--border-color)] hover:border-black dark:hover:border-white"
+                              ? "bg-[var(--fg-primary)] text-[var(--bg-primary)] border-[var(--fg-primary)]" 
+                              : "bg-transparent text-[var(--fg-primary)] border-[var(--border-color)] hover:border-[var(--fg-primary)]"
                           }`}
                         >
                           <div className="flex-1">
@@ -590,7 +590,7 @@ export default function StoriesPage() {
                     ) : (
                       <div className="flex gap-2">
                         <input
-                          className="flex-1 border-b border-black py-4 outline-none text-sm font-playfair italic bg-transparent placeholder:text-gray-200"
+                          className="flex-1 border-b border-[var(--fg-primary)] py-4 outline-none text-sm font-playfair italic bg-transparent placeholder:text-[var(--fg-muted)]"
                           placeholder="Enter a new Part 3 question..."
                           value={newPart3Q}
                           onChange={(e) => setNewPart3Q(e.target.value)}
@@ -673,8 +673,8 @@ export default function StoriesPage() {
                             onClick={() => { setTab('topics'); setActiveDrawerTopicId(t.id); }}
                             className="bg-[var(--bg-card)] border border-[var(--border-color)] px-4 py-3 rounded-2xl flex items-center gap-3 hover:scale-105 transition-all cursor-pointer group shadow-sm hover:shadow-md hover:border-indigo-400"
                           >
-                            <Link2 size={12} className="text-[var(--fg-muted)] group-hover:text-black dark:group-hover:text-white" />
-                            <span className="text-sm font-playfair group-hover:italic transition-all dark:text-[var(--fg-muted)] dark:group-hover:text-white">{t.title}</span>
+                            <Link2 size={12} className="text-[var(--fg-muted)] group-hover:text-[var(--fg-primary)]" />
+                            <span className="text-sm font-playfair group-hover:italic transition-all dark:text-[var(--fg-muted)] dark:group-hover:text-[var(--fg-primary)]">{t.title}</span>
                           </div>
                         ))}
                       </div>
