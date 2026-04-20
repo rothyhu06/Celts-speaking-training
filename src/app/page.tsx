@@ -603,7 +603,7 @@ function QuickLink({
       className="nga-card flex items-center gap-5 hover:shadow-sm transition-all group bg-[var(--bg-card)] border-[var(--border-color)]"
       style={{ textDecoration: "none" }}
     >
-      <div className="p-3 rounded-full border border-[var(--border-color)] group-hover:bg-[var(--fg-primary)] group-hover:text-[var(--bg-primary)] group-hover:border-[var(--fg-primary)] transition-all">
+      <div className="p-3 rounded-full border border-[var(--border-color)] group-hover:border-[var(--accent-color)] group-hover:text-[var(--accent-color)] transition-all bg-[var(--bg-card)]">
         {icon}
       </div>
       <div className="flex-1">
