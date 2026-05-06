@@ -209,7 +209,7 @@ export default function DualEditor({
             </div>
           </div>
           <textarea
-            className="w-full p-6 rounded-2xl text-lg font-playfair leading-relaxed resize-none h-48 outline-none transition-all duration-500 bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-indigo-400 focus:bg-[var(--bg-card)] text-[var(--fg-primary)]"
+            className="w-full p-6 rounded-2xl text-lg font-sans leading-relaxed resize-none h-48 outline-none transition-all duration-500 bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-indigo-400 focus:bg-[var(--bg-card)] text-[var(--fg-primary)]"
             placeholder="Type your manual response here..."
             value={localEnglish}
             onChange={(e) => {
@@ -238,7 +238,7 @@ export default function DualEditor({
             </div>
             <textarea
               readOnly
-              className="w-full p-6 text-xl font-playfair italic leading-relaxed resize-none h-48 outline-none bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] shadow-sm text-[var(--fg-primary)]"
+              className="w-full p-6 text-lg font-sans leading-relaxed resize-none h-48 outline-none bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] shadow-sm text-[var(--fg-primary)]"
               value={aiEnglishValue}
             />
             {/* Prompt Controller */}
@@ -275,7 +275,7 @@ export default function DualEditor({
             <label className="nga-label text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-widest">AI Master Coach</label>
           </div>
           <div className="w-full p-8 rounded-[2rem] text-sm leading-loose bg-[var(--bg-secondary)]/50 text-[var(--fg-primary)] outline-none shadow-sm border border-[var(--border-color)]">
-            <div className="whitespace-pre-wrap font-playfair italic leading-relaxed text-base opacity-95 text-[var(--fg-primary)]">{aiCoachingValue}</div>
+            <div className="whitespace-pre-wrap font-sans leading-relaxed text-sm opacity-95 text-[var(--fg-primary)]">{aiCoachingValue}</div>
           </div>
         </div>
       )}
