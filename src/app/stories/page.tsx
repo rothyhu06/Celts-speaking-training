@@ -104,7 +104,7 @@ export default function StoriesPage() {
       const context = {
         question: topic.title,
         cueCard: topic.cueCard,
-        storyDetails: story ? story.summary : undefined,
+        storyDetails: story ? `Story Title: ${story.title}\nStory Summary: ${story.summary || '(No summary)'}` : undefined,
         chineseLogic: topic.chineseLogic,
         preferredStyle: user.preferredStyle,
         age: user.age,
