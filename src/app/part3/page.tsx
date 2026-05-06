@@ -81,11 +81,14 @@ function Part3PageContent() {
 
       if (type === 'script') {
         const answer = await generateGeminiIA('script', 'part3', context, instruction);
-        const aiCoaching = await generateGeminiIA('coaching', 'part3', { ...context, question: answer });
         baseUpdate = { 
-          aiCoaching, 
           aiSuggestions: { ...currAiSuggestions, answer } 
         };
+      } else if (type === 'coaching') {
+        const manualAnswer = editingData?.q.answer || q.answer || "";
+        if (!manualAnswer.trim()) throw new Error("Please write a manual script first before evaluating.");
+        const aiCoaching = await generateGeminiIA('coaching', 'part3', { ...context, question: manualAnswer }, instruction);
+        baseUpdate = { aiCoaching };
       } else if (type === 'translation') {
         const translation = await generateGeminiIA('translation', 'part3', { ...context, question: q.aiSuggestions?.answer || q.answer || q.question }, instruction);
         baseUpdate = { aiSuggestions: { ...currAiSuggestions, translation } };
@@ -98,9 +101,9 @@ function Part3PageContent() {
       if (editingData?.q.id === q.id) {
         setEditingData(prev => prev ? { topicId, q: { ...prev.q, ...baseUpdate } } : null);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Part 3 AI Generation failed:", error);
-      alert("AI Generation failed. Please check your API key or connection.");
+      alert(error.message || "AI Generation failed. Please check your API key or connection.");
     } finally {
       setIsGenerating(false);
     }

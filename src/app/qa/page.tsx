@@ -180,9 +180,7 @@ function QAPageContent() {
 
       if (type === 'script') {
         const answer = await generateGeminiIA('script', 'part1', context, instruction);
-        const aiCoaching = await generateGeminiIA('coaching', 'part1', { ...context, question: answer });
         baseUpdate = { 
-          aiCoaching, 
           aiSuggestions: { ...currAiSuggestions, answer } 
         };
       } else if (type === 'translation') {
@@ -192,7 +190,9 @@ function QAPageContent() {
         const vocabAnalysisText = await generateGeminiIA('vocab', 'part1', { ...context, question: q.aiSuggestions?.answer || q.answer || q.question }, instruction);
         baseUpdate = { aiSuggestions: { ...currAiSuggestions, vocabAnalysisText } };
       } else if (type === 'coaching') {
-        const aiCoaching = await generateGeminiIA('coaching', 'part1', { ...context, question: q.aiSuggestions?.answer || q.answer || q.question }, instruction);
+        const manualAnswer = editingQuestion?.answer || q.answer || "";
+        if (!manualAnswer.trim()) throw new Error("Please write a manual script first before evaluating.");
+        const aiCoaching = await generateGeminiIA('coaching', 'part1', { ...context, question: manualAnswer }, instruction);
         baseUpdate = { aiCoaching };
       }
 

@@ -177,7 +177,18 @@ export default function DualEditor({
               <Edit3 size={16} className="text-[var(--fg-muted)]" />
               <label className="nga-label text-[9px]">Manual English Script (你的草稿)</label>
             </div>
-            {!aiEnglishValue ? (
+            <div className="flex gap-2 items-center">
+              {englishValue && (
+                <button
+                  onClick={() => onAiGenerate('coaching')}
+                  disabled={isGenerating}
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 text-amber-600 transition-all border border-amber-500/20 disabled:opacity-50 shadow-sm"
+                >
+                  <Sparkles size={10} />
+                  <span className="text-[8px] font-bold uppercase tracking-wider">{isGenerating ? "Evaluating..." : "Evaluate Draft"}</span>
+                </button>
+              )}
+              {!aiEnglishValue ? (
               <button
                 onClick={() => onAiGenerate('script', scriptInstruction.trim())}
                 disabled={isGenerating}
@@ -195,6 +206,7 @@ export default function DualEditor({
                 <span className="text-[10px] tracking-wider font-bold">LISTEN</span>
               </button>
             )}
+            </div>
           </div>
           <textarea
             className="w-full p-6 rounded-2xl text-lg font-playfair leading-relaxed resize-none h-48 outline-none transition-all duration-500 bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:border-indigo-400 focus:bg-[var(--bg-card)] text-[var(--fg-primary)]"

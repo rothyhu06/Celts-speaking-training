@@ -114,16 +114,17 @@ export default function StoriesPage() {
 
       if (type === 'script') {
         const script = await generateGeminiIA('script', 'part2', context, instruction);
-        const aiCoaching = await generateGeminiIA('coaching', 'part2', { ...context, question: script });
-        
-        // Basic transition tip generation logic (can be further refined)
         const transitionTip = "Transition Tip: Part 2 was a personal story. For Part 3, zoom out. Use phrases like 'Generally speaking' or 'In my society' to sound more abstract and analytical.";
         
         baseUpdate = {
-          aiCoaching,
           transitionTip,
           aiSuggestions: { ...currAiSuggestions, script }
         };
+      } else if (type === 'coaching') {
+        const manualAnswer = localEditingTopic?.script || topic.script || "";
+        if (!manualAnswer.trim()) throw new Error("Please write a manual script first before evaluating.");
+        const aiCoaching = await generateGeminiIA('coaching', 'part2', { ...context, question: manualAnswer }, instruction);
+        baseUpdate = { aiCoaching };
       } else if (type === 'translation') {
         const translation = await generateGeminiIA('translation', 'part2', { ...context, question: topic.aiSuggestions?.script || topic.script || topic.title }, instruction);
         baseUpdate = { aiSuggestions: { ...currAiSuggestions, translation } };
@@ -134,9 +135,9 @@ export default function StoriesPage() {
 
       updateTopic(topic.id, baseUpdate);
       setLocalEditingTopic(prev => prev ? { ...prev, ...baseUpdate } : null);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Part 2 AI Generation failed:", error);
-      alert("AI Generation failed. Please check your API key or connection.");
+      alert(error.message || "AI Generation failed. Please check your API key or connection.");
     } finally {
       setIsGenerating(false);
     }
