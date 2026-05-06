@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Sparkles, Edit3, MessageCircle, Send, Volume2, Square, Cloud, CloudOff, RefreshCw } from "lucide-react";
+import { Sparkles, Edit3, MessageCircle, Send, Volume2, Square, Cloud, CloudOff, RefreshCw, Eye, EyeOff } from "lucide-react";
 
 interface DualEditorProps {
   title: string;
@@ -86,6 +86,11 @@ export default function DualEditor({
   const [scriptInstruction, setScriptInstruction] = useState("");
   const [translationInstruction, setTranslationInstruction] = useState("");
   const [vocabInstruction, setVocabInstruction] = useState("");
+
+  const [hideAiScript, setHideAiScript] = useState(false);
+  const [hideAiCoaching, setHideAiCoaching] = useState(false);
+  const [hideAiTranslation, setHideAiTranslation] = useState(false);
+  const [hideAiVocab, setHideAiVocab] = useState(false);
 
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -228,41 +233,55 @@ export default function DualEditor({
                 <Sparkles size={14} className="text-[var(--accent-color)]" />
                 <label className="nga-label text-[9px] text-[var(--accent-color)] font-bold">AI Suggested Version</label>
               </div>
-              <button 
-                onClick={() => toggleSpeech(aiEnglishValue)}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--accent-soft)] hover:opacity-80 transition-colors text-[var(--accent-color)] font-bold border border-[var(--accent-color)]/20 shadow-sm"
-              >
-                {isPlaying ? <Square size={10} className="fill-current" /> : <Volume2 size={12} />}
-                <span className="text-[10px] uppercase font-bold tracking-wider">{isPlaying ? "Stop" : "Listen"}</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => setHideAiScript(!hideAiScript)}
+                  className="p-1 rounded-full text-[var(--accent-color)] hover:bg-[var(--accent-soft)] transition-colors"
+                >
+                  {hideAiScript ? <EyeOff size={14} /> : <Eye size={14} />}
+                </button>
+                {!hideAiScript && (
+                  <button 
+                    onClick={() => toggleSpeech(aiEnglishValue)}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--accent-soft)] hover:opacity-80 transition-colors text-[var(--accent-color)] font-bold border border-[var(--accent-color)]/20 shadow-sm"
+                  >
+                    {isPlaying ? <Square size={10} className="fill-current" /> : <Volume2 size={12} />}
+                    <span className="text-[10px] uppercase font-bold tracking-wider">{isPlaying ? "Stop" : "Listen"}</span>
+                  </button>
+                )}
+              </div>
             </div>
-            <textarea
-              readOnly
-              className="w-full p-6 text-lg font-sans leading-relaxed resize-none h-48 outline-none bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] shadow-sm text-[var(--fg-primary)]"
-              value={aiEnglishValue}
-            />
-            {/* Prompt Controller */}
-            <div className="flex items-center gap-2 mt-2">
-              <input 
-                type="text"
-                placeholder="Instruct AI to adjust..."
-                className="flex-1 bg-[var(--bg-card)] border border-[var(--border-color)] py-3 px-4 rounded-xl text-sm outline-none focus:border-[var(--accent-color)]/50 transition-colors shadow-sm text-[var(--fg-primary)] placeholder:text-[var(--fg-muted)]"
-                value={scriptInstruction}
-                onChange={(e) => setScriptInstruction(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !isGenerating) {
-                    onAiGenerate('script', scriptInstruction.trim());
-                  }
-                }}
-              />
-              <button
-                onClick={() => onAiGenerate('script', scriptInstruction.trim())}
-                disabled={isGenerating}
-                className="bg-[var(--accent-color)] text-white p-3 rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center justify-center shrink-0"
-              >
-                <Send size={16} />
-              </button>
-            </div>
+            {!hideAiScript && (
+              <>
+                <textarea
+                  readOnly
+                  className="w-full p-6 text-lg font-sans leading-relaxed resize-none h-48 outline-none bg-[var(--bg-card)] rounded-2xl border border-[var(--border-color)] shadow-sm text-[var(--fg-primary)]"
+                  value={aiEnglishValue}
+                />
+                {/* Prompt Controller */}
+                <div className="flex items-center gap-2 mt-2">
+                  <input 
+                    type="text"
+                    placeholder="Instruct AI to adjust..."
+                    className="flex-1 bg-[var(--bg-card)] border border-[var(--border-color)] py-3 px-4 rounded-xl text-sm outline-none focus:border-[var(--accent-color)]/50 transition-colors shadow-sm text-[var(--fg-primary)] placeholder:text-[var(--fg-muted)]"
+                    value={scriptInstruction}
+                    onChange={(e) => setScriptInstruction(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !isGenerating) {
+                        onAiGenerate('script', scriptInstruction.trim());
+                      }
+                    }}
+                  />
+                  <button
+                    onClick={() => onAiGenerate('script', scriptInstruction.trim())}
+                    disabled={isGenerating}
+                    className="bg-[var(--accent-color)] text-white p-3 rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center justify-center shrink-0"
+                  >
+                    <Send size={16} />
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -270,13 +289,23 @@ export default function DualEditor({
       {/* AI Coaching Module (Read-only) */}
       {aiCoachingValue && (
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Sparkles size={16} className="text-[var(--accent-color)]" />
-            <label className="nga-label text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-widest">AI Master Coach</label>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Sparkles size={16} className="text-[var(--accent-color)]" />
+              <label className="nga-label text-[10px] text-[var(--accent-color)] font-bold uppercase tracking-widest">AI Master Coach</label>
+            </div>
+            <button 
+              onClick={() => setHideAiCoaching(!hideAiCoaching)}
+              className="p-1 rounded-full text-[var(--accent-color)] hover:bg-[var(--accent-soft)] transition-colors"
+            >
+              {hideAiCoaching ? <EyeOff size={14} /> : <Eye size={14} />}
+            </button>
           </div>
-          <div className="w-full p-8 rounded-[2rem] text-sm leading-loose bg-[var(--bg-secondary)]/50 text-[var(--fg-primary)] outline-none shadow-sm border border-[var(--border-color)]">
-            <div className="whitespace-pre-wrap font-sans leading-relaxed text-sm opacity-95 text-[var(--fg-primary)]">{aiCoachingValue}</div>
-          </div>
+          {!hideAiCoaching && (
+            <div className="w-full p-8 rounded-[2rem] text-sm leading-loose bg-[var(--bg-secondary)]/50 text-[var(--fg-primary)] outline-none shadow-sm border border-[var(--border-color)]">
+              <div className="whitespace-pre-wrap font-sans leading-relaxed text-sm opacity-95 text-[var(--fg-primary)]">{aiCoachingValue}</div>
+            </div>
+          )}
         </div>
       )}
 
@@ -313,36 +342,48 @@ export default function DualEditor({
           
           {aiChineseValue && (
             <div className="space-y-3 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 dark:from-emerald-500/[0.05] dark:to-teal-500/[0.05] p-3 rounded-2xl border border-[var(--success-color)] dark:border-emerald-900/10 transition-all">
-               <div className="flex items-center gap-2 px-1">
-                 <Sparkles size={12} className="text-[var(--success-color)]" />
-                 <label className="nga-label text-[8px] text-emerald-700">AI Translation</label>
+               <div className="flex items-center justify-between px-1">
+                 <div className="flex items-center gap-2">
+                   <Sparkles size={12} className="text-[var(--success-color)]" />
+                   <label className="nga-label text-[8px] text-emerald-700">AI Translation</label>
+                 </div>
+                 <button 
+                   onClick={() => setHideAiTranslation(!hideAiTranslation)}
+                   className="p-1 rounded-full text-[var(--success-color)] hover:bg-[var(--success-soft)] transition-colors"
+                 >
+                   {hideAiTranslation ? <EyeOff size={12} /> : <Eye size={12} />}
+                 </button>
                </div>
-               <textarea
-                  readOnly
-                  className="w-full p-4 text-sm leading-loose resize-none h-32 outline-none bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)]/[0.05] rounded-xl shadow-sm text-[var(--fg-primary)] dark:text-emerald-100"
-                  value={aiChineseValue}
-                />
-                <div className="flex items-center gap-2">
-                  <input 
-                    type="text"
-                    placeholder="Adjust style..."
-                    className="flex-1 bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)]/[0.03] border border-[var(--success-color)] dark:border-emerald-900/10 py-2.5 px-3 rounded-xl text-xs outline-none focus:border-emerald-300 transition-colors shadow-sm dark:text-white"
-                    value={translationInstruction}
-                    onChange={(e) => setTranslationInstruction(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !isGenerating) {
-                        onAiGenerate('translation', translationInstruction.trim());
-                      }
-                    }}
-                  />
-                  <button
-                    onClick={() => onAiGenerate('translation', translationInstruction.trim())}
-                    disabled={isGenerating}
-                    className="bg-[var(--success-color)] text-white p-2.5 rounded-xl hover:bg-emerald-700 transition-colors disabled:opacity-50"
-                  >
-                    <Send size={14} />
-                  </button>
-                </div>
+               {!hideAiTranslation && (
+                 <>
+                   <textarea
+                      readOnly
+                      className="w-full p-4 text-sm leading-loose resize-none h-32 outline-none bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)]/[0.05] rounded-xl shadow-sm text-[var(--fg-primary)] dark:text-emerald-100"
+                      value={aiChineseValue}
+                    />
+                    <div className="flex items-center gap-2">
+                      <input 
+                        type="text"
+                        placeholder="Adjust style..."
+                        className="flex-1 bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)]/[0.03] border border-[var(--success-color)] dark:border-emerald-900/10 py-2.5 px-3 rounded-xl text-xs outline-none focus:border-emerald-300 transition-colors shadow-sm dark:text-white"
+                        value={translationInstruction}
+                        onChange={(e) => setTranslationInstruction(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && !isGenerating) {
+                            onAiGenerate('translation', translationInstruction.trim());
+                          }
+                        }}
+                      />
+                      <button
+                        onClick={() => onAiGenerate('translation', translationInstruction.trim())}
+                        disabled={isGenerating}
+                        className="bg-[var(--success-color)] text-white p-2.5 rounded-xl hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                      >
+                        <Send size={14} />
+                      </button>
+                    </div>
+                 </>
+               )}
             </div>
           )}
         </div>
@@ -379,36 +420,48 @@ export default function DualEditor({
           
           {aiVocabAnalysisValue && (
             <div className="space-y-3 bg-gradient-to-br from-amber-500/5 to-orange-500/5 dark:from-amber-500/[0.05] dark:to-orange-500/[0.05] p-3 rounded-2xl border border-[var(--warning-color)] dark:border-amber-900/10 transition-all">
-               <div className="flex items-center gap-2 px-1">
-                 <Sparkles size={12} className="text-[var(--warning-color)]" />
-                 <label className="nga-label text-[8px] text-amber-700">AI Vocab Extraction</label>
+               <div className="flex items-center justify-between px-1">
+                 <div className="flex items-center gap-2">
+                   <Sparkles size={12} className="text-[var(--warning-color)]" />
+                   <label className="nga-label text-[8px] text-amber-700">AI Vocab Extraction</label>
+                 </div>
+                 <button 
+                   onClick={() => setHideAiVocab(!hideAiVocab)}
+                   className="p-1 rounded-full text-[var(--warning-color)] hover:bg-[var(--warning-color)]/10 transition-colors"
+                 >
+                   {hideAiVocab ? <EyeOff size={12} /> : <Eye size={12} />}
+                 </button>
                </div>
-               <textarea
-                  readOnly
-                  className="w-full p-4 text-sm leading-loose resize-none h-32 outline-none bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)]/[0.05] rounded-xl shadow-sm text-[var(--fg-primary)] dark:text-amber-100"
-                  value={aiVocabAnalysisValue}
-                />
-                <div className="flex items-center gap-2">
-                  <input 
-                    type="text"
-                    placeholder="E.g. extract advanced idioms"
-                    className="flex-1 bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)]/[0.03] border border-[var(--warning-color)] dark:border-amber-900/10 py-2.5 px-3 rounded-xl text-xs outline-none focus:border-amber-300 transition-colors shadow-sm dark:text-white"
-                    value={vocabInstruction}
-                    onChange={(e) => setVocabInstruction(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !isGenerating) {
-                        onAiGenerate('vocab', vocabInstruction.trim());
-                      }
-                    }}
-                  />
-                  <button
-                    onClick={() => onAiGenerate('vocab', vocabInstruction.trim())}
-                    disabled={isGenerating}
-                    className="bg-[var(--warning-color)] text-white p-2.5 rounded-xl hover:bg-amber-600 transition-colors disabled:opacity-50"
-                  >
-                    <Send size={14} />
-                  </button>
-                </div>
+               {!hideAiVocab && (
+                 <>
+                   <textarea
+                      readOnly
+                      className="w-full p-4 text-sm leading-loose resize-none h-32 outline-none bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)]/[0.05] rounded-xl shadow-sm text-[var(--fg-primary)] dark:text-amber-100"
+                      value={aiVocabAnalysisValue}
+                    />
+                    <div className="flex items-center gap-2">
+                      <input 
+                        type="text"
+                        placeholder="E.g. extract advanced idioms"
+                        className="flex-1 bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)]/[0.03] border border-[var(--warning-color)] dark:border-amber-900/10 py-2.5 px-3 rounded-xl text-xs outline-none focus:border-amber-300 transition-colors shadow-sm dark:text-white"
+                        value={vocabInstruction}
+                        onChange={(e) => setVocabInstruction(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && !isGenerating) {
+                            onAiGenerate('vocab', vocabInstruction.trim());
+                          }
+                        }}
+                      />
+                      <button
+                        onClick={() => onAiGenerate('vocab', vocabInstruction.trim())}
+                        disabled={isGenerating}
+                        className="bg-[var(--warning-color)] text-white p-2.5 rounded-xl hover:bg-amber-600 transition-colors disabled:opacity-50"
+                      >
+                        <Send size={14} />
+                      </button>
+                    </div>
+                 </>
+               )}
             </div>
           )}
         </div>
