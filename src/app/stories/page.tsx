@@ -5,7 +5,7 @@ import { useStore } from "@/lib/store";
 import { Topic, Story } from "@/types";
 import {
   Plus, X, Check, ChevronDown, Sparkles, Link2, Trash2,
-  BookOpen, Edit2, Upload, MessageCircle
+  BookOpen, Edit2, Upload, MessageCircle, HelpCircle, FileText
 } from "lucide-react";
 import DualEditor from "@/components/DualEditor";
 import { useRouter } from "next/navigation";
@@ -64,6 +64,8 @@ export default function StoriesPage() {
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const [localEditingTopic, setLocalEditingTopic] = useState<Topic | null>(null);
   const [snapshot, setSnapshot] = useState<any>(null);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
   
@@ -135,8 +137,8 @@ export default function StoriesPage() {
     }
   };
 
-  const handleBulkImport = () => {
-    const blocks = bulkText.split(/\n\s*---\s*\n|\n\s*\n/).map(b => b.trim()).filter(Boolean);
+  const processImportedText = (text: string) => {
+    const blocks = text.split(/\n\s*---\s*\n|\n\s*\n/).map(b => b.trim()).filter(Boolean);
     const topicsToImport: any[] = [];
 
     blocks.forEach((block) => {
@@ -187,10 +189,52 @@ export default function StoriesPage() {
       batchImportTopicsFull(topicsToImport);
     }
     
-    setBulkText("");
-    setIsBulkMode(false);
     setImportStatus(`Imported ${topicsToImport.length} topics.`);
     setTimeout(() => setImportStatus(null), 3000);
+  };
+
+  const handleBulkImport = () => {
+    processImportedText(bulkText);
+    setBulkText("");
+    setIsBulkMode(false);
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsImporting(true);
+    setImportStatus("Processing file...");
+
+    try {
+      if (file.name.endsWith('.docx')) {
+        const mammoth = await import("mammoth");
+        const arrayBuffer = await file.arrayBuffer();
+        const result = await mammoth.extractRawText({ arrayBuffer });
+        processImportedText(result.value);
+      } else if (file.name.endsWith('.txt')) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const text = event.target?.result as string;
+          processImportedText(text);
+        };
+        reader.onerror = () => {
+          setImportStatus("Error reading text file.");
+          setTimeout(() => setImportStatus(null), 3000);
+        };
+        reader.readAsText(file);
+      } else {
+        setImportStatus("Unsupported file type. Use .txt or .docx");
+        setTimeout(() => setImportStatus(null), 3000);
+      }
+    } catch (error) {
+      setImportStatus("Error uploading file.");
+      setTimeout(() => setImportStatus(null), 3000);
+    } finally {
+      setIsImporting(false);
+    }
+    
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handlePart3Import = (topicId: string) => {
@@ -212,6 +256,112 @@ export default function StoriesPage() {
         </div>
       )}
 
+      {/* Bilingual Import Guide Modal */}
+      {isGuideOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] flex items-center justify-center p-6 animate-in fade-in zoom-in-95 duration-300">
+          <div className="w-full max-w-2xl bg-[var(--bg-card)] border border-[var(--border-color)] shadow-2xl rounded-[3rem] overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="p-10 border-b border-[var(--border-color)] flex justify-between items-center">
+              <div className="space-y-1">
+                <h2 className="text-3xl font-playfair tracking-tight text-[var(--fg-primary)]">Import Guide</h2>
+                <p className="nga-label text-[10px] text-[var(--fg-muted)]">导入指南 (Part 2 专属)</p>
+              </div>
+              <button 
+                onClick={() => setIsGuideOpen(false)}
+                className="p-3 hover:bg-[var(--bg-secondary)] rounded-full transition-colors text-[var(--fg-muted)] hover:text-[var(--fg-primary)]"
+              >
+                <X size={20} strokeWidth={1.5} />
+              </button>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-10 space-y-12 custom-scrollbar">
+              <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[var(--fg-primary)] text-[var(--bg-primary)] flex items-center justify-center text-[10px] font-bold">1</div>
+                  <h3 className="text-sm font-bold tracking-widest uppercase text-[var(--fg-primary)]">General Rules (通用规则)</h3>
+                </div>
+                <div className="pl-9 space-y-4">
+                  <p className="text-sm leading-relaxed text-[var(--fg-secondary)]">
+                    <strong className="text-[var(--fg-primary)]">File Types:</strong> .txt or .docx only. Word files are automatically parsed for plain text.
+                    <br/>
+                    <small className="text-[var(--fg-muted)]">支持文件格式：仅限 .txt 或 .docx。</small>
+                  </p>
+                  <p className="text-sm leading-relaxed text-[var(--fg-secondary)]">
+                    <strong className="text-[var(--fg-primary)]">Separator:</strong> Separate different topics using <code className="bg-black/10 dark:bg-white/10 px-1 rounded">---</code> on a new line.
+                    <br/>
+                    <small className="text-[var(--fg-muted)]">分隔符：不同的话题之间请用三个减号 `---` 隔开。</small>
+                  </p>
+                </div>
+              </section>
+
+              {/* Keywords Section */}
+              <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[var(--fg-primary)] text-[var(--bg-primary)] flex items-center justify-center text-[10px] font-bold">2</div>
+                  <h3 className="text-sm font-bold tracking-widest uppercase text-[var(--fg-primary)]">Keywords (支持的标签)</h3>
+                </div>
+                <div className="pl-9 grid grid-cols-2 gap-4">
+                  {[
+                    { en: 'Topic Title', zh: '话题题目', markers: '[TopicTitle]' },
+                    { en: 'Cue Card', zh: '题卡内容', markers: '[CueCard]' },
+                    { en: 'Answer Script', zh: '参考讲稿', markers: '[Answer]' },
+                    { en: 'Translation', zh: '中文翻译', markers: '[Translation]' },
+                    { en: 'Vocab', zh: '词汇笔记', markers: '[Vocab]' },
+                    { en: 'Part 3 Qs', zh: 'P3扩展题', markers: '[Part3] (可多次使用)' }
+                  ].map((item, idx) => (
+                    <div key={idx} className="bg-[var(--bg-secondary)]/50 p-4 rounded-2xl border border-[var(--border-color)]">
+                      <p className="text-[10px] uppercase tracking-tighter font-bold text-[var(--fg-muted)] mb-1">{item.en} ({item.zh})</p>
+                      <code className="text-[11px] font-mono text-[var(--accent-color)]">{item.markers}</code>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Template Section */}
+              <section className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[var(--fg-primary)] text-[var(--bg-primary)] flex items-center justify-center text-[10px] font-bold">3</div>
+                  <h3 className="text-sm font-bold tracking-widest uppercase text-[var(--fg-primary)]">Example Template (示例模板)</h3>
+                </div>
+                <div className="pl-9">
+                  <div className="bg-[var(--bg-secondary)]/50 text-[var(--fg-primary)] p-8 rounded-3xl relative overflow-hidden border border-[var(--border-color)]">
+                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                      <BookOpen size={60} />
+                    </div>
+                    <pre className="text-xs font-mono leading-loose whitespace-pre-wrap opacity-80 text-[var(--fg-primary)]">
+{`[TopicTitle] Describe a person who has influenced you
+[CueCard] You should say:
+- Who this person is
+- How you met them
+- And explain why they influenced you
+[Answer] I would like to talk about my high school teacher...
+[Translation] 我想谈谈我的高中老师...
+[Vocab] influence - 影响
+mentor - 导师
+[Part3] How do people in your country show respect to teachers?
+[Part3] Do you think teachers should be friends with their students?
+---
+[TopicTitle] Describe an important object
+[CueCard] You should say:
+- What it is
+...`}
+                    </pre>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div className="p-10 border-t border-[var(--border-color)] flex justify-center">
+              <button 
+                onClick={() => setIsGuideOpen(false)}
+                className="nga-button-outline px-12"
+              >
+                I Understand (了解了)
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <header className="flex justify-between items-start border-b border-[var(--border-color)] pb-10">
         <div className="space-y-2">
@@ -219,9 +369,30 @@ export default function StoriesPage() {
           <p className="nga-label">Stories <span className="font-sans opacity-40">&</span> Topics</p>
         </div>
         <div className="flex gap-3">
+          <button 
+            onClick={() => fileInputRef.current?.click()}
+            className="p-3 border border-[var(--border-color)] rounded-full hover:bg-[var(--fg-primary)] hover:text-[var(--bg-primary)] transition-all group relative text-[var(--fg-primary)] shadow-sm"
+            title="Import from file (.txt, .docx)"
+          >
+            <Upload size={20} strokeWidth={1.5} />
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              className="hidden" 
+              accept=".txt,.docx" 
+              onChange={handleFileUpload} 
+            />
+          </button>
+          <button 
+            onClick={() => setIsGuideOpen(true)}
+            className="p-3 border border-[var(--border-color)] rounded-full hover:bg-[var(--fg-primary)] hover:text-[var(--bg-primary)] transition-all group relative mr-2 text-[var(--fg-primary)] shadow-sm"
+            title="View Import Guide (查看导入指南)"
+          >
+            <HelpCircle size={20} strokeWidth={1.5} />
+          </button>
           <button
             onClick={() => tab === "topics" ? setIsAddingTopic(true) : setIsAddingStory(true)}
-            className="p-3 border border-[var(--border-color)] rounded-full hover:bg-[var(--fg-primary)] hover:text-[var(--bg-primary)] transition-all text-[var(--fg-primary)]"
+            className="p-3 border border-[var(--border-color)] rounded-full hover:bg-[var(--fg-primary)] hover:text-[var(--bg-primary)] transition-all text-[var(--fg-primary)] shadow-sm"
           >
             <Plus size={20} strokeWidth={1.5} />
           </button>
@@ -285,8 +456,8 @@ export default function StoriesPage() {
             onClick={() => setIsBulkMode(true)}
             className="w-full text-[9px] nga-label flex items-center justify-center gap-2 py-3 border border-dashed border-[var(--border-color)] rounded-xl hover:border-[var(--fg-primary)] transition-all text-[var(--fg-muted)] hover:text-[var(--fg-primary)] bg-[var(--bg-secondary)]"
           >
-            <Upload size={12} />
-            Batch Import Question Bank (批量录入题库)
+            <FileText size={12} />
+            Paste Text Import (粘贴文本导入)
           </button>
           
           {isBulkMode && (

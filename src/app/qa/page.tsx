@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useStore } from "@/lib/store";
-import { Plus, ChevronDown, ChevronUp, Edit2, Check, X, Book, Sparkles, Upload, Trash2, Volume2, Square, HelpCircle } from "lucide-react";
+import { Plus, ChevronDown, ChevronUp, Edit2, Check, X, Book, Sparkles, Upload, Trash2, Volume2, Square, HelpCircle, FileText } from "lucide-react";
 import { Category, Question } from "@/types";
 import DualEditor from "@/components/DualEditor";
 import { useTTS } from "@/hooks/useTTS";
@@ -37,6 +37,8 @@ function QAPageContent() {
   const [isImporting, setIsImporting] = useState(false);
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const [snapshot, setSnapshot] = useState<any>(null);
+  const [isBulkMode, setIsBulkMode] = useState(false);
+  const [bulkText, setBulkText] = useState("");
   const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   const searchParams = useSearchParams();
@@ -373,6 +375,51 @@ T: 当然！我发现我的注意力往往会下降...`}
             />
             <button onClick={handleAddCategory} className="p-2 text-[var(--fg-primary)]"><Check size={20} /></button>
             <button onClick={() => setIsAddingCategory(false)} className="p-2 text-[var(--fg-muted)]"><X size={20} /></button>
+          </div>
+        </div>
+      )}
+
+      {/* Bulk import toggle button for Paste */}
+      <div className="flex gap-4">
+        <button
+          onClick={() => setIsBulkMode(true)}
+          className="flex-1 text-[9px] nga-label flex items-center justify-center gap-2 py-3 border border-dashed border-[var(--border-color)] rounded-xl hover:border-[var(--fg-primary)] transition-all text-[var(--fg-muted)] hover:text-[var(--fg-primary)] bg-[var(--bg-secondary)]"
+        >
+          <FileText size={12} />
+          Paste Text Import (粘贴文本导入)
+        </button>
+      </div>
+
+      {isBulkMode && (
+        <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[var(--bg-card)] rounded-[2.5rem] w-full max-w-2xl p-8 space-y-6 animate-in zoom-in-95 duration-300 border border-[var(--border-color)] shadow-2xl">
+            <div className="flex justify-between items-center">
+              <h3 className="font-playfair text-2xl text-[var(--fg-primary)]">Paste Text Import</h3>
+              <button onClick={() => setIsBulkMode(false)} className="text-[var(--fg-muted)] hover:text-[var(--fg-primary)]">
+                <X size={20} />
+              </button>
+            </div>
+            <p className="text-xs text-[var(--fg-muted)] leading-relaxed">
+              Paste your raw text here. Please follow the format in the Import Guide.
+            </p>
+            <textarea
+              autoFocus
+              className="w-full border border-[var(--border-color)] rounded-xl p-4 text-sm outline-none h-64 bg-[var(--bg-secondary)] resize-none leading-relaxed text-[var(--fg-primary)] placeholder:text-[var(--fg-muted)] opacity-80"
+              placeholder="Topic: Work & Study&#10;Q: Do you prefer to study in the morning or evening?&#10;A: Well, for me, I'm definitely a morning person.&#10;..."
+              value={bulkText}
+              onChange={(e) => setBulkText(e.target.value)}
+            />
+            <div className="flex justify-end gap-4">
+              <button onClick={() => setIsBulkMode(false)} className="nga-label text-[9px]">Cancel</button>
+              <button onClick={() => {
+                if (bulkText.trim()) {
+                  setIsImporting(true);
+                  processImportedText(bulkText);
+                  setIsBulkMode(false);
+                  setBulkText("");
+                }
+              }} className="nga-button-outline">Import</button>
+            </div>
           </div>
         </div>
       )}
