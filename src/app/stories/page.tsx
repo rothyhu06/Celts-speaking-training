@@ -37,7 +37,7 @@ What made it so rewarding wasn't just the food itself — it was this sense of s
 
 export default function StoriesPage() {
   const [mounted, setMounted] = useState(false);
-  const { topics, stories, user, addTopic, updateTopic, deleteTopic, addStory, updateStory, deleteStory, addPart3Question, updatePart3Question, deletePart3Question, batchImportPart3 } = useStore();
+  const { topics, stories, user, addTopic, updateTopic, deleteTopic, addStory, updateStory, deleteStory, addPart3Question, updatePart3Question, deletePart3Question, batchImportPart3, batchImportTopicsFull } = useStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
@@ -136,20 +136,60 @@ export default function StoriesPage() {
   };
 
   const handleBulkImport = () => {
-    const blocks = bulkText.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
-    let count = 0;
-    blocks.forEach(block => {
-      const lines = block.split('\n');
-      const title = lines[0].trim();
-      const cueCard = lines.slice(1).join('\n').trim();
-      if (title.length > 3) {
-        addTopic(title, cueCard || undefined);
-        count++;
+    const blocks = bulkText.split(/\n\s*---\s*\n|\n\s*\n/).map(b => b.trim()).filter(Boolean);
+    const topicsToImport: any[] = [];
+
+    blocks.forEach((block) => {
+      // Parse with regex if tags exist
+      const titleMatch = block.match(/\[TopicTitle\]([\s\S]*?)(?=\[(CueCard|Answer|Translation|Vocab|Part3)\]|$)/i);
+      const cueCardMatch = block.match(/\[CueCard\]([\s\S]*?)(?=\[(TopicTitle|Answer|Translation|Vocab|Part3)\]|$)/i);
+      const answerMatch = block.match(/\[Answer\]([\s\S]*?)(?=\[(TopicTitle|CueCard|Translation|Vocab|Part3)\]|$)/i);
+      const translationMatch = block.match(/\[Translation\]([\s\S]*?)(?=\[(TopicTitle|CueCard|Answer|Vocab|Part3)\]|$)/i);
+      const vocabMatch = block.match(/\[Vocab\]([\s\S]*?)(?=\[(TopicTitle|CueCard|Answer|Translation|Part3)\]|$)/i);
+      const part3Match = block.match(/\[Part3\]([\s\S]*?)(?=\[(TopicTitle|CueCard|Answer|Translation|Vocab)\]|$)/i);
+
+      let title = "";
+      let cueCard = "";
+      
+      // If we don't have tags, assume old format
+      if (!titleMatch && !block.toLowerCase().includes('[topictitle]')) {
+         const lines = block.split('\n');
+         title = lines[0].trim();
+         cueCard = lines.slice(1).join('\n').trim();
+         if (title.length > 3) {
+           topicsToImport.push({ title, cueCard: cueCard || undefined });
+         }
+      } else {
+         title = titleMatch ? titleMatch[1].trim() : "";
+         cueCard = cueCardMatch ? cueCardMatch[1].trim() : "";
+         const script = answerMatch ? answerMatch[1].trim() : "";
+         const translation = translationMatch ? translationMatch[1].trim() : "";
+         const vocabAnalysisText = vocabMatch ? vocabMatch[1].trim() : "";
+         
+         const part3Questions = part3Match 
+           ? part3Match[1].split('\n').map(l => l.replace(/^\d+\.\s*/, '').trim()).filter(Boolean)
+           : [];
+           
+         if (title.length > 3) {
+            topicsToImport.push({
+               title,
+               cueCard: cueCard || undefined,
+               script: script || undefined,
+               translation: translation || undefined,
+               vocabAnalysisText: vocabAnalysisText || undefined,
+               part3Questions
+            });
+         }
       }
     });
+
+    if (topicsToImport.length > 0) {
+      batchImportTopicsFull(topicsToImport);
+    }
+    
     setBulkText("");
     setIsBulkMode(false);
-    setImportStatus(`Imported ${count} topics.`);
+    setImportStatus(`Imported ${topicsToImport.length} topics.`);
     setTimeout(() => setImportStatus(null), 3000);
   };
 
@@ -259,12 +299,12 @@ export default function StoriesPage() {
                   </button>
                 </div>
                 <p className="text-xs text-[var(--fg-muted)] leading-relaxed">
-                  Paste raw text here. Topics separated by empty lines (double enter) will be split automatically. The first line of each block becomes the Title, the rest becomes the Cue Card.
+                  Paste raw text here. Separate topics with <code className="bg-black/10 dark:bg-white/10 px-1 rounded">---</code>. Support tags: [TopicTitle], [CueCard], [Answer], [Translation], [Vocab], [Part3].
                 </p>
                 <textarea
                   autoFocus
                   className="w-full border border-[var(--border-color)] rounded-xl p-4 text-sm outline-none h-64 bg-[var(--bg-secondary)] resize-none leading-relaxed text-[var(--fg-primary)] placeholder:text-[var(--fg-muted)] opacity-80"
-                  placeholder="Describe a person...&#10;You should say:&#10;- who...&#10;&#10;Describe an object...&#10;You should say:&#10;- what..."
+                  placeholder="[TopicTitle] Describe a person...&#10;[CueCard] You should say...&#10;[Answer] I want to talk about...&#10;[Translation] 我想谈谈...&#10;[Vocab] influence - 影响&#10;[Part3] How do people...&#10;---&#10;[TopicTitle] Describe an object..."
                   value={bulkText}
                   onChange={(e) => setBulkText(e.target.value)}
                 />

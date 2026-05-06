@@ -35,6 +35,7 @@ interface AppState {
   addTopic: (title: string, cueCard?: string) => void;
   updateTopic: (topicId: string, updates: Partial<Topic>) => void;
   deleteTopic: (topicId: string) => void;
+  batchImportTopicsFull: (topicsData: { title: string; cueCard?: string; script?: string; translation?: string; vocabAnalysisText?: string; part3Questions?: string[] }[]) => void;
 
   // Story actions
   addStory: (title: string, tag: string, summary?: string) => void;
@@ -316,6 +317,26 @@ export const useStore = create<AppState>()(
 
       deleteTopic: (topicId) =>
         set((state) => ({ topics: state.topics.filter((t) => t.id !== topicId) })),
+
+      batchImportTopicsFull: (topicsData) =>
+        set((state) => {
+          const newTopics = topicsData.map((data) => ({
+            id: uuidv4(),
+            userId: state.user?.id ?? 'user-1',
+            title: data.title,
+            cueCard: data.cueCard,
+            script: data.script,
+            translation: data.translation,
+            vocabAnalysisText: data.vocabAnalysisText,
+            part3Questions: data.part3Questions?.map((q) => ({
+              id: uuidv4(),
+              question: q,
+              isAiGenerated: { answer: false, translation: false },
+            })) || [],
+            isAiGenerated: { script: false, translation: false },
+          }));
+          return { topics: [...state.topics, ...newTopics] };
+        }),
 
       addStory: (title, tag, summary) =>
         set((state) => ({
