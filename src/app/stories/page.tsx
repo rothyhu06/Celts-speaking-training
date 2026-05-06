@@ -61,6 +61,10 @@ export default function StoriesPage() {
   const [isBulkMode, setIsBulkMode] = useState(false);
   const [editingTopicId, setEditingTopicId] = useState<string | null>(null);
   const [editingTopicTitle, setEditingTopicTitle] = useState("");
+  const [editingStoryId, setEditingStoryId] = useState<string | null>(null);
+  const [editingStoryTitle, setEditingStoryTitle] = useState("");
+  const [editingStorySummary, setEditingStorySummary] = useState("");
+  const [editingStoryTag, setEditingStoryTag] = useState<typeof TAGS[number]>("Person");
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const [localEditingTopic, setLocalEditingTopic] = useState<Topic | null>(null);
   const [snapshot, setSnapshot] = useState<any>(null);
@@ -129,6 +133,7 @@ export default function StoriesPage() {
       }
 
       updateTopic(topic.id, baseUpdate);
+      setLocalEditingTopic(prev => prev ? { ...prev, ...baseUpdate } : null);
     } catch (error) {
       console.error("Part 2 AI Generation failed:", error);
       alert("AI Generation failed. Please check your API key or connection.");
@@ -687,24 +692,77 @@ mentor - 导师
           ) : (
             userStories.map((story) => {
               const linkedCount = userTopics.filter((t) => t.linkedStoryId === story.id).length;
+              const isEditingStory = editingStoryId === story.id;
+              
               return (
                 <div key={story.id} className="nga-card group">
-                  <div className="flex items-start gap-4">
-                    <span className="text-[8px] bg-[var(--accent-color)] text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter shrink-0 mt-0.5">
-                      {story.tag}
-                    </span>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-playfair font-medium">{story.title}</p>
-                      {story.summary && <p className="text-xs text-muted mt-1 font-light">{story.summary}</p>}
-                      <p className="text-[9px] nga-label mt-2">{linkedCount} topics linked</p>
+                  {isEditingStory ? (
+                    <div className="flex flex-col gap-3 w-full">
+                      <div className="flex gap-2">
+                        <select
+                          className="border border-[var(--border-color)] rounded-xl py-2 px-3 outline-none text-sm bg-[var(--bg-secondary)]"
+                          value={editingStoryTag}
+                          onChange={(e) => setEditingStoryTag(e.target.value as typeof TAGS[number])}
+                        >
+                          {TAGS.map((t) => <option key={t} value={t}>{t}</option>)}
+                        </select>
+                        <input
+                          autoFocus
+                          className="flex-1 border-b border-[var(--fg-primary)] py-2 outline-none text-base font-playfair italic bg-transparent text-[var(--fg-primary)]"
+                          value={editingStoryTitle}
+                          onChange={(e) => setEditingStoryTitle(e.target.value)}
+                        />
+                      </div>
+                      <textarea
+                        className="w-full border border-[var(--border-color)] rounded-xl p-3 text-sm outline-none h-20 bg-[var(--bg-secondary)]/30 resize-none font-light placeholder:text-[var(--fg-muted)]"
+                        placeholder="Summary..."
+                        value={editingStorySummary}
+                        onChange={(e) => setEditingStorySummary(e.target.value)}
+                      />
+                      <div className="flex justify-end gap-2">
+                        <button onClick={() => setEditingStoryId(null)} className="p-2 text-[var(--fg-muted)] hover:text-[var(--fg-primary)] transition-all"><X size={16}/></button>
+                        <button 
+                          onClick={() => {
+                            updateStory(story.id, { title: editingStoryTitle, tag: editingStoryTag, summary: editingStorySummary });
+                            setEditingStoryId(null);
+                          }} 
+                          className="p-2 text-[var(--fg-primary)] hover:scale-110 transition-all"
+                        >
+                          <Check size={16}/>
+                        </button>
+                      </div>
                     </div>
-                    <button
-                      onClick={() => { if (confirm("Delete story?")) deleteStory(story.id); }}
-                      className="p-1.5 text-[var(--fg-primary)] hover:text-[var(--danger-color)] transition-all"
-                    >
-                      <Trash2 size={13} strokeWidth={1.5} />
-                    </button>
-                  </div>
+                  ) : (
+                    <div className="flex items-start gap-4">
+                      <span className="text-[8px] bg-[var(--accent-color)] text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter shrink-0 mt-0.5">
+                        {story.tag}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-playfair font-medium">{story.title}</p>
+                        {story.summary && <p className="text-xs text-[var(--fg-muted)] mt-1 font-light">{story.summary}</p>}
+                        <p className="text-[9px] nga-label mt-2">{linkedCount} topics linked</p>
+                      </div>
+                      <div className="flex flex-col items-end gap-2">
+                        <button
+                          onClick={() => { if (confirm("Delete story?")) deleteStory(story.id); }}
+                          className="p-1.5 text-[var(--fg-primary)] hover:text-[var(--danger-color)] transition-all"
+                        >
+                          <Trash2 size={13} strokeWidth={1.5} />
+                        </button>
+                        <button
+                          onClick={() => {
+                            setEditingStoryId(story.id);
+                            setEditingStoryTitle(story.title);
+                            setEditingStorySummary(story.summary || "");
+                            setEditingStoryTag(story.tag as any);
+                          }}
+                          className="p-1.5 text-[var(--fg-primary)] hover:scale-110 transition-all"
+                        >
+                          <Edit2 size={13} strokeWidth={1.5} />
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               );
             })

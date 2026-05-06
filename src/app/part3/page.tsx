@@ -96,7 +96,7 @@ function Part3PageContent() {
 
       updatePart3Question(topicId, q.id, baseUpdate);
       if (editingData?.q.id === q.id) {
-        setEditingData({ topicId, q: { ...q, ...baseUpdate } });
+        setEditingData(prev => prev ? { topicId, q: { ...prev.q, ...baseUpdate } } : null);
       }
     } catch (error) {
       console.error("Part 3 AI Generation failed:", error);
