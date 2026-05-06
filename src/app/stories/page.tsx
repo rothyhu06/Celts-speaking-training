@@ -871,7 +871,7 @@ mentor - 导师
 
                   <div className="space-y-4">
                     {(activeTopic.part3Questions || []).map((q) => (
-                      <div key={q.id} className="bg-white border border-[var(--border-color)] rounded-xl p-5 flex justify-between items-start gap-4 group hover:shadow-sm hover:border-gray-200 transition-all cursor-pointer" onClick={() => router.push(`/part3?topicId=${activeTopic.id}&questionId=${q.id}`)}>
+                      <div key={q.id} className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 flex justify-between items-start gap-4 group hover:shadow-sm hover:border-[var(--fg-primary)] transition-all cursor-pointer" onClick={() => router.push(`/part3?topicId=${activeTopic.id}&questionId=${q.id}`)}>
                         <div className="flex-1 space-y-2">
                           <p className="text-sm font-medium leading-relaxed font-playfair">{q.question}</p>
                           {q.answer && q.answer.trim().length > 0 && (
