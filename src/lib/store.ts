@@ -35,6 +35,7 @@ interface AppState {
   addTopic: (title: string, cueCard?: string) => void;
   updateTopic: (topicId: string, updates: Partial<Topic>) => void;
   deleteTopic: (topicId: string) => void;
+  batchDeleteTopics: (topicIds: string[]) => void;
   batchImportTopicsFull: (topicsData: { title: string; cueCard?: string; script?: string; translation?: string; vocabAnalysisText?: string; part3Questions?: string[] }[]) => void;
 
   // Story actions
@@ -317,6 +318,9 @@ export const useStore = create<AppState>()(
 
       deleteTopic: (topicId) =>
         set((state) => ({ topics: state.topics.filter((t) => t.id !== topicId) })),
+
+      batchDeleteTopics: (topicIds) =>
+        set((state) => ({ topics: state.topics.filter((t) => !topicIds.includes(t.id)) })),
 
       batchImportTopicsFull: (topicsData) =>
         set((state) => {

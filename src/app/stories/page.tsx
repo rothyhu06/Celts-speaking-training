@@ -5,7 +5,7 @@ import { useStore } from "@/lib/store";
 import { Topic, Story } from "@/types";
 import {
   Plus, X, Check, ChevronDown, Sparkles, Link2, Trash2,
-  BookOpen, Edit2, Upload, MessageCircle, HelpCircle, FileText
+  BookOpen, Edit2, Upload, MessageCircle, HelpCircle, FileText, CheckSquare
 } from "lucide-react";
 import DualEditor from "@/components/DualEditor";
 import { useRouter } from "next/navigation";
@@ -37,7 +37,7 @@ What made it so rewarding wasn't just the food itself — it was this sense of s
 
 export default function StoriesPage() {
   const [mounted, setMounted] = useState(false);
-  const { topics, stories, user, addTopic, updateTopic, deleteTopic, addStory, updateStory, deleteStory, addPart3Question, updatePart3Question, deletePart3Question, batchImportPart3, batchImportTopicsFull } = useStore();
+  const { topics, stories, user, addTopic, updateTopic, deleteTopic, addStory, updateStory, deleteStory, addPart3Question, updatePart3Question, deletePart3Question, batchImportPart3, batchImportTopicsFull, batchDeleteTopics } = useStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
@@ -66,6 +66,8 @@ export default function StoriesPage() {
   const [snapshot, setSnapshot] = useState<any>(null);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const [isSelectMode, setIsSelectMode] = useState(false);
+  const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>([]);
 
   useEffect(() => { setMounted(true); }, []);
   
@@ -388,6 +390,38 @@ mentor - 导师
           >
             <HelpCircle size={20} strokeWidth={1.5} />
           </button>
+          
+          {tab === "topics" && (
+            <>
+              {selectedTopicIds.length > 0 && isSelectMode && (
+                <button
+                  onClick={() => {
+                    if (confirm(`Delete ${selectedTopicIds.length} topics?`)) {
+                      batchDeleteTopics(selectedTopicIds);
+                      setSelectedTopicIds([]);
+                      setIsSelectMode(false);
+                    }
+                  }}
+                  className="px-4 py-3 border border-[var(--danger-color)] text-[var(--danger-color)] rounded-full hover:bg-[var(--danger-color)] hover:text-white transition-all text-[10px] uppercase tracking-widest font-bold shadow-sm"
+                >
+                  Delete ({selectedTopicIds.length})
+                </button>
+              )}
+              <button 
+                onClick={() => {
+                  setIsSelectMode(!isSelectMode);
+                  if (isSelectMode) setSelectedTopicIds([]);
+                }}
+                className={`p-3 border border-[var(--border-color)] rounded-full transition-all group relative mr-2 shadow-sm ${
+                  isSelectMode ? "bg-[var(--fg-primary)] text-[var(--bg-primary)]" : "hover:bg-[var(--fg-primary)] hover:text-[var(--bg-primary)] text-[var(--fg-primary)]"
+                }`}
+                title="Batch Select Mode (批量选择)"
+              >
+                <CheckSquare size={20} strokeWidth={1.5} />
+              </button>
+            </>
+          )}
+
           <button
             onClick={() => tab === "topics" ? setIsAddingTopic(true) : setIsAddingStory(true)}
             className="p-3 border border-[var(--border-color)] rounded-full hover:bg-[var(--fg-primary)] hover:text-[var(--bg-primary)] transition-all text-[var(--fg-primary)] shadow-sm"
@@ -497,9 +531,22 @@ mentor - 导师
               return (
                 <div 
                   key={topic.id} 
-                  className="nga-card group flex items-start gap-5 cursor-pointer hover:shadow-sm transition-all"
-                  onClick={() => !isEditing && setActiveDrawerTopicId(topic.id)}
+                  className={`nga-card group flex items-start gap-5 cursor-pointer hover:shadow-sm transition-all ${
+                    selectedTopicIds.includes(topic.id) ? "ring-2 ring-[var(--fg-primary)] bg-[var(--accent-soft)]" : ""
+                  }`}
+                  onClick={() => {
+                    if (isSelectMode) {
+                      setSelectedTopicIds(prev => prev.includes(topic.id) ? prev.filter(id => id !== topic.id) : [...prev, topic.id]);
+                    } else if (!isEditing) {
+                      setActiveDrawerTopicId(topic.id);
+                    }
+                  }}
                 >
+                  {isSelectMode && (
+                    <div className="mt-1 mr-2 text-[var(--fg-primary)] opacity-80">
+                      {selectedTopicIds.includes(topic.id) ? <CheckSquare size={20} /> : <div className="w-5 h-5 border-2 border-[var(--fg-primary)] rounded-[4px] opacity-40"></div>}
+                    </div>
+                  )}
                   <div className="flex-1 min-w-0">
                     {isEditing ? (
                       <div className="flex gap-4 items-center" onClick={(e) => e.stopPropagation()}>
