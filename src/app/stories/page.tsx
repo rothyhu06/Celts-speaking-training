@@ -167,7 +167,7 @@ export default function StoriesPage() {
          const vocabAnalysisText = vocabMatch ? vocabMatch[1].trim() : "";
          
          const part3Questions = part3Match 
-           ? part3Match[1].split('\n').map(l => l.replace(/^\d+\.\s*/, '').trim()).filter(Boolean)
+           ? part3Match[1].split('\n').map(l => l.replace(/^\[Part3\]\s*/i, '').replace(/^\d+\.\s*/, '').trim()).filter(Boolean)
            : [];
            
          if (title.length > 3) {
