@@ -88,9 +88,7 @@ export default function StoriesPage() {
   const userStories = stories.filter((s) => s.userId === uid);
 
   const handleAiGenerate = async (type: 'script' | 'translation' | 'vocab' | 'coaching', topic: Topic, instruction?: string) => {
-    if (!topic.linkedStoryId) return;
-    const story = userStories.find((s) => s.id === topic.linkedStoryId);
-    if (!story) return;
+    const story = topic.linkedStoryId ? userStories.find((s) => s.id === topic.linkedStoryId) : null;
     setIsGenerating(true);
 
     try {
@@ -100,7 +98,7 @@ export default function StoriesPage() {
       const context = {
         question: topic.title,
         cueCard: topic.cueCard,
-        storyDetails: story.summary,
+        storyDetails: story ? story.summary : undefined,
         chineseLogic: topic.chineseLogic,
         preferredStyle: user.preferredStyle,
         age: user.age,
@@ -711,7 +709,7 @@ mentor - 导师
               </div>
 
               {/* Dual Editor */}
-              {activeTopic && activeTopic.linkedStoryId && localEditingTopic && (
+              {activeTopic && localEditingTopic && (
                 <DualEditor
                   title={activeTopic.title}
                   subtitle={activeTopic.cueCard}
@@ -745,7 +743,7 @@ mentor - 导师
               )}
 
               {/* Part 3 Questions */}
-              {activeTopic.linkedStoryId && (
+              {activeTopic && (
                 <div className="pt-12 border-t border-[var(--border-color)] space-y-6">
                   <div className="space-y-2">
                     <p className="nga-label">Part 3 Extensions</p>
