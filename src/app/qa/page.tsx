@@ -356,6 +356,21 @@ T: 当然！我发现我的注意力往往会下降...`}
             <HelpCircle size={20} strokeWidth={1.5} />
           </button>
           
+          {isSelectMode && (
+            <button
+              onClick={() => {
+                const allQIds = userCategories.flatMap(c => c.questions.map(q => q.id));
+                if (selectedQuestionIds.length === allQIds.length && allQIds.length > 0) {
+                  setSelectedQuestionIds([]);
+                } else {
+                  setSelectedQuestionIds(allQIds);
+                }
+              }}
+              className="px-4 py-3 border border-[var(--border-color)] text-[var(--fg-primary)] rounded-full hover:bg-[var(--fg-primary)] hover:text-white transition-all text-[10px] uppercase tracking-widest font-bold shadow-sm"
+            >
+              {selectedQuestionIds.length === userCategories.flatMap(c => c.questions).length && userCategories.flatMap(c => c.questions).length > 0 ? "Deselect All" : "Select All"}
+            </button>
+          )}
           {selectedQuestionIds.length > 0 && isSelectMode && (
             <button
               onClick={() => {

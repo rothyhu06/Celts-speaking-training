@@ -130,6 +130,21 @@ function Part3PageContent() {
           <p className="nga-label">Extended Discussion</p>
         </div>
         <div className="flex gap-4 items-center">
+          {isSelectMode && (
+            <button
+              onClick={() => {
+                const allP3Ids = userTopics.flatMap(t => (t.part3Questions || []).map(q => q.id));
+                if (selectedQuestionIds.length === allP3Ids.length && allP3Ids.length > 0) {
+                  setSelectedQuestionIds([]);
+                } else {
+                  setSelectedQuestionIds(allP3Ids);
+                }
+              }}
+              className="px-4 py-3 border border-[var(--border-color)] text-[var(--fg-primary)] rounded-full hover:bg-[var(--fg-primary)] hover:text-white transition-all text-[10px] uppercase tracking-widest font-bold shadow-sm"
+            >
+              {selectedQuestionIds.length === userTopics.flatMap(t => t.part3Questions || []).length && userTopics.flatMap(t => t.part3Questions || []).length > 0 ? "Deselect All" : "Select All"}
+            </button>
+          )}
           {selectedQuestionIds.length > 0 && isSelectMode && (
             <button
               onClick={() => {

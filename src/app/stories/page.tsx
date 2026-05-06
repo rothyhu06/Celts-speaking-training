@@ -393,6 +393,21 @@ mentor - 导师
           
           {tab === "topics" && (
             <>
+              {isSelectMode && (
+                <button
+                  onClick={() => {
+                    const allTopicIds = userTopics.map(t => t.id);
+                    if (selectedTopicIds.length === allTopicIds.length && allTopicIds.length > 0) {
+                      setSelectedTopicIds([]);
+                    } else {
+                      setSelectedTopicIds(allTopicIds);
+                    }
+                  }}
+                  className="px-4 py-3 border border-[var(--border-color)] text-[var(--fg-primary)] rounded-full hover:bg-[var(--fg-primary)] hover:text-white transition-all text-[10px] uppercase tracking-widest font-bold shadow-sm"
+                >
+                  {selectedTopicIds.length === userTopics.length && userTopics.length > 0 ? "Deselect All" : "Select All"}
+                </button>
+              )}
               {selectedTopicIds.length > 0 && isSelectMode && (
                 <button
                   onClick={() => {
