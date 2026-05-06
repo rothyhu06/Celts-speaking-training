@@ -726,32 +726,16 @@ mentor - 导师
                 {userStories.length === 0 ? (
                   <p className="text-xs text-muted italic">Add stories in the Stories tab first.</p>
                 ) : (
-                  <div className="grid grid-cols-1 gap-2">
-                    {userStories.map((story) => {
-                      const isLinked = activeTopic.linkedStoryId === story.id;
-                      return (
-                        <button
-                          key={story.id}
-                          onClick={() => updateTopic(activeTopic.id, {
-                            linkedStoryId: isLinked ? undefined : story.id,
-                          })}
-                          className={`text-left flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
-                            isLinked 
-                              ? "bg-[var(--bg-primary)] text-[var(--fg-primary)] border-[var(--fg-primary)] shadow-md" 
-                              : "bg-transparent text-[var(--fg-primary)] border-[var(--border-color)] hover:border-[var(--fg-primary)]"
-                          }`}
-                        >
-                          <div className="flex-1">
-                            <p className="text-sm font-medium">{story.title}</p>
-                            <p className={`text-[10px] font-bold uppercase tracking-widest mt-0.5 ${isLinked ? 'text-white/70 dark:text-black/70' : 'text-indigo-500'}`}>
-                              {story.tag}
-                            </p>
-                          </div>
-                          {isLinked && <Check size={14} />}
-                        </button>
-                      );
-                    })}
-                  </div>
+                  <select
+                    className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] text-[var(--fg-primary)] rounded-xl px-4 py-3 text-sm outline-none appearance-none font-playfair"
+                    value={activeTopic.linkedStoryId || ""}
+                    onChange={(e) => updateTopic(activeTopic.id, { linkedStoryId: e.target.value || undefined })}
+                  >
+                    <option value="">(None) Select a story to link...</option>
+                    {userStories.map(story => (
+                      <option key={story.id} value={story.id}>{story.title} [{story.tag}]</option>
+                    ))}
+                  </select>
                 )}
               </div>
 

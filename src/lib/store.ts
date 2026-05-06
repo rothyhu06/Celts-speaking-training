@@ -29,6 +29,7 @@ interface AppState {
   addQuestion: (categoryId: string, question: string, answer?: string) => void;
   updateQuestion: (categoryId: string, questionId: string, updates: Partial<Question>) => void;
   deleteQuestion: (categoryId: string, questionId: string) => void;
+  batchDeleteQuestions: (questionIds: string[]) => void;
   batchImportQA: (pairs: { category: string; question: string; answer?: string; translation?: string; vocabAnalysisText?: string; chineseLogic?: string }[]) => void;
 
   // Topic actions
@@ -47,6 +48,7 @@ interface AppState {
   addPart3Question: (topicId: string, question: string) => void;
   updatePart3Question: (topicId: string, questionId: string, updates: Partial<Part3Question>) => void;
   deletePart3Question: (topicId: string, questionId: string) => void;
+  batchDeletePart3Questions: (questionIds: string[]) => void;
   batchImportPart3: (topicId: string, questions: string[]) => void;
   toggleQuestionPrepared: (categoryId: string, questionId: string) => void;
   togglePart3QuestionPrepared: (topicId: string, questionId: string) => void;
@@ -265,6 +267,14 @@ export const useStore = create<AppState>()(
           ),
         })),
 
+      batchDeleteQuestions: (questionIds) =>
+        set((state) => ({
+          categories: state.categories.map((c) => ({
+            ...c,
+            questions: c.questions.filter((q) => !questionIds.includes(q.id)),
+          })),
+        })),
+
       batchImportQA: (pairs) =>
         set((state) => {
           let updatedCategories = [...state.categories];
@@ -403,6 +413,14 @@ export const useStore = create<AppState>()(
                 }
               : t
           ),
+        })),
+
+      batchDeletePart3Questions: (questionIds) =>
+        set((state) => ({
+          topics: state.topics.map((t) => ({
+            ...t,
+            part3Questions: (t.part3Questions || []).filter((q) => !questionIds.includes(q.id)),
+          })),
         })),
 
       batchImportPart3: (topicId, questions) =>

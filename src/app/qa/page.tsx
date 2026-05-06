@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useStore } from "@/lib/store";
-import { Plus, ChevronDown, ChevronUp, Edit2, Check, X, Book, Sparkles, Upload, Trash2, Volume2, Square, HelpCircle, FileText } from "lucide-react";
+import { Plus, ChevronDown, ChevronUp, Edit2, Check, X, Book, Sparkles, Upload, Trash2, Volume2, Square, HelpCircle, FileText, CheckSquare } from "lucide-react";
 import { Category, Question } from "@/types";
 import DualEditor from "@/components/DualEditor";
 import { useTTS } from "@/hooks/useTTS";
@@ -21,7 +21,7 @@ export default function QAPage() {
 
 function QAPageContent() {
   const [mounted, setMounted] = useState(false);
-  const { categories, addCategory, addQuestion, updateQuestion, user, updateProfile, batchImportQA, deleteCategory, updateCategory, deleteQuestion, toggleQuestionPrepared } = useStore();
+  const { categories, addCategory, addQuestion, updateQuestion, user, updateProfile, batchImportQA, deleteCategory, updateCategory, deleteQuestion, batchDeleteQuestions, toggleQuestionPrepared } = useStore();
   const { playingId, toggleSpeech } = useTTS();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [newCategoryName, setNewCategoryName] = useState("");
@@ -40,6 +40,8 @@ function QAPageContent() {
   const [isBulkMode, setIsBulkMode] = useState(false);
   const [bulkText, setBulkText] = useState("");
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [isSelectMode, setIsSelectMode] = useState(false);
+  const [selectedQuestionIds, setSelectedQuestionIds] = useState<string[]>([]);
 
   const searchParams = useSearchParams();
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
@@ -353,6 +355,34 @@ T: 当然！我发现我的注意力往往会下降...`}
           >
             <HelpCircle size={20} strokeWidth={1.5} />
           </button>
+          
+          {selectedQuestionIds.length > 0 && isSelectMode && (
+            <button
+              onClick={() => {
+                if (confirm(`Delete ${selectedQuestionIds.length} questions?`)) {
+                  batchDeleteQuestions(selectedQuestionIds);
+                  setSelectedQuestionIds([]);
+                  setIsSelectMode(false);
+                }
+              }}
+              className="px-4 py-3 border border-[var(--danger-color)] text-[var(--danger-color)] rounded-full hover:bg-[var(--danger-color)] hover:text-white transition-all text-[10px] uppercase tracking-widest font-bold shadow-sm"
+            >
+              Delete ({selectedQuestionIds.length})
+            </button>
+          )}
+          <button 
+            onClick={() => {
+              setIsSelectMode(!isSelectMode);
+              if (isSelectMode) setSelectedQuestionIds([]);
+            }}
+            className={`p-3 border border-[var(--border-color)] rounded-full transition-all group relative mr-2 shadow-sm ${
+              isSelectMode ? "bg-[var(--fg-primary)] text-[var(--bg-primary)]" : "hover:bg-[var(--fg-primary)] hover:text-[var(--bg-primary)] text-[var(--fg-primary)]"
+            }`}
+            title="Batch Select Mode (批量选择)"
+          >
+            <CheckSquare size={20} strokeWidth={1.5} />
+          </button>
+
           <button 
             onClick={() => setIsAddingCategory(true)}
             className="p-3 border border-[var(--border-color)] rounded-full hover:bg-[var(--fg-primary)] hover:text-[var(--bg-primary)] transition-all text-[var(--fg-primary)] shadow-sm"
@@ -515,8 +545,18 @@ T: 当然！我发现我的注意力往往会下降...`}
                       <div 
                         key={q.id} 
                         id={`q-${q.id}`}
-                        className={`group space-y-4 rounded-3xl transition-all duration-1000 ${highlightedId === q.id ? 'bg-[var(--accent-soft)]/50 p-4 -mx-4 ring-1 ring-indigo-100' : ''}`}
+                        className={`group space-y-4 rounded-3xl transition-all duration-1000 ${highlightedId === q.id ? 'bg-[var(--accent-soft)]/50 p-4 -mx-4 ring-1 ring-indigo-100' : ''} ${selectedQuestionIds.includes(q.id) ? 'bg-[var(--accent-soft)]/20 p-4 -mx-4 ring-1 ring-[var(--fg-primary)]' : ''}`}
+                        onClick={() => {
+                          if (isSelectMode) {
+                            setSelectedQuestionIds(prev => prev.includes(q.id) ? prev.filter(id => id !== q.id) : [...prev, q.id]);
+                          }
+                        }}
                       >
+                        {isSelectMode && (
+                          <div className="absolute -left-10 top-4 text-[var(--fg-primary)] opacity-80 cursor-pointer">
+                            {selectedQuestionIds.includes(q.id) ? <CheckSquare size={20} /> : <div className="w-5 h-5 border-2 border-[var(--fg-primary)] rounded-[4px] opacity-40"></div>}
+                          </div>
+                        )}
                         {editingQuestion?.id === q.id ? (
                           <div className="space-y-10 bg-[var(--bg-secondary)]/30 p-10 rounded-[2rem] border border-[var(--border-color)]">
                             <div className="flex justify-between items-center mb-6">
