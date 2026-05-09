@@ -481,26 +481,21 @@ export const useStore = create<AppState>()(
             ? state.accounts.map(acc => acc.email?.toLowerCase() === restoredUser.email?.toLowerCase() ? restoredUser : acc)
             : [...state.accounts, restoredUser];
 
-          // MERGE STRATEGY: Combine items by ID to prevent overwriting different datasets
-          const mergeById = <T extends { id: string }>(local: T[], remote: T[]): T[] => {
-            const map = new Map<string, T>();
-            // Add local items (current user's data only to avoid bloating)
-            local.filter(item => (item as any).userId === restoredUser.id).forEach(item => map.set(item.id, item));
-            // Add remote items, overwriting if ID matches
-            remote.forEach(item => map.set(item.id, item));
-            
-            // Re-attach other users' categories if they exist (unlikely in this context but safe)
+          // REPLACE STRATEGY: Overwrite current user's local data with remote data to ensure deletions sync
+          const replaceForUser = <T extends { id: string }>(local: T[], remote: T[]): T[] => {
+            // Keep other users' data intact
             const otherUsersData = local.filter(item => (item as any).userId !== restoredUser.id);
-            return [...otherUsersData, ...Array.from(map.values())];
+            // Replace current user's data entirely with remote data
+            return [...otherUsersData, ...remote];
           };
 
           return {
             ...state,
             user: restoredUser,
             accounts: newAccounts,
-            categories: mergeById(state.categories, data.categories || []),
-            topics: mergeById(state.topics, data.topics || []),
-            stories: mergeById(state.stories, data.stories || [])
+            categories: replaceForUser(state.categories, data.categories || []),
+            topics: replaceForUser(state.topics, data.topics || []),
+            stories: replaceForUser(state.stories, data.stories || [])
           };
         }),
     }),
