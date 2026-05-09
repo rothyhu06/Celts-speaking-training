@@ -33,8 +33,8 @@ export default function FlashcardsPage() {
       // Clean leading brackets (e.g. from AI refinement tips)
       const cleanText = text.replace(/^\[.*?\]\n/, '');
       
-      cleanText.split('\n').forEach(line => {
-        const trimmed = line.trim();
+      cleanText.split(/[\n;；]/).forEach(item => {
+        const trimmed = item.trim();
         if (!trimmed) return;
         
         // Split by standard delimiters
