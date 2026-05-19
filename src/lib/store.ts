@@ -334,22 +334,52 @@ export const useStore = create<AppState>()(
 
       batchImportTopicsFull: (topicsData) =>
         set((state) => {
-          const newTopics = topicsData.map((data) => ({
-            id: uuidv4(),
-            userId: state.user?.id ?? 'user-1',
-            title: data.title,
-            cueCard: data.cueCard,
-            script: data.script,
-            translation: data.translation,
-            vocabAnalysisText: data.vocabAnalysisText,
-            part3Questions: data.part3Questions?.map((q) => ({
-              id: uuidv4(),
-              question: q,
-              isAiGenerated: { answer: false, translation: false },
-            })) || [],
-            isAiGenerated: { script: false, translation: false },
-          }));
-          return { topics: [...state.topics, ...newTopics] };
+          let updatedTopics = [...state.topics];
+          
+          topicsData.forEach((data) => {
+            const existingTopicIndex = updatedTopics.findIndex(
+              (t) => t.title.toLowerCase().trim() === data.title.toLowerCase().trim() && t.userId === (state.user?.id ?? 'user-1')
+            );
+
+            if (existingTopicIndex !== -1) {
+              const existingTopic = updatedTopics[existingTopicIndex];
+              const existingPart3Questions = existingTopic.part3Questions || [];
+              const newPart3Qs = data.part3Questions?.filter(q => 
+                !existingPart3Questions.some(eq => eq.question.toLowerCase().trim() === q.toLowerCase().trim())
+              ).map(q => ({
+                id: uuidv4(),
+                question: q,
+                isAiGenerated: { answer: false, translation: false },
+              })) || [];
+
+              updatedTopics[existingTopicIndex] = {
+                ...existingTopic,
+                cueCard: data.cueCard || existingTopic.cueCard,
+                script: data.script || existingTopic.script,
+                translation: data.translation || existingTopic.translation,
+                vocabAnalysisText: data.vocabAnalysisText || existingTopic.vocabAnalysisText,
+                part3Questions: [...existingPart3Questions, ...newPart3Qs],
+              };
+            } else {
+              updatedTopics.push({
+                id: uuidv4(),
+                userId: state.user?.id ?? 'user-1',
+                title: data.title,
+                cueCard: data.cueCard,
+                script: data.script,
+                translation: data.translation,
+                vocabAnalysisText: data.vocabAnalysisText,
+                part3Questions: data.part3Questions?.map((q) => ({
+                  id: uuidv4(),
+                  question: q,
+                  isAiGenerated: { answer: false, translation: false },
+                })) || [],
+                isAiGenerated: { script: false, translation: false },
+              });
+            }
+          });
+
+          return { topics: updatedTopics };
         }),
 
       addStory: (title, tag, summary) =>
